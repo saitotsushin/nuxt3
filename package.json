@@ -23,6 +23,7 @@
   "dependencies": {
     "nuxtjs-phaser": "^3.0.17",
     "phaser": "^3.70.0",
-    "sass": "^1.69.5"
+    "sass": "^1.69.5",
+    "vuedraggable": "^2.24.3"
   }
 }

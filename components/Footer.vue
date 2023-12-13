@@ -10,5 +10,10 @@
   text-align: center;
   font-weight: normal;
   padding: 10px;
+
+  position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 100%;
 }
 </style>

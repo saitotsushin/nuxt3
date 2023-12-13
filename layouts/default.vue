@@ -1,123 +1,251 @@
 <template>
-  <div class="container">
+  <div class="wrapper">
     <Header />
-    <!-- <p>{{ route.path }}</p> -->
-    <div class="cardClose" @click="CardClose()" :class="closeBtn">x</div>
-    <Card
-        :imagePath="'/nuxt3/images/thumb/html5game.png'"
-        :cardName="'HTML5game'"
-        :imageIcon="'/nuxt3/images/icons/html5.png'"
-        :productId="'product_1'"
-        :class="className"
-      />
-      <Card
-        :imagePath="'/nuxt3/images/thumb/famireview.png'"
-        :cardName="'bubble.io'"
-        :imageIcon="'/nuxt3/images/icons/bubble.png'"
-        :productId="'product_2'"
-        :class="className"
-      />
-      <Card
-        :imagePath="'/nuxt3/images/thumb/moveandslash.png'"
-        :cardName="'Unity'"
-        :imageIcon="'/nuxt3/images/icons/unity.png'"
-        :productId="'product_3'"
-        :class="className"
-      />
-      <Card
-        :imagePath="'/nuxt3/images/thumb/blender.png'"
-        :cardName="'blender'"
-        :imageIcon="'/nuxt3/images/icons/blender.png'"
-        :productId="'product_4'"
-        :class="className"
-      />
-      <Card
-        :imagePath="'/nuxt3/images/thumb/touchnumber.png'"
-        :cardName="'Touch Number'"
-        :imageIcon="'/nuxt3/images/icons/vuejs.png'"
-        :productId="'product_5'"
-        :class="className"
-      />
-      <Card
-        :imagePath="'/nuxt3/images/thumb/monsterbattle.png'"
-        :cardName="'Monster Battle'"
-        :imageIcon="'/nuxt3/images/icons/html5.png'"
-        :productId="'product_6'"
-        :class="className"
-      />
-    <div class="main">
-      <!-- <Card
-        :imagePath="'/nuxt3/_nuxt/assets/images/thumb/html5game.png'"
-      /> -->
-      <slot />
+    <div
+      class="container"
+      :style="{
+        top: dragInfo.top + 'px',
+        left: dragInfo.left + 'px',
+        width: resizableInfo.width + 'px',
+        height: resizableInfo.height + 'px',
+        position: resizableInfo.position,
+        margin: resizableInfo.margin
+      }"
+      ref="MyContainer"
+    >
+      <div class="MainHeader draggable" @mousedown="startDrag">
+        <img src="~/assets/images/player.png" alt="Discover Nuxt 3" />
+      </div>
+      <div class="Main">
+        <div class="MainColumHeader draggable" @mousedown="startDrag">MainColumnHeader</div>
+        <div class="MainColumn">
+          <div class="Column">
+            Column
+          </div>
+          <div class="Column">
+            Column
+          </div>
+          <div class="Column">
+            Column
+          </div>
+        </div>
+        <slot />
+      </div>
+      <div class="rightBar" @mousedown="startResizeX"></div>
+      <div class="bottomBar" @mousedown="startResizeY"></div>
+      <div class="resizeXYbar" @mousedown="startResizeXY"></div>
     </div>
     <Footer />
   </div>
 </template>
 
-<style>
-.container {
-  width: 276px;
-  padding: 10px;
-  margin: auto;
-  position: relative;
-}
-.product{
-  padding-top: 140px;
-  z-index: 100;
-  overflow-wrap: break-word;
-  font-family: "PixelMplus10";
-  font-size: 10px;
-}
-.product h2{
-  font-size: 12px;
-  font-family: "PixelMplus10";
-}
-.product .OtherURL{
-  font-size: 10px;
-  line-height: 14px;
-  display: inline-block;
-}
-.product article img{
-  margin: 5px 0 5px 0;
-}
-.cardClose{
-  display: none;
-}
-.cardClose.active{
-  display: block;
+<style lang="scss" scoped>
+.resizeXYbar{
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  cursor: pointer;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+}
+.rightBar{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10px;
+  height: 100%;
+  background-color: #F00;
+}
+.bottomBar{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  background-color: #F00;
+}
+.wrapper{
+  background-image: url('/nuxt3/images/10-6--thumb.png');
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  max-width: 920px;
+  max-height: 460px;
+  margin: auto;
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 14px 22px -7px rgba(0, 0, 0, 0.33);  
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+	.MainHeader {
+    width: 180px;
+    background-color: rgba(229, 229, 229, 0.2);;
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	}
+  .Main{
+    width: 100%;
+    background-color: #ffffff;
+  }
+  .MainColumHeader{
+    background-color: #faf4f2;
+    width: 100%;
+    padding: 20px;
+  }
+  .MainColumn{
+    display: flex;
+  }
+  .Column{
+    width: calc(100% / 3);
+  }
+}
+.draggable:hover{
+  cursor: grab;
 }
 </style>
+
 <script setup>
+const dragInfo = ref({
+  isDragging: false,
+  startX: 0,
+  startY: 0,
+  top: 0,
+  left: 0,
+});
+
+const startDrag = (event) => {
+  dragInfo.value.isDragging = true;
+  dragInfo.value.startX = event.clientX - dragInfo.value.left;
+  dragInfo.value.startY = event.clientY - dragInfo.value.top;
+
+  document.addEventListener('mousemove', dragMove);
+  document.addEventListener('mouseup', endDrag);
+};
+
+const dragMove = (event) => {
+  if (dragInfo.value.isDragging) {
+    dragInfo.value.left = event.clientX - dragInfo.value.startX;
+    dragInfo.value.top = event.clientY - dragInfo.value.startY;
+  }
+};
+
+const endDrag = () => {
+  dragInfo.value.isDragging = false;
+  document.removeEventListener('mousemove', dragMove);
+  document.removeEventListener('mouseup', endDrag);
+};
+
+const resizableInfo = ref({
+  isResizing: false,
+  startX: 0,
+  startWidth: 0,
+  startY: 0,
+  startHeight: 0,      
+  width: 920, // 初期の横幅
+  height: 460,
+  position: "relative",
+  margin: "auto"
+});
+
+const startResizeX = (event) => {
+  resizableInfo.value.isResizing = true;
+  resizableInfo.value.startX = event.clientX;
+  resizableInfo.value.startWidth = resizableInfo.value.width;
+  resizableInfo.value.position = "absolute";
+  resizableInfo.value.margin = "0";
+
+  document.addEventListener('mousemove', resizeX);
+  document.addEventListener('mouseup', endResizeX);
+};
+const startResizeY = (event) => {
+  resizableInfo.value.isResizing = true;
+  resizableInfo.value.startY = event.clientY;
+  resizableInfo.value.startHeight = resizableInfo.value.height;
+  resizableInfo.value.position = "absolute";
+
+  document.addEventListener('mousemove', resizeY);
+  document.addEventListener('mouseup', endResizeY);
+};
+const startResizeXY = (event) => {
+  resizableInfo.value.isResizing = true;
+  resizableInfo.value.startX = event.clientX;
+  resizableInfo.value.startWidth = resizableInfo.value.width;
+  resizableInfo.value.startY = event.clientY;
+  resizableInfo.value.startHeight = resizableInfo.value.height;
+
+  document.addEventListener('mousemove', resizeXY);
+  document.addEventListener('mouseup', endResizeXY);
+};
+const resizeX = (event) => {
+  if (resizableInfo.value.isResizing) {
+    const newWidth = resizableInfo.value.startWidth + (event.clientX - resizableInfo.value.startX);
+    resizableInfo.value.width = Math.max(50, newWidth); // 最小横幅を設定
+  }
+};
+const resizeY = (event) => {
+  if (resizableInfo.value.isResizing) {
+    const newHeight = resizableInfo.value.startHeight + (event.clientY - resizableInfo.value.startY);
+    resizableInfo.value.height = Math.max(50, newHeight); // 最小横幅を設定
+  }
+};
+const resizeXY = (event) => {
+  if (resizableInfo.value.isResizing) {
+    const newWidth = resizableInfo.value.startWidth + (event.clientX - resizableInfo.value.startX);
+    resizableInfo.value.width = Math.max(50, newWidth); // 最小横幅を設定
+    const newHeight = resizableInfo.value.startHeight + (event.clientY - resizableInfo.value.startY);
+    resizableInfo.value.height = Math.max(50, newHeight); // 最小横幅を設定
+    resizableInfo.value.height = newWidth;
+    resizableInfo.value.height = newHeight;
+  }
+};
+const endResizeX = () => {
+  resizableInfo.value.isResizing = false;
+  document.removeEventListener('mousemove', resizeX);      
+  document.removeEventListener('mouseup', endResizeX);
+};
+const endResizeY = () => {
+  resizableInfo.value.isResizing = false;
+  document.removeEventListener('mousemove', resizeY);      
+  document.removeEventListener('mouseup', endResizeY);
+};
+const endResizeXY = () => {
+  resizableInfo.value.isResizing = false;
+  document.removeEventListener('mousemove', resizeXY);      
+  document.removeEventListener('mouseup', endResizeXY);
+};
+
+const MyContainer = ref(null);
+onMounted(() => {
+  // マウント後にDOMの位置を取得
+  const element = MyContainer.value;
+  dragInfo.value.top = element.offsetTop;
+  dragInfo.value.left = element.offsetLeft;
+  resizableInfo.value.position = "absolute";
+  resizableInfo.value.margin = "0";
+});
 const route = useRoute();
 const router = useRouter();
 const className = ref('');
 const closeBtn = ref('');
-// watch(route, () => {
-//   console.log("route", route.path);
+
+// watch(() => route.path, (newPath) => {
+//   // ここで必要な処理を実行する
 //   if (route.path.includes("product_")) {
-//     className.value = "hidden";
+//     className.value = "cardAllHidden";
+//     closeBtn.value = "active";
+//   } else {
+//     className.value = "";
+//     closeBtn.value = "";
 //   }
 // });
-const CardClose = () => {
-  router.push('/');
-};
-watch(() => route.path, (newPath) => {
-    // currentPath.value = newPath;
-  // ここで必要な処理を実行する
-  console.log("route.path", route.path)
-  if (route.path.includes("product_")) {
-    console.log("product page")
-    className.value = "cardAllHidden";
-    closeBtn.value = "active";
-  } else {
-    className.value = "";
-    closeBtn.value = "";
-  }
-});
 </script>
