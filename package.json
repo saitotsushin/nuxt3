@@ -8,13 +8,21 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "deploy": "gh-pages --dotfiles -d .output/public"
+    "deploy": "nuxt generate && gh-pages --dotfiles -d .output/public"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxtjs/vuetify": "^1.12.3",
     "gh-pages": "^6.1.0",
     "nuxt": "^3.8.2",
+    "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.3.10",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vuetify": "^3.4.6"
+  },
+  "dependencies": {
+    "nuxtjs-phaser": "^3.0.17",
+    "phaser": "^3.70.0",
+    "sass": "^1.69.5"
   }
 }

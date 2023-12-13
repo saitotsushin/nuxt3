@@ -1,10 +1,21 @@
 <template>
-  <h1>HEADER</h1>
+  <h1 class="Header font-bit">
+    <NuxtLink to="/">SAITOTSUSHIN</NuxtLink>
+  </h1>
   <img src="~/assets/images/player.png" alt="Discover Nuxt 3" />
-  <NuxtLink to="/">
+  <!-- <v-btn to="/" nuxt>
     top
-  </NuxtLink>  
+  </v-btn>  
+  <v-btn to="/" nuxt>リンク</v-btn>
   <NuxtLink to="/about">
     about
-  </NuxtLink>
+  </NuxtLink> -->
 </template>
+
+<style>
+.Header{
+  font-size: 16px;
+  text-align: center;
+  font-weight: normal;
+}
+</style>

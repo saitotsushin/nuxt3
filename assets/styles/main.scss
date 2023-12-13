@@ -1,0 +1,22 @@
+@import './variables';
+a {
+  text-decoration: none;
+  transition: 0.3s;
+  color: inherit;
+}
+body{
+  background: rgb(61,61,61);
+  background: linear-gradient(0deg, rgba(19,19,19,1) 0%, rgba(31,31,31,1) 24%, rgba(0,0,0,1) 100%);
+}
+@font-face {
+  font-family: 'PixelMplus10'; // <-好きな名前をつけれます。
+  src: url('../font/PixelMplus10-Regular_min.ttf') format("ttf");
+}
+.font-bit{
+  font-family: "PixelMplus10";
+  letter-spacing: 1px;
+}
+*{
+  box-sizing: border-box;
+  position: relative;
+}
