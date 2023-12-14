@@ -13,108 +13,155 @@
       }"
       ref="MyContainer"
     >
-      <div class="MainHeader draggable" @mousedown="startDrag">
-        <img src="~/assets/images/player.png" alt="Discover Nuxt 3" />
-      </div>
-      <div class="Main">
-        <div class="MainColumHeader draggable" @mousedown="startDrag">MainColumnHeader</div>
-        <div class="MainColumn">
-          <div class="Column">
-            Column
-          </div>
-          <div class="Column">
-            Column
-          </div>
-          <div class="Column">
-            Column
-          </div>
+      <div class="containerInner">
+        <div class="MainHeader draggable" @mousedown="startDrag">
+          <img src="~/assets/images/player.png" alt="Discover Nuxt 3" />
         </div>
-        <slot />
+        <div class="Main">
+          <div class="MainColumHeader draggable" @mousedown="startDrag">{{ MainColumHeader }}</div>
+          <div class="MainColumn" ref="MainColumn" :style="{overflowX: MainColumnInfo.overflowX}">
+            <div class="Column" ref="Column1" >
+              Column
+              <ul>
+                <ColumnItem v-for="item in items"
+                  :dirName = "item.dirName"
+                  :columnList = "item.columnList"
+                  :contentsList = "item.contents"
+                  :dirNumber = "item.dirNumber"
+                  @item-clicked="handleItemClick"
+                />
+              </ul>
+            </div>
+            <div class="Column" ref="Column2" v-if="MyColumnList.column2">
+              <ul>
+                <ColumnItem v-for="item in items2"
+                  :dirName = "item.dirName"
+                  :columnList = "item.columnList"
+                  :contentsList = "item.contents"
+                  :dirNumber = "item.dirNumber"
+                  @item-clicked="handleItemClick"
+                />
+              </ul>
+            </div>
+            <div class="Column" ref="Column3" v-if="MyColumnList.column3">
+              <ul>
+                <ColumnItem v-for="item in items3"
+                  :dirName = "item.dirName"
+                  :columnList = "item.columnList"
+                  :contentsList = "item.contents"
+                  :dirNumber = "item.dirNumber"
+                  @item-clicked="handleItemClick"
+                />
+              </ul>
+            </div>
+            <div class="Column" ref="Column4">
+              Detail
+            </div>
+          </div>
+          <slot />
+        </div>
       </div>
-      <div class="rightBar" @mousedown="startResizeX"></div>
-      <div class="bottomBar" @mousedown="startResizeY"></div>
+      <div class="rightBar" @mousedown="startResizeX"><span></span></div>
+      <div class="bottomBar" @mousedown="startResizeY"><span></span></div>
       <div class="resizeXYbar" @mousedown="startResizeXY"></div>
     </div>
+    <PopupWindow
+      :contentsList = "popuWindow.contents"
+      :title = "popuWindow.title"
+      @popup-clicked="handlePopupCloseClick"
+    />
     <Footer />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.resizeXYbar{
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 10px;
-  height: 10px;
-  background-color: #000;
-}
-.rightBar{
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 10px;
-  height: 100%;
-  background-color: #F00;
-}
-.bottomBar{
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 10px;
-  background-color: #F00;
-}
-.wrapper{
-  background-image: url('/nuxt3/images/10-6--thumb.png');
-  background-size: cover;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.container {
-  max-width: 920px;
-  max-height: 460px;
-  margin: auto;
-  display: flex;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0px 14px 22px -7px rgba(0, 0, 0, 0.33);  
-  position: relative;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-	.MainHeader {
-    width: 180px;
-    background-color: rgba(229, 229, 229, 0.2);;
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	}
-  .Main{
-    width: 100%;
-    background-color: #ffffff;
-  }
-  .MainColumHeader{
-    background-color: #faf4f2;
-    width: 100%;
-    padding: 20px;
-  }
-  .MainColumn{
-    display: flex;
-  }
-  .Column{
-    width: calc(100% / 3);
-  }
-}
-.draggable:hover{
-  cursor: grab;
+.container{
+  /* 何かしらstyleがないとエラーになる... */
 }
 </style>
 
 <script setup>
+const MainColumHeader = ref("/");
+const items = ref([
+  {
+    dirName: 'HOME',
+    dirNumber: 1
+  },
+  {
+    dirName: 'PROFILE',
+    dirNumber: 1,
+    contents: '<img src="/nuxt3/images/product/images.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images.jpg"/>'
+  },
+  {
+    dirName: 'PRODUCT',
+    dirNumber: 1,
+    columnList: [
+      {
+        dirName: "TEST1",
+        dirNumber: 2,
+        contents: '<img src="/nuxt3/images/product/images2.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images2.jpg"/>'
+      },
+      {
+        dirName: "TEST2",
+        dirNumber: 2,
+        contents: '<img src="/nuxt3/images/product/images3.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images3.jpg"/>'
+      }
+    ]
+  },
+  {
+    dirName: 'PHOTOS',
+    dirNumber: 1, 
+    columnList: [
+      {
+        dirName: "PHOTOS_1",
+        dirNumber: 2,
+        contents: '<img src="/nuxt3/images/product/10-6--thumb.png"/><p>テスト</p><img src="/nuxt3/images/product/10-6--thumb.png"/>'
+      },
+      {
+        dirName: 'PHOTOS_2',
+        dirNumber: 2,
+        columnList: [
+          {
+            dirName: "PHOTOS_2_1",
+            dirNumber: 3,
+            contents: '<img src="/nuxt3/images/product/images4.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images4.jpg"/>'
+          },
+          {
+            dirName: "PHOTOS_2_2",
+            dirNumber: 3,
+            contents: '<img src="/nuxt3/images/product/images5.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images5.jpg"/>'
+          },
+          {
+            dirName: "PHOTOS_2_3",
+            dirNumber: 3,
+            contents: '<img src="/nuxt3/images/product/images6.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images6.jpg"/>'
+          },          
+        ]
+      },
+      {
+        dirName: 'PHOTOS_3',
+        dirNumber: 2,
+        columnList: [
+        {
+            dirName: "PHOTOS_3_1",
+            dirNumber: 3,
+            contents: '<img src="/nuxt3/images/product/images7.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images7.jpg"/>'
+          },
+          {
+            dirName: "PHOTOS_3_2",
+            dirNumber: 3,
+            contents: '<img src="/nuxt3/images/product/images8.jpg"/><p>テスト</p><img src="/nuxt3/images/product/images8.jpg"/>'
+          } 
+        ]
+      }
+    ]
+  }
+]);
+
+const items2 = ref([]);
+const items3 = ref([]);
+const popuWindow = ref({title: "", contents:""});
+
 const dragInfo = ref({
   isDragging: false,
   startX: 0,
@@ -225,6 +272,21 @@ const endResizeXY = () => {
 };
 
 const MyContainer = ref(null);
+
+const Column1 = ref(null);
+const Column2 = ref(null);
+const Column3 = ref(null);
+const Column4 = ref(null);
+const MainColumn = ref(null);
+const MainColumnInfo = ref({
+  overflowX: "auto",
+});
+const MyColumnList = ref({
+  column1: true,
+  column2: false,
+  column3: false,
+});
+
 onMounted(() => {
   // マウント後にDOMの位置を取得
   const element = MyContainer.value;
@@ -233,19 +295,59 @@ onMounted(() => {
   resizableInfo.value.position = "absolute";
   resizableInfo.value.margin = "0";
 });
-const route = useRoute();
-const router = useRouter();
-const className = ref('');
-const closeBtn = ref('');
 
-// watch(() => route.path, (newPath) => {
-//   // ここで必要な処理を実行する
-//   if (route.path.includes("product_")) {
-//     className.value = "cardAllHidden";
-//     closeBtn.value = "active";
-//   } else {
-//     className.value = "";
-//     closeBtn.value = "";
-//   }
-// });
+watch(() => MyColumnList.value.column3, (newValue, oldValue) => {
+  const element = MainColumn.value;
+  const childColumn = Column1.value;
+  nextTick(() => {
+      element.scrollTo({
+        left: childColumn.offsetWidth,
+        behavior: 'smooth' // 'smooth'を指定するとスムーズなアニメーションでスクロールします
+      });
+    MainColumnInfo.value.overflowX = "scroll";
+    });
+
+  // ここでmyValue1に対する処理を実行
+});
+const handleItemClick = (itemInfo) => {
+  console.log("itemInfo.dirNumber=" + itemInfo.dirNumber);
+  MainColumHeader.value = itemInfo.dirName;
+  if (itemInfo.columnList) {
+    if (itemInfo.dirNumber == 1) {
+      MyColumnList.value.column2 = true;
+      MyColumnList.value.column3 = false;
+      items2.value = [];
+      items3.value = [];
+      const reactiveItems2 = reactive(itemInfo.columnList);
+      items2.value = reactiveItems2;
+    }
+    if (itemInfo.dirNumber == 2) {
+      MyColumnList.value.column3 = true;
+      const reactiveItems3 = reactive(itemInfo.columnList);
+      items3.value = reactiveItems3;
+      MainColumnInfo.value.overflowX = "scroll";
+      
+    }    
+  } else {
+    if (itemInfo.dirNumber == 1) {
+      items2.value = [];
+      items3.value = [];      
+      MyColumnList.value.column2 = false;
+      MyColumnList.value.column3 = false;
+    }
+    if (itemInfo.dirNumber == 2) {
+      console.log("columnListなし");
+      items3.value = [];      
+      MyColumnList.value.column3 = false;
+    }
+    // const reactiveItemsDetail = itemInfo.contents;
+    popuWindow.value.title = itemInfo.dirName;  
+    popuWindow.value.contents = itemInfo.contents;  
+    MainColumnInfo.value.overflowX = "auto";  
+  }
+}
+const emit = defineEmits(['change', 'delete']);//<-必須
+const handlePopupCloseClick = (_data) => {
+  popuWindow.value.contents = '';  
+}
 </script>

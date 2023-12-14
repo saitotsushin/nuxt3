@@ -2,13 +2,6 @@
   <h1 class="Header font-bit">
     <NuxtLink to="/">SAITOTSUSHIN</NuxtLink>
   </h1>
-  <!-- <v-btn to="/" nuxt>
-    top
-  </v-btn>  
-  <v-btn to="/" nuxt>リンク</v-btn>
-  <NuxtLink to="/about">
-    about
-  </NuxtLink> -->
 </template>
 
 <style>

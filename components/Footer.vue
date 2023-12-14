@@ -1,6 +1,6 @@
 <template>
   <h1 class="Footer font-bit">
-    (c) ---
+    (c) ☺
   </h1>
 </template>
 
