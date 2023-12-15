@@ -21,9 +21,11 @@
     "vuetify": "^3.4.6"
   },
   "dependencies": {
+    "@types/three": "^0.159.0",
     "nuxtjs-phaser": "^3.0.17",
     "phaser": "^3.70.0",
     "sass": "^1.69.5",
+    "three": "^0.159.0",
     "vuedraggable": "^2.24.3"
   }
 }
