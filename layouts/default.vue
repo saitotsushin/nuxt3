@@ -1,8 +1,9 @@
 <template>
-  <NuxtLoadingIndicator>
+  <!-- <NuxtLoadingIndicator>
     <slot><Loading /></slot>
-  </NuxtLoadingIndicator>
+  </NuxtLoadingIndicator> -->
   <div class="wrapper">
+    <Box/>    
     <Header />
     <div
       class="container"
