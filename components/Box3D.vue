@@ -1,11 +1,13 @@
 <template>
   <div class="webGLbox" ref="container"></div>
-
-  <!-- <canvas id="mountId" width="700" height="500" class="m-auto h-[500px] w-[700px] rounded-md" /> -->
 </template>
-<style>
+<style scoped>
+html{
+  width: 100%;
+  height: 100vh;
+}
 .webGLbox{
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   width: 100%;
@@ -27,7 +29,6 @@ import { Line, LineBasicMaterial, PerspectiveCamera, Scene, SphereGeometry, Vect
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // import { ref } from 'vue'
-
 const container: Ref<HTMLElement> = ref(null!);
 // const { clientWidth, clientHeight } = useWindowSize()
 
