@@ -1,31 +1,57 @@
 <template>
-  <div class="webGLbox" ref="container"></div>
+  <div class="main">
+    <div class="webGLbox" ref="container"></div>
+    <div class="sizeSticker">
+      <div class="sizeUS">
+        <div class="sizeUS_name">US</div>
+        <div class="sizeUS_number">9.5</div>
+      </div>
+    </div>
+  </div>
 </template>
-<style scoped>
-html{
+<style>
+.main{
   width: 100%;
-  height: 100vh;
+  background-color: #F15928;
+  position: relative;
 }
 .webGLbox{
   position: relative;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  z-index: 1000;
+  max-width: 640px;
+  z-index: 1;
   pointer-events: none;
 }
-canvas{
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
+.webGLbox canvas{
+  width: 100% !important;
+  height: auto !important;
   pointer-events: none;
+}
+.sizeSticker{
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  border-top: 8px solid #FFF;
+  border-left: 20px solid #FFF;
+  border-right: 8px solid #FFF;
+  border-bottom: 8px solid #FFF;
+  padding: 20px;
+  z-index: 10;
+}
+.sizeUS_number{
+  font-size: 36px;
+  font-weight: bold;
 }
 </style>
 <script setup lang="ts">
-import { Line, LineBasicMaterial, PerspectiveCamera, Scene, SphereGeometry, Vector3, WebGLRenderer,AmbientLight,SpotLight, Object3D, type Object3DEventMap } from 'three'
+import {
+  Line,
+  LineBasicMaterial,
+  PerspectiveCamera,
+  ACESFilmicToneMapping, Scene, SphereGeometry, Vector3, WebGLRenderer, AmbientLight, SpotLight, Object3D,
+  DirectionalLight,
+  type Object3DEventMap
+} from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 // import { ref } from 'vue'
@@ -39,24 +65,26 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       alpha: true,
       antialias: true
     })
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    renderer.setPixelRatio(window.innerWidth / window.innerHeight)
-    
+    // サイズを取得
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
+    const width = 640;
+    const height = 480;    
+
+    // レンダラーのサイズを調整する
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
+    renderer.toneMapping = ACESFilmicToneMapping;
+
+    renderer.toneMappingExposure = 1;
+
     container.value.appendChild(renderer.domElement)
     // シーン追加
-    const scene = new Scene()
-    // カメラ作成
-    // const camera = new PerspectiveCamera(45, clientWidth / clientHeight)
-    // camera.position.set(20, 20, 20)
-    // camera.lookAt(new Vector3(0, 0, 0))
-    // 球体作成
-    const geometry = new SphereGeometry(10, 32, 32)
-    const material = new LineBasicMaterial({ color: 0x6699ff, linewidth: 1 })
-    const sphere = new Line(geometry, material)
-    scene.add(sphere)
+    const scene = new Scene();
     // カメラの作成
-    const camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 2, 4);
+    const camera = new PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 2, 6);
     camera.lookAt(new Vector3(0, 1, 0));
 
     // 環境光
@@ -64,14 +92,19 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     scene.add(ambientLight);
 
     // 光源
-    const spotLight = new SpotLight(0xffffff, 0.7);
-    spotLight.position.set(-10, 10, 10);
-        scene.add(spotLight);
+    // const spotLight = new SpotLight(0xffffff, 0.7);
+    // spotLight.position.set(0, 0, 0);
+    // scene.add(spotLight);
 
+    const directionalLight = new DirectionalLight(0xffffff);
+    directionalLight.intensity = 2; // 光の強さを倍に
+    directionalLight.position.set(0, 1, 1); // ライトの方向
+    scene.add(directionalLight);
+    
     // GLTFモデルの読み込み
     const loader = new GLTFLoader();
     let model: Object3D<Object3DEventMap>;
-    loader.load('/nuxt3/object/face01.gltf', (gltf) => {
+    loader.load('/nuxt3/object/sneaker_box2.glb', (gltf) => {
       model = gltf.scene;
       scene.add(model);
     }, undefined, function (e) {
@@ -82,7 +115,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       requestAnimationFrame(tick)
       // 球体を回転
       if (model) {
-        model.rotation.x += 0.01;
+        model.rotation.y += 0.01;
       }
       // レンダリング
       renderer.render(scene, camera)

@@ -73,3 +73,11 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+# 画像加工
+https://www.shutterstock.com/ja/blog/how-to-turn-any-photograph-into-pixel-art-with-photoshop
+
+# node
+```
+Cannot start nuxt:  The requested module 'node:module' does not provide an export named 'isBuiltin'
+```
