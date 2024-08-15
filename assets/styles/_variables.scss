@@ -3,3 +3,66 @@ body{
   background-color: #000;
   color: #FFF;
 }
+.half-circle {
+  width: 10px;
+  height: 5px;
+  background-color: #FFF;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  bottom: calc(-2px - 5px);
+  right: calc(50% - 5px);
+}
+.switchQualityBox{
+  border-left: 1px dotted #FFF;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+.switchQuality{
+  display: flex;
+  align-items: center;
+  
+}
+.toggle-button {
+  display: inline-block;
+  position: relative;
+  width: 42px;
+  height: 20px;
+  border-radius: 50px;
+  // border: 3px solid #dddddd;
+  box-sizing: content-box;
+  cursor: pointer;
+  transition: border-color 0.4s;
+  background-color: rgba(#FFF, 0.5);
+}
+
+.toggle-button:has(:checked) {
+    // border-color: #4bd865;
+}
+
+.toggle-button::after {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #f15928;
+  content: "";
+  transition: left 0.4s;
+}
+
+.toggle-button:has(:checked)::after {
+    left: 24px;
+    background-color: #f15928;
+}
+
+.toggle-button input {
+    display: none;
+}
+.switchQualityName{
+  font-size: 0.75rem;
+  padding: 0 0.3rem;
+}

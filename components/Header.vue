@@ -1,18 +1,30 @@
 <template>
     <header class="sticky-menu">
-      <h1 class="font-bit"><NuxtLink to="/">SAITOTSUSHIN</NuxtLink></h1>
-      <nav>
-        <ul>
-            <li><a href="#section2">NIKE</a></li>
-            <li><a href="#section3">addidas</a></li>
-            <li><a href="#section4">VANS</a></li>
-        </ul>
-      </nav>
+      <h1 class="font-bit"><NuxtLink to="/"><img src="~/assets/images/logo.svg"></NuxtLink></h1>
+      <div class="switchQualityBox">
+        <div class="switchQuality">
+          <div class="switchQualityName">
+            HI
+          </div>
+          <label class="toggle-button">
+            <input type="checkbox"/>
+          </label>
+          <div class="switchQualityName">
+            LOW
+          </div>
+        </div>
+        <div class="half-circle"></div>
+      </div>
     </header>
 
 </template>
 
 <style>
+header h1 a{
+  display: flex;
+}
+header h1 a img{
+}
 .sticky-menu {
     position: -webkit-sticky; /* サポートされていないブラウザ用のプレフィックス */
     position: sticky;
@@ -24,10 +36,12 @@
     z-index: 1000; /* 必要に応じて調整 */
     background-color: #F15928;
     justify-content:space-between;
+    /* align-items: center; */
 }
 .sticky-menu h1{
   font-size: 16px;
   padding: 0.25rem 0.75rem;
+  border-right: 2px solid #FFF;
 }
 .sticky-menu nav{
   border-left: 1px solid #FFF;

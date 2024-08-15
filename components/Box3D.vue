@@ -1,15 +1,72 @@
 <template>
   <div class="main">
+    <div class="pageTitle rainbow-text font-bit">
+      <p class="loop">MY SNEAKER’S HISTORY & ARCHIVES</p>
+      <p class="loop loop2">MY SNEAKER’S HISTORY & ARCHIVES</p>
+    </div>
     <div class="webGLbox" ref="container"></div>
     <div class="sizeSticker">
-      <div class="sizeUS">
+      <div class="sizeList sizeUS">
         <div class="sizeUS_name">US</div>
         <div class="sizeUS_number">9.5</div>
+      </div>
+      <div class="sizeList sizeJP">
+        <div class="sizeJP_name">US</div>
+        <div class="sizeJP_number">9.5</div>
       </div>
     </div>
   </div>
 </template>
 <style>
+.pageTitle{
+  overflow: hidden;
+  position: absolute;
+  top: calc(50% -  7vw);
+  left: 0;
+  width: 180%;
+  z-index: 10;
+  margin-inline: auto;
+  font-size: 8vw;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.rainbow-text {
+  /* color: #F15928; */
+  mix-blend-mode: difference;
+    font-size: 48px;
+    font-weight: bold;
+    animation: rainbow 3s infinite;
+}
+@keyframes rainbow {
+    0% { color: red; }
+    16% { color: orange; }
+    33% { color: yellow; }
+    50% { color: green; }
+    66% { color: blue; }
+    83% { color: indigo; }
+    100% { color: violet; }
+}
+
+
+.loop {
+  animation: loop 12s linear infinite;
+  width: 100%;
+}
+
+.loop2{
+  position: absolute;
+  top: 0; left: 0;
+  animation: loop 12s -6s linear infinite;
+}
+
+@keyframes loop {
+  0%{
+    transform: translateX(100%);
+  }
+  100%{
+    transform: translateX(-100%);
+  }
+}
 .main{
   width: 100%;
   background-color: #F15928;
@@ -19,6 +76,8 @@
   position: relative;
   width: 100%;
   max-width: 640px;
+  height: 480px;
+  margin: auto;
   z-index: 1;
   pointer-events: none;
 }
@@ -37,6 +96,9 @@
   border-bottom: 8px solid #FFF;
   padding: 20px;
   z-index: 10;
+}
+.sizeList{
+  display: flex;
 }
 .sizeUS_number{
   font-size: 36px;
@@ -84,11 +146,11 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     const scene = new Scene();
     // カメラの作成
     const camera = new PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 2, 6);
+    camera.position.set(0, 3, 6);
     camera.lookAt(new Vector3(0, 1, 0));
 
     // 環境光
-    const ambientLight = new AmbientLight(0xffffff, 0.5);
+    const ambientLight = new AmbientLight(0xF15928, 1);
     scene.add(ambientLight);
 
     // 光源
@@ -97,8 +159,8 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     // scene.add(spotLight);
 
     const directionalLight = new DirectionalLight(0xffffff);
-    directionalLight.intensity = 2; // 光の強さを倍に
-    directionalLight.position.set(0, 1, 1); // ライトの方向
+    directionalLight.intensity = 4; // 光の強さを倍に
+    directionalLight.position.set(0, 2, 1); // ライトの方向
     scene.add(directionalLight);
     
     // GLTFモデルの読み込み
@@ -106,6 +168,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     let model: Object3D<Object3DEventMap>;
     loader.load('/nuxt3/object/sneaker_box2.glb', (gltf) => {
       model = gltf.scene;
+      model.position.set(0, 1.4,0);
       scene.add(model);
     }, undefined, function (e) {
       console.error(e);
