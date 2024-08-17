@@ -74,7 +74,6 @@ export default {
   },
   methods: {
     BgSelectClick() {
-      console.log("BgSelectClick");
       if (this.isBgSelected) {
         this.isBgSelected = false;        
       } else {

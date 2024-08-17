@@ -118,34 +118,14 @@ canvas{
         const fragmentShaderSource = gl.getShaderSource( fragmentShader );
         
         console.groupCollapsed( "vertexShader" )
-        console.log( vertexShaderSource )
         console.groupEnd()
         
         console.groupCollapsed( "fragmentShader" )
-        console.log( fragmentShaderSource )
         console.groupEnd()
 
       }
-      // var texture = new TextureLoader().load('/nuxt3/images/product/images.jpg',
-      //     (tex) => { // 読み込み完了時
-      //         console.log("tex", tex);
-      //         // 縦横比を保って適当にリサイズ
-      //         const w = 5;
-      //         const h = tex.image.height/(tex.image.width/w);
-
-      //         // 平面
-      //         const geometry = new PlaneGeometry(1, 1);
-      //         const material = new MeshPhongMaterial( { map:texture } );
-      //         const plane = new Mesh(geometry, material);
-      //         console.log("w=" + w + "/h=" + h);
-      //         plane.scale.set(w, h, 1);
-      //         console.log("plane", plane);
-      //         scene.add( plane );
-      //     });
-
       function render() {
           requestAnimationFrame(render);
-          // console.log("render");
           uniforms.uTime.value++;
           renderer.render(scene, camera);
       }

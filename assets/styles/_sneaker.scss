@@ -8,7 +8,7 @@ body.isMouseMove{
   margin-right: 2rem;
 }
 .sneakerThumb{
-  height: 60vw;
+  height: 45vw;
   *{
     transition: 0.25s cubic-bezier(.445, .05, .55, .95);
   }
@@ -28,11 +28,11 @@ body.isMouseMove{
   }
   .sneakerThumbName{
     position: absolute;
-    top: 2vw;
-    left: 2vw;
+    top: 9vw;
+    left: 4vw;
   }
   .sneakerThumbNameText{
-    font-size: 14vw;
+    font-size: 11vw;
     z-index: 10;
     color: #000;
     span{
@@ -40,7 +40,7 @@ body.isMouseMove{
       font-family: "Poppins", sans-serif;
       font-weight: 700;
       font-style: normal;
-      line-height: 1;
+      line-height: 0.9;
     }
   }
   .sneakerThumbBg{
@@ -76,6 +76,16 @@ body.isMouseMove{
     }
   }
 }
+.c-budge{
+  position: absolute;
+  top: 4vw;
+  left: 4vw;
+  z-index: 10;
+  background-color: #1b1b1b;
+  padding: 0.4rem 0.75rem;
+  border-radius: 100px;
+  line-height: 1.1;
+}
 .cursorDebug{
   position: fixed;
   padding: 10px;
@@ -86,4 +96,8 @@ body.isMouseMove{
   p{
     position: relative;
   }
+}
+.l-thumbs-s{
+  display: flex;
+  flex-wrap: wrap;
 }

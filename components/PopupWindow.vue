@@ -160,7 +160,6 @@ onMounted(() => {
 // });
 
 const modalDisplay = computed(() => {
-  console.log("contentsList",props.contentsList);
   return props.contentsList == "" ? 'none' : 'block';
 });
 
@@ -169,13 +168,6 @@ const emit = defineEmits(['change', 'delete','rewrite']);//<-必須
 const popuClose = () => {
   emit('popup-clicked',false);
 };
-
-// const popuClose = () => {
-//   console.log("popuClose");
-//   emit('popup-clicked',{
-//         contents: this.contentsList
-//       });
-// };
 </script>
 <style>
 .modalwindow{

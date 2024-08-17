@@ -1,20 +1,18 @@
 <template>
-  <NuxtLink to="/product/sneaker">
-    <div class="sneakerThumb" ref="targetElement" :class="{ 'isActive': visible }">
-      <div class="c-budge">😄 MOST FAVORITE</div>
-      <div class="sneakerThumbName">
-        <div class="sneakerThumbNameText sneakerThumbName2" ref="targtSneakerThumbName2">
-          <span>NIKE</span>
-          <span>AIR</span>
-          <span>JORDAN 1</span>
-        </div>
-      </div> 
-      <div class="sneakerThumbImage">
-        <img src="~/assets/images/1.png" ref="targetSneakerImage"/>
+  <div class="sneakerThumb" ref="targetElement" :class="{ 'isActive': visible }">
+    <div class="c-budge">😄 MOST FAVORITE</div>
+    <div class="sneakerThumbName">
+      <div class="sneakerThumbNameText sneakerThumbName2" ref="targtSneakerThumbName2">
+        <span>NIKE</span>
+        <span>DUNK</span>
+        <span>LOW PRO B</span>
       </div>
-      <div class="sneakerThumbBg"></div>
+    </div> 
+    <div class="sneakerThumbImage">
+      <img src="~/assets/images/2.png" ref="targetSneakerImage"/>
     </div>
-  </NuxtLink>
+    <div class="sneakerThumbBg" style="background-color: #ECE5D3;"></div>
+  </div>
 </template>
 <style>
 </style>
@@ -132,7 +130,7 @@ onMounted(() => {
     observerName.observe(targtSneakerThumbName2.value);
   }
 
-
+  
   window.addEventListener('mousemove', handleMouseMove);
 });
 onUnmounted(() => {
@@ -144,6 +142,7 @@ onUnmounted(() => {
   }
   window.removeEventListener('mousemove', handleMouseMove);
 });
+
 </script>
 <style lang="scss">
 .sneakerThumb{

@@ -98,7 +98,6 @@ canvas{
       scene.add(mesh);
       function render() {
           requestAnimationFrame(render);
-          // console.log("render");
           uniforms.uTime.value++;
           renderer.render(scene, camera);
       }

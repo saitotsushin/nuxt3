@@ -174,3 +174,8 @@ body{
 .btnClose::after {
   transform: translate(-50%,-50%) rotate(-45deg);
 }
+
+.l-thumbs{
+  padding: 20px 20px;
+  display: flex;
+}
