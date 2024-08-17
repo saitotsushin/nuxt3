@@ -30,15 +30,10 @@ body{
   width: 42px;
   height: 20px;
   border-radius: 50px;
-  // border: 3px solid #dddddd;
   box-sizing: content-box;
   cursor: pointer;
   transition: border-color 0.4s;
   background-color: rgba(#FFF, 0.5);
-}
-
-.toggle-button:has(:checked) {
-    // border-color: #4bd865;
 }
 
 .toggle-button::after {

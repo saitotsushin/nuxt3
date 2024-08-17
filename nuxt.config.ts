@@ -29,9 +29,9 @@ export default defineNuxtConfig({
         {
           rel: "stylesheet",
       	  // TODO: ここに先ほど控えたhrefの中身を記載
-          href: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap",
+          href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@400;700&family=Silkscreen&display=swap",
           crossorigin: "",
-        },
+        }
       ],
     },
   },

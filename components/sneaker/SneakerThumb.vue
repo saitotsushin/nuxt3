@@ -12,7 +12,7 @@
         </div>
       </div> 
       <div class="sneakerThumbImage">
-        <img src="~/assets/images/1.png" ref="targetSneakerImage"/>
+        <img :src="imagePath" ref="targetSneakerImage"/>
       </div>
       <div class="sneakerThumbBg"></div>
     </div>
@@ -23,7 +23,9 @@
 <script setup>
 const props = defineProps({
   name: String,
-  color: String,
+  mainColor: String,
+  subColor: String,
+  imagePath: String,
   count: Number
 });
 const targetElement = ref(null); // 監視対象の要素
@@ -149,7 +151,11 @@ onUnmounted(() => {
 function handleClick(event) {
   // クリック時の処理
   const store = useWebsiteStore();
-  store.setSiteDate(props.name, props.color);
+  store.setSiteDate(
+    props.name,
+    props.mainColor,
+    props.subColor
+  );
 }
 </script>
 <style lang="scss">

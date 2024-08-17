@@ -3,7 +3,7 @@
     <Header/>
     <div class="contents">
       <NuxtPage :transition="transition"/>
-      <div id="js-next-display" ref="contentsLoading"></div>
+      <div id="js-next-display" ref="contentsLoading" :style="{ backgroundColor: website.subColor }"></div>
     </div>
     <BgImage/>
     <Footer/>
@@ -11,17 +11,10 @@
 </template>
 <script setup>
 import gsap from 'gsap';
-// const loadElement = ref(null); // 監視対象の要素
 const contentsLoading = ref(null); // 監視対象の要素
 
-const store = useWebsiteStore();
+const website = useWebsiteStore();
 
-// ストアの count プロパティの変更を監視
-watch(() => store.name, (newValue, oldValue) => {
-  // contentsLoading.value.classList.remove("isLoad","isLoadFin");
-});
-var beforeContents = "";
-var afterContents = "";
 const transition = {
   name: 'page',
   mode: 'out-in',
@@ -39,6 +32,8 @@ const transition = {
   onLeave: (el, done) => {
     gsap.to(contentsLoading.value, {
       width: "100%",
+      duration: 0.5,
+      ease: "power1.inOut",
       onComplete: done
     });
   },
@@ -51,6 +46,8 @@ const transition = {
   onEnter: (el, done) => {
     gsap.to(contentsLoading.value, {
       x: window.innerWidth + "px",
+      duration: 0.5,
+      ease: "power1.inOut",
       onComplete: done
     });
   },
@@ -70,7 +67,6 @@ const transition = {
   width: 0%;
   height: 100%;
   z-index: 1000;
-  background-color: #cc6363;
-  // transition: 0.4s ease-in-out;
+  background-color: #f15927;
 }
 </style>

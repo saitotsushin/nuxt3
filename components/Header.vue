@@ -1,5 +1,5 @@
 <template>
-    <header class="sticky-menu" :style="{ backgroundColor: website.color }">
+    <header class="sticky-menu" :style="{ backgroundColor: website.mainColor }">
       <h1 class="font-bit"><NuxtLink to="/" @click="handleClick"><img src="~/assets/images/logo.svg"></NuxtLink></h1>
       <h2 class="font-bit menu-sneaker-name">{{ website.name }}</h2>
       <div class="switchQualityBox">
@@ -22,9 +22,8 @@
 <script setup>
 const website = useWebsiteStore();
 function handleClick(event) {
-  // クリック時の処理
   const store = useWebsiteStore();
-  store.setSiteDate("", "");
+  store.setSiteDate("", "","");
 }
 </script>
 <style>

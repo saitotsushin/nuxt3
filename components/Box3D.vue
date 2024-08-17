@@ -6,18 +6,24 @@
     </div>
     <div class="webGLbox" ref="container"></div>
     <div class="sizeSticker">
-      <div class="sizeList sizeUS">
-        <div class="sizeUS_name">US</div>
-        <div class="sizeUS_number">9.5</div>
-      </div>
-      <div class="sizeList sizeJP">
-        <div class="sizeJP_name">US</div>
-        <div class="sizeJP_number">9.5</div>
+      <div class="jan-code"><img src="/images/jan_3110241464916 1.svg"/></div>
+      <div class="sizeListWrap">
+        <div class="sizeListName">SAITOTSUSHIN</div>
+        <div class="sizeListBox">
+          <div class="sizeList sizeUS">
+            <div class="sizeName sizeUS_name">US</div>
+            <div class="sizeNumb sizeUS_number">9.5</div>
+          </div>
+          <div class="sizeList sizeJP">
+            <div class="sizeName sizeJP_name">CM</div>
+            <div class="sizeNumb sizeJP_number">27.5</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
-<style>
+<style lang="scss">
 .pageTitle{
   overflow: hidden;
   position: absolute;
@@ -33,9 +39,9 @@
 .rainbow-text {
   /* color: #F15928; */
   mix-blend-mode: difference;
-    font-size: 48px;
-    font-weight: bold;
-    animation: rainbow 3s infinite;
+  font-size: 12vw;
+  animation: rainbow 3s infinite;
+  line-height: 1;
 }
 @keyframes rainbow {
     0% { color: red; }
@@ -87,22 +93,79 @@
   pointer-events: none;
 }
 .sizeSticker{
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
   position: absolute;
   bottom: 10px;
   left: 10px;
   border-top: 8px solid #FFF;
-  border-left: 20px solid #FFF;
+  border-left: 8px solid #FFF;
   border-right: 8px solid #FFF;
   border-bottom: 8px solid #FFF;
-  padding: 20px;
   z-index: 10;
+  display: flex;
+}
+.jan-code{
+  background-color: #FFF;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.sizeListWrap{
+  padding: 10px 50px 10px 20px; 
+}
+.sizeListName{
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0 0 10px 0;
 }
 .sizeList{
   display: flex;
+  line-height: 1;
+  align-items: flex-end;
+  display: flex;
+  margin: 0 0 10px 0;
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+.sizeListBox{
+  position: relative;
+  padding: 2px 0 4px 0;
+  &:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 60px;
+    width: 1px;
+    height: 100%; /* 線の太さ */
+    background-color: #FFF; /* 線の色 */
+  }
+}
+.sizeName{
+  font-weight: normal;
+  width: 50px;
+  padding: 0 10px 0 0;
+  margin: 0 20px 0 0 ;
+  text-align: right;
+}
+
+.sizeNumb{
+  text-align: right;
+  width: 80px;
+}
+.sizeUS_name{
+  font-size: 32px;
 }
 .sizeUS_number{
-  font-size: 36px;
+  font-size: 50px;
   font-weight: bold;
+}
+.sizeJP_number{
+  font-size: 26px;
+  font-weight: 700;
 }
 </style>
 <script setup lang="ts">
