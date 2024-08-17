@@ -3,9 +3,9 @@
   <SneakerThumb
      name="NIKE AIR JORDAN 1 Hi"
   />
-  <SneakerThumb
+  <!-- <SneakerThumb
      name="NIKE AIR JORDAN 1 Hi"
-  />
+  /> -->
 
 </template>
 

@@ -77,6 +77,9 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 # 画像加工
 https://www.shutterstock.com/ja/blog/how-to-turn-any-photograph-into-pixel-art-with-photoshop
 
+# 3Dcssの参考
+https://digipress.info/tech/3d-hovering-motion-with-chasing-cursor-sample/
+
 # node
 ```
 Cannot start nuxt:  The requested module 'node:module' does not provide an export named 'isBuiltin'
