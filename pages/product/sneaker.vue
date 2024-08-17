@@ -6,15 +6,9 @@
 	</div>
 </template>
 <script setup lang="ts">
-// definePageMeta({
-//   pageTransition: {
-//     name: 'custom-flip',
-//     mode: 'out-in',
-//     onBeforeEnter: (el) => {
-//       console.log('Before enter...')
-//     },
-//     onEnter: (el, done) => {console.log("on")},
-//     onAfterEnter: (el) => {}
-//   }
-// })
 </script>
+<style>
+.SneakerList li{
+	padding: 40vw 0;
+}
+</style>

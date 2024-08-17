@@ -1,31 +1,76 @@
 <template>
   <NuxtLayout>
     <Header/>
-    <NuxtPage :transition="transition"/>
+    <div class="contents">
+      <NuxtPage :transition="transition"/>
+      <div id="js-next-display" ref="contentsLoading"></div>
+    </div>
     <BgImage/>
     <Footer/>
   </NuxtLayout>
 </template>
 <script setup>
+import gsap from 'gsap';
+// const loadElement = ref(null); // 監視対象の要素
+const contentsLoading = ref(null); // 監視対象の要素
+
+const store = useWebsiteStore();
+
+// ストアの count プロパティの変更を監視
+watch(() => store.name, (newValue, oldValue) => {
+  // contentsLoading.value.classList.remove("isLoad","isLoadFin");
+});
+var beforeContents = "";
+var afterContents = "";
 const transition = {
   name: 'page',
   mode: 'out-in',
-  onEnter: (el, done) => {
-    console.log("onEnter");
-    done();
-  },
-  onBeforeEnter: (el) => {
-    console.log("onBeforeEnter");
-  },
+  css: false,
+  // leave フックの前に呼ばれる
+  // 大体の場合は、leave フックだけ使用するべき
   onBeforeLeave: (el) => {
-    console.log("onBeforeLeave");
+    gsap.set(contentsLoading.value, {
+      width: "0%",
+      x: "0px"
+    });
   },
-  onAfterEnter: (el) => {
-    console.log("onAfterEnter");
-  },
+  // leave トランジションの開始時に呼ばれる
+  // leave アニメーションを開始する時に使用する
   onLeave: (el, done) => {
-    console.log("onLeave");
-    done();
+    gsap.to(contentsLoading.value, {
+      width: "100%",
+      onComplete: done
+    });
+  },
+  onAfterLeave: (el) => {
+  },
+  // 要素が DOM に挿入される前に呼ばれる
+  onBeforeEnter: (el) => {
+  },
+  // 要素が DOM に挿入された次のフレームで呼ばれる
+  onEnter: (el, done) => {
+    gsap.to(contentsLoading.value, {
+      x: window.innerWidth + "px",
+      onComplete: done
+    });
+  },
+  // enter トランジションが完了したときに呼ばれる
+  onAfterEnter: (el) => {
   },
 }
 </script>
+<style lang="scss">
+.contents{
+  position: relative;
+}
+#js-next-display{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  z-index: 1000;
+  background-color: #cc6363;
+  // transition: 0.4s ease-in-out;
+}
+</style>

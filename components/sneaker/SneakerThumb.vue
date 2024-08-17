@@ -4,9 +4,11 @@
       <div class="c-budge">😄 MOST FAVORITE</div>
       <div class="sneakerThumbName">
         <div class="sneakerThumbNameText sneakerThumbName2" ref="targtSneakerThumbName2">
-          <span>NIKE</span>
-          <span>AIR</span>
-          <span>JORDAN 1</span>
+          <slot name="sneakerName">
+            <span>NIKE</span>
+            <span>AIR</span>
+            <span>JORDAN 1</span>
+          </slot>
         </div>
       </div> 
       <div class="sneakerThumbImage">
@@ -21,12 +23,12 @@
 <script setup>
 const props = defineProps({
   name: String,
+  color: String,
   count: Number
 });
 const targetElement = ref(null); // 監視対象の要素
 const targtSneakerThumbName2 = ref(null); // 監視対象の要素
 const targetSneakerImage = ref(null); // 監視対象の要素
-const displayedChars1 = ref([]);
 
 const cursorPos = ref({x:0,y:0}); // 監視対象の要素
 
@@ -146,12 +148,8 @@ onUnmounted(() => {
 });
 function handleClick(event) {
   // クリック時の処理
-  console.log('NuxtLink clicked!');
   const store = useWebsiteStore();
-  store.setSiteDate("NIKE AIR JORDAN 1", "new password")
-
-  // 必要に応じて、デフォルトのリンク動作をキャンセルできます
-  // event.preventDefault();
+  store.setSiteDate(props.name, props.color);
 }
 </script>
 <style lang="scss">

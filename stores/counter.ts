@@ -1,13 +1,13 @@
 export const useWebsiteStore = defineStore('websiteStore', {
     state: () => ({
       name: 'TEST',
-      description: ''
+      color: ''
     }),
     actions: {
         // ユーザー情報の更新
-        setSiteDate (name: string, description: string) {
+        setSiteDate (name: string, color: string) {
             this.name = name
-            this.description = description
+            this.color = color
         }
     }
   })

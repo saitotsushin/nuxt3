@@ -23,6 +23,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.3",
     "@types/three": "^0.159.0",
+    "gsap": "^3.12.5",
     "nuxtjs-phaser": "^3.0.17",
     "phaser": "^3.70.0",
     "pinia": "^2.2.2",

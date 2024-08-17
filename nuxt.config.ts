@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['stores'],
   },
+  plugins: [
+    '~/plugins/gsap'
+  ],
   app: {
     baseURL: '/nuxt3/',
     cdnURL: '/nuxt3/',

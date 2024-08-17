@@ -1,7 +1,7 @@
 <template>
-    <header class="sticky-menu">
-      <h1 class="font-bit"><NuxtLink to="/"><img src="~/assets/images/logo.svg"></NuxtLink></h1>
-      <h2>{{ website.name }}</h2>
+    <header class="sticky-menu" :style="{ backgroundColor: website.color }">
+      <h1 class="font-bit"><NuxtLink to="/" @click="handleClick"><img src="~/assets/images/logo.svg"></NuxtLink></h1>
+      <h2 class="font-bit menu-sneaker-name">{{ website.name }}</h2>
       <div class="switchQualityBox">
         <div class="switchQuality">
           <div class="switchQualityName">
@@ -20,13 +20,21 @@
 
 </template>
 <script setup>
-  const website = useWebsiteStore();
+const website = useWebsiteStore();
+function handleClick(event) {
+  // クリック時の処理
+  const store = useWebsiteStore();
+  store.setSiteDate("", "");
+}
 </script>
 <style>
 header h1 a{
   display: flex;
 }
-header h1 a img{
+.menu-sneaker-name{
+  width: 100%;
+  font-weight: normal;
+  padding: 0 1rem;
 }
 .sticky-menu {
     position: -webkit-sticky; /* サポートされていないブラウザ用のプレフィックス */
@@ -36,7 +44,7 @@ header h1 a img{
     color: white;
     border-bottom: 3px solid #FFF;
     padding: 0;
-    z-index: 1000; /* 必要に応じて調整 */
+    z-index: 10000; /* 必要に応じて調整 */
     background-color: #F15928;
     justify-content:space-between;
     /* align-items: center; */
