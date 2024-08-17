@@ -1,6 +1,9 @@
 <template>
   <NuxtLayout>
+    <Header/>
     <NuxtPage :transition="transition"/>
+    <BgImage/>
+    <Footer/>
   </NuxtLayout>
 </template>
 <script setup>
@@ -8,16 +11,21 @@ const transition = {
   name: 'page',
   mode: 'out-in',
   onEnter: (el, done) => {
-    done("onEnter");
+    console.log("onEnter");
+    done();
+  },
+  onBeforeEnter: (el) => {
+    console.log("onBeforeEnter");
   },
   onBeforeLeave: (el) => {
-    done("onBeforeLeave");
+    console.log("onBeforeLeave");
+  },
+  onAfterEnter: (el) => {
+    console.log("onAfterEnter");
   },
   onLeave: (el, done) => {
-    done("onLeave")
+    console.log("onLeave");
+    done();
   },
-}
-function done(e) {
-  console.log("done",e)
 }
 </script>

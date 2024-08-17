@@ -2,10 +2,21 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: true,
+  imports: {
+    dirs: ['stores'],
+  },
   app: {
     baseURL: '/nuxt3/',
     cdnURL: '/nuxt3/',
     buildAssetsDir: "",
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
+    layoutTransition: {
+      name: 'layout',
+      mode: 'out-in'
+    },
     head: {
       link: [
         {
@@ -27,5 +38,13 @@ export default defineNuxtConfig({
   ],
   build: {
     transpile: ["vuetify"]
-  }
+  },
+  modules: [
+    [
+      '@pinia/nuxt',
+      {
+        autoImports: ['defineStore', 'acceptHMRUpdate'],
+      },
+    ],
+  ]
 })

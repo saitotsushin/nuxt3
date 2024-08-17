@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/product/sneaker">
+  <NuxtLink to="/product/sneaker" @click="handleClick">
     <div class="sneakerThumb" ref="targetElement" :class="{ 'isActive': visible }">
       <div class="c-budge">😄 MOST FAVORITE</div>
       <div class="sneakerThumbName">
@@ -144,6 +144,15 @@ onUnmounted(() => {
   }
   window.removeEventListener('mousemove', handleMouseMove);
 });
+function handleClick(event) {
+  // クリック時の処理
+  console.log('NuxtLink clicked!');
+  const store = useWebsiteStore();
+  store.setSiteDate("NIKE AIR JORDAN 1", "new password")
+
+  // 必要に応じて、デフォルトのリンク動作をキャンセルできます
+  // event.preventDefault();
+}
 </script>
 <style lang="scss">
 .sneakerThumb{

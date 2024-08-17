@@ -1,6 +1,7 @@
 <template>
     <header class="sticky-menu">
       <h1 class="font-bit"><NuxtLink to="/"><img src="~/assets/images/logo.svg"></NuxtLink></h1>
+      <h2>{{ website.name }}</h2>
       <div class="switchQualityBox">
         <div class="switchQuality">
           <div class="switchQualityName">
@@ -18,7 +19,9 @@
     </header>
 
 </template>
-
+<script setup>
+  const website = useWebsiteStore();
+</script>
 <style>
 header h1 a{
   display: flex;
