@@ -25,6 +25,11 @@
         <span>PRO b</span>
       </template>
     </SneakerThumb>
+    <div class="l-dunk_thumb">
+      <SneakerDunk/>
+      <SneakerDunk/>
+      <SneakerDunk/>
+    </div>
 
     <div class="l-thumbs">
       <SneakerThumb_s/>
@@ -52,4 +57,28 @@ const MainColumHeader = ref("/");
 const messages = 'Hello from Parent Component'
 const items = ref([
 ]);
+
+const targetElement = ref(null)
+const isFixed = ref(false)
+
+const handleScroll = () => {
+  if (!targetElement.value) return
+  
+  // 要素の位置を取得
+  const rect = targetElement.value.getBoundingClientRect()
+  
+  // 要素が画面の一番上に来たら固定
+  isFixed.value = rect.top <= 0
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
+
+<style>
+</style>
