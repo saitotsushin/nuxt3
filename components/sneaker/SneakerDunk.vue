@@ -42,10 +42,11 @@ onMounted(() => {
 
 
 })
-
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+  if (targetElement.value) {
+    observer.unobserve(targetElement.value);
+  }
+});
 </script>
 <style lang="scss">
 .l-dunk_thumb{
