@@ -90,3 +90,7 @@ Cannot start nuxt:  The requested module 'node:module' does not provide an expor
 
 # 画像を合わせる
 https://qiita.com/watabo_shi/items/0811d03390c18e46be86
+
+# モザイク
+https://wgld.org/d/webgl/w066.html
+https://blog.design-nkt.com/osyare-glsl2/
