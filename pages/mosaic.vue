@@ -1,6 +1,6 @@
 <template>
     <div class="webGL_glsi_box" ref="container">
-        <img src="/images/thumb/32_2.png" ref="thumb">
+        <img src="/images/thumb/12.jpg" ref="thumb">
     </div>  
   </template>
   
@@ -18,14 +18,19 @@
       width: 1200px;
       height: auto !important;
     }
+    img{
+      width: 100%;
+    }
     canvas{
       top: 0;
       left: 0;
+      position: absolute;
     }
   }
   </style>
     <script setup lang="ts">
-    import {
+    import { Value } from 'sass';
+import {
       PerspectiveCamera,
       OrthographicCamera,
       Scene,
@@ -40,6 +45,14 @@
     
     const container: Ref<HTMLElement> = ref(null!);
     const thumb: Ref<HTMLElement> = ref(null!);
+    var texture: any;
+    var pos: any;
+    var isActive = false;
+    var mat = new ShaderMaterial();
+    var uniforms = {
+      uPos: 20.0,
+      uTexture: texture
+    }
 
     const vertexShader = `
   varying vec2 vUv;
@@ -53,6 +66,7 @@
         const fragmentShader = `
   uniform sampler2D uTexture;
   varying vec2 vUv;
+  uniform float uPos;
 // 10色を定義
 vec3 palette[54] = vec3[](    
 vec3(0.47, 0.47, 0.47),
@@ -120,7 +134,9 @@ vec3(1.00, 1.00, 1.00)
 void main(void){
     // テクスチャから色を取得
     //一度モザイク処理する
-    vec2 mUv = vec2( floor(vUv.x * 30.0) / 30.0, floor(vUv.y * 20.0) / 20.0 );
+    float set_uPos_x = uPos * 3.0;
+    float set_uPos_y = uPos * 2.0;
+    vec2 mUv = vec2( floor(vUv.x * set_uPos_x) / set_uPos_x, floor(vUv.y * set_uPos_y) / set_uPos_y );
     vec4 texColor = texture(uTexture, mUv);
     
     // 最小距離と最も近い色を保持する変数
@@ -128,19 +144,19 @@ void main(void){
     vec3 closestColor = palette[0];
     
     // 各色との距離を計算
-    // for (int i = 0; i < 54; i++) {
-    //     float dist = distance(texColor.rgb, palette[i]);
-    //     if (dist < minDist) {
-    //         minDist = dist;
-    //         closestColor = palette[i];
-    //     }
-    // }
+    for (int i = 0; i < 54; i++) {
+        float dist = distance(texColor.rgb, palette[i]);
+        if (dist < minDist) {
+            minDist = dist;
+            closestColor = palette[i];
+        }
+    }
 
     // vec2 uv = vec2( floor(vUv.x * 40.0) / 40.0, floor(vUv.y * 17.0) / 17.0 );
 
     // テクスチャから色を取り出してピクセルの色とします
-    gl_FragColor = texture(uTexture, mUv);
-    // gl_FragColor = vec4(closestColor, texColor.a);
+    // gl_FragColor = texture(uTexture, mUv);
+    gl_FragColor = vec4(closestColor, texColor.a);
 
 }
         `;    
@@ -161,7 +177,7 @@ void main(void){
         const loader = new TextureLoader();
         var light = new AmbientLight(0xffffff);
         scene.add(light);
-        const texture = loader.load('/nuxt3/images/thumb/12.jpg',
+        texture = loader.load('/nuxt3/images/thumb/12.jpg',
           function(texture) { // テクスチャがロードされた後に呼び出されるコールバック
             // テクスチャの画像データから幅と高さを取得
             w = texture.image.naturalWidth;
@@ -202,12 +218,21 @@ void main(void){
   
         }
         function SetPlaneGeometry(){
-          const geo = new PlaneGeometry(w,h,1);
+          const geo = new PlaneGeometry(w, h, 1);
 
-          const mat = new ShaderMaterial({
+          console.log("texture", texture);
+
+          uniforms.uTexture = texture;
+
+          // console.log("uniforms.uTexture", uniforms.uTexture);
+
+          mat = new ShaderMaterial({
+            // uniforms: {
+            //   uTexture:{value:texture}
+            // },
             uniforms: {
-              uResolution: {value: [w, h]},
-              uTexture: { value: texture }
+              uPos:{value: uniforms.uPos},
+              uTexture:{value:texture}
             },
             vertexShader: vertexShader,
             fragmentShader: fragmentShader
@@ -215,13 +240,20 @@ void main(void){
     
           const mesh = new Mesh(geo, mat);      
           scene.add(mesh);
+          isActive = true;
+          console.log("isActive", isActive);
         }
 
-        function render() {
+        function render(time: number) {
           requestAnimationFrame(render);
+          if (isActive) {
+            console.log("uniforms.uPos", uniforms.uPos);
+            mat.uniforms.uPos.value = time * 0.01;
+          }
           renderer.render(scene, camera);
         }
-        render();
+        console.log(isActive);
+        render(0);
         renderer.render(scene, camera);
        
       }
