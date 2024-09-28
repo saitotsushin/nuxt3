@@ -81,8 +81,6 @@ const checkOverlap = () => {
   const widthRatioB = rectB.width * overlapRatio
   const heightRatioB = rectB.height * overlapRatio
 
-
-
   // rectBの中心点
   const centerX = rectB.left + rectB.width / 2
   const centerY = rectB.top + rectB.height / 2

@@ -1,7 +1,5 @@
 <template>
-  <div class="wrapper" >
-    <slot />
-  </div>
+  <slot />
 </template>
 
 <script setup>

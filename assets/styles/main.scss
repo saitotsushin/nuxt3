@@ -70,6 +70,10 @@ body{
 .wrapper{
   background-size: cover;
 }
+.contents{
+  width: 60%;
+  margin: 0 0 0 40%;
+}
 .main{
   height: 480px;
   width: 100%;
@@ -195,8 +199,8 @@ body{
   }
 }
 .ContentsWrap{
-  margin: 0 0 0 40%;
-  width: 60%;
+  // margin: 0 0 0 40%;
+  // width: 60%;
   position: relative;
   .ContentsWrapInner{
     padding: 100px 0 0 0;

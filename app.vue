@@ -1,13 +1,21 @@
 <template>
-  <NuxtLayout>
+  <div class="wrapper" >    
     <Header/>
-    <div class="contents">
-      <NuxtPage :transition="transition"/>
-      <div id="js-next-display" ref="contentsLoading" :style="{ backgroundColor: website.subColor }"></div>
+    <div class="MainWrap">
+      <div class="MainImage">
+        <Box3D_main/>
+        <p v-if="isOverlapping">要素Aと要素Bが重なっています！</p>
+      </div>
+      <NuxtLayout>
+        <div class="contents">
+          <NuxtPage :transition="transition"/>
+          <div id="js-next-display" ref="contentsLoading" :style="{ backgroundColor: website.subColor }"></div>
+        </div>
+      </NuxtLayout>
     </div>
-    <BgImage/>
     <Footer/>
-  </NuxtLayout>
+  </div>
+
 </template>
 <script setup>
 import gsap from 'gsap';

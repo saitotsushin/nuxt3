@@ -1,5 +1,7 @@
 <template>
-  <div class="webGLbox" ref="container"></div>
+  <NuxtLink to="/product/sneaker">
+    <div class="webGLbox" ref="container"></div>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
