@@ -77,21 +77,12 @@ void main(void){
     // 最小距離と最も近い色を保持する変数
     float minDist = 1000.0;
     vec3 closestColor = palette[0];
-
-    float shift = sin(uTime) * 0.01;
-    float shift_x = cos(uTime) * 0.01;
-    float shift_y = sin(uTime) * 0.01;
-    // float sinValue = sin(uTime);
-
-    // float r = texture2D( uTexture, vUv + vec2( shift_y, 0.0 ) ).r;
+    // float r = closestColor.x - 0.2;
+    // float g = closestColor.y;
+    // float b = closestColor.z + 0.2;
+    // float r = texture2D( uTexture, vUv + vec2( 0.01 * sin(uTime), 0.0 ) ).r;
     // float g = texture2D( uTexture, vUv ).g;
-    // float b = texture2D( uTexture, vUv - vec2( shift_x, 0.0 ) ).b;
-
-    float r = closestColor.x * sin(uTime);
-    float g = closestColor.y;
-    float b = closestColor.z * sin(uTime);
-
-    vec3 color = vec3(r,g,b);
+    // float b = texture2D( uTexture, vUv - vec2( 0.01 * sin(uTime), 0.0 ) ).b;
 
     // 各色との距離を計算
     for (int i = 0; i < 54; i++) {
@@ -111,15 +102,17 @@ void main(void){
     // float g = texture2D( uTexture, vUv ).g;
     // float b = texture2D( uTexture, vUv - vec2( shift_x, 0.0 ) ).b;
 
-    // float r = closestColor.x * sin(uTime);
-    // float g = closestColor.y;
-    // float b = closestColor.z * sin(uTime);
+    float r2 = closestColor.x;
+    float g2 = closestColor.y;
+    float b2 = closestColor.z;
 
-    // vec3 color = vec3(r,g,b);
+    vec3 noise_color = vec3(r2,g2,b2);
+
 
     // テクスチャから色を取り出してピクセルの色とします
     // gl_FragColor = texture(uTexture, mUv);
-    gl_FragColor = vec4(closestColor, texColor.a);
+    gl_FragColor = vec4(noise_color, texColor.a);
+    // gl_FragColor = vec4(noise_color, texColor.a);
     // gl_FragColor = vec4(color, texColor.a);
 
 }

@@ -1,0 +1,76 @@
+.sizeSticker{
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  border-top: 8px solid #FFF;
+  border-left: 8px solid #FFF;
+  border-right: 8px solid #FFF;
+  border-bottom: 8px solid #FFF;
+  z-index: 10;
+  // display: flex;
+  position: fixed;
+}
+.jan-code{
+  background-color: #FFF;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+.sizeListWrap{
+  padding: 10px 50px 10px 20px; 
+}
+.sizeListName{
+  font-size: 12px;
+  font-weight: normal;
+  margin: 0 0 10px 0;
+}
+.sizeList{
+  display: flex;
+  line-height: 1;
+  align-items: flex-end;
+  display: flex;
+  margin: 0 0 10px 0;
+  &:last-child{
+    margin-bottom: 0;
+  }
+}
+.sizeListBox{
+  position: relative;
+  padding: 2px 0 4px 0;
+  &:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 60px;
+    width: 1px;
+    height: 100%; /* 線の太さ */
+    background-color: #FFF; /* 線の色 */
+  }
+}
+.sizeName{
+  font-weight: normal;
+  width: 50px;
+  padding: 0 10px 0 0;
+  margin: 0 20px 0 0 ;
+  text-align: right;
+}
+
+.sizeNumb{
+  text-align: right;
+  width: 80px;
+}
+.sizeUS_name{
+  font-size: 32px;
+}
+.sizeUS_number{
+  font-size: 50px;
+  font-weight: bold;
+}
+.sizeJP_number{
+  font-size: 26px;
+  font-weight: 700;
+}

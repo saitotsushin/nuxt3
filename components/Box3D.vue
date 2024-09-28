@@ -77,96 +77,23 @@
   width: 100%;
   background-color: #F15928;
   position: relative;
-}
-.webGLbox{
-  position: relative;
-  width: 100%;
-  max-width: 640px;
-  height: 480px;
-  margin: auto;
-  z-index: 1;
-  pointer-events: none;
-}
-.webGLbox canvas{
-  width: 100% !important;
-  height: auto !important;
-  pointer-events: none;
-}
-.sizeSticker{
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 900;
-  font-style: normal;
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  border-top: 8px solid #FFF;
-  border-left: 8px solid #FFF;
-  border-right: 8px solid #FFF;
-  border-bottom: 8px solid #FFF;
-  z-index: 10;
-  display: flex;
-}
-.jan-code{
-  background-color: #FFF;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-}
-.sizeListWrap{
-  padding: 10px 50px 10px 20px; 
-}
-.sizeListName{
-  font-size: 12px;
-  font-weight: normal;
-  margin: 0 0 10px 0;
-}
-.sizeList{
-  display: flex;
-  line-height: 1;
-  align-items: flex-end;
-  display: flex;
-  margin: 0 0 10px 0;
-  &:last-child{
-    margin-bottom: 0;
+  .webGLbox{
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    height: 480px;
+    margin: auto;
+    z-index: 1;
+    pointer-events: none;
   }
-}
-.sizeListBox{
-  position: relative;
-  padding: 2px 0 4px 0;
-  &:before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 60px;
-    width: 1px;
-    height: 100%; /* 線の太さ */
-    background-color: #FFF; /* 線の色 */
-  }
-}
-.sizeName{
-  font-weight: normal;
-  width: 50px;
-  padding: 0 10px 0 0;
-  margin: 0 20px 0 0 ;
-  text-align: right;
+  .webGLbox canvas{
+    width: 100% !important;
+    height: auto !important;
+    pointer-events: none;
+  }  
 }
 
-.sizeNumb{
-  text-align: right;
-  width: 80px;
-}
-.sizeUS_name{
-  font-size: 32px;
-}
-.sizeUS_number{
-  font-size: 50px;
-  font-weight: bold;
-}
-.sizeJP_number{
-  font-size: 26px;
-  font-weight: 700;
-}
+
 </style>
 <script setup lang="ts">
 import {
