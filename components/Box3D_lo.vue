@@ -31,7 +31,6 @@ const emit = defineEmits()
 
 // タイトルを親に送信する関数
 const sendTitle = () => {
-  console.log("sendTitle");
   emit('getTitle', props.title) // titleを親に送信
 }
 // 親コンポーネントにこの参照を公開
@@ -56,8 +55,6 @@ const onScroll = () => {
   const scrollTop = window.scrollY;
   const docHeight = document.body.scrollHeight - window.innerHeight;
   scrollPercentage = scrollTop / docHeight;
-  console.log("scrollPercentage", scrollPercentage);
-
   // スクロール位置を取得
   targetScrollY = document.documentElement.scrollTop;
 
@@ -69,9 +66,9 @@ const onScroll = () => {
   scrollOffset = targetScrollY - currentScrollY;
 
   if (currentScrollY > lastScrollY) {
-    console.log('スクロールダウン'); // 下にスクロール
+    // console.log('スクロールダウン'); // 下にスクロール
   } else {
-    console.log('スクロールアップ',scrollOffset); // 上にスクロール
+    // console.log('スクロールアップ',scrollOffset); // 上にスクロール
   }
   scrollSpeed = ((currentScrollY - lastScrollY) / docHeight);
   lastScrollY = currentScrollY;
@@ -81,7 +78,7 @@ const onScroll = () => {
     clearTimeout(isScrolling);
   }
   isScrolling = setTimeout(() => {
-    console.log('スクロールしていない');
+    // console.log('スクロールしていない');
     isScrolling = null; // タイマーIDをリセット
   }, 300); // 300ms後にスクロールが止まったと判断
 };

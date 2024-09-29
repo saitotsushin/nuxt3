@@ -33,8 +33,6 @@ const onScroll = () => {
   const scrollTop = window.scrollY;
   const docHeight = document.body.scrollHeight - window.innerHeight;
   scrollPercentage = scrollTop / docHeight;
-  console.log("scrollPercentage", scrollPercentage);
-
   // スクロール位置を取得
   targetScrollY = document.documentElement.scrollTop;
 
@@ -46,15 +44,9 @@ const onScroll = () => {
   scrollOffset = targetScrollY - currentScrollY;
 
   if (currentScrollY > lastScrollY) {
-    console.log('スクロールダウン'); // 下にスクロール
   } else {
-    console.log('スクロールアップ',scrollOffset); // 上にスクロール
   }
   scrollSpeed = ((currentScrollY - lastScrollY) / docHeight);
-  console.log("SPEED=" + ((currentScrollY - lastScrollY) / docHeight * 100) + "%")
-  console.log("scrollPercentage", scrollPercentage);
-  console.log('currentScrollY',currentScrollY); // 下にスクロール
-  console.log('targetScrollY',targetScrollY); // 下にスクロール
   lastScrollY = currentScrollY;
 
   // スクロール中の状態を更新
@@ -62,7 +54,6 @@ const onScroll = () => {
     clearTimeout(isScrolling);
   }
   isScrolling = setTimeout(() => {
-    console.log('スクロールしていない');
     isScrolling = null; // タイマーIDをリセット
   }, 300); // 300ms後にスクロールが止まったと判断
 };

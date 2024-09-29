@@ -15,7 +15,6 @@ const visible = ref(false);
 
 function handleIntersect(entries) {
   entries.forEach(entry => {
-    console.log("entry.isIntersecting", entry.isIntersecting);
     if (entry.isIntersecting) {
       if (visible.value == false) {
         visible.value = true;
@@ -29,7 +28,6 @@ function handleIntersect(entries) {
 }
 onMounted(() => {
   const h = window.innerHeight * -1 + 60;
-  console.log("h", h);
   const observer = new IntersectionObserver(handleIntersect, {
     root: null, // ビューポートを基準とする
     rootMargin: '0% 0px ' + h +'px 0px', // 上部20%をトリガー領域に設定

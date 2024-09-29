@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" >    
     <Header/>
-    <div class="MainWrap">
+    <div class="MainWrap font-bit">
       <div class="MainImage">
         <Box3D_main/>
         <p v-if="isOverlapping">要素Aと要素Bが重なっています！</p>
