@@ -2,18 +2,23 @@ export const useWebsiteStore = defineStore('websiteStore', {
   state: () => ({
     name: '',
     mainColor: '',
-    subColor: '',      
+    subColor: '',
   }),
   actions: {
-      // ユーザー情報の更新
+    // ユーザー情報の更新
     setSiteDate(
       name: string,
       mainColor: string,
       subColor: string
     ) {
-        this.name = name
-        this.mainColor = mainColor
-        this.subColor = subColor
-      }
+      this.name = name
+      this.mainColor = mainColor
+      this.subColor = subColor
+    },
+    setMainColor(
+      mainColor: string
+    ) {
+      this.mainColor = mainColor
     }
-  })
+  }
+})

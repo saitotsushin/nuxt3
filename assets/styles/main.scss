@@ -1,6 +1,9 @@
 @import './variables';
+@import './header';
 @import './sneaker';
 @import './sizeSticker';
+@import './mainWrap';
+@import './selectCursor';
 
 a {
   text-decoration: none;
@@ -9,14 +12,19 @@ a {
 }
 html{
 }
-body{
-  background: rgb(61,61,61);
-  background: linear-gradient(0deg, rgba(19,19,19,1) 0%, rgba(31,31,31,1) 24%, rgba(0,0,0,1) 100%);
-}
 // @font-face {
 //   font-family: 'PixelMplus10'; // <-好きな名前をつけれます。
 //   src: url('../font/PixelMplus10-Regular_min.ttf') format("ttf");
 // }
+body{
+  text-decoration: none;
+  background-color: #000;
+  color: #FFF;
+  background: rgb(61,61,61);
+  background: linear-gradient(0deg, rgba(19,19,19,1) 0%, rgba(31,31,31,1) 24%, rgba(0,0,0,1) 100%);
+}
+
+
 .font-bit{
   // font-family: "PixelMplus10";
   font-family: "DotGothic16", sans-serif;
@@ -25,212 +33,11 @@ body{
 }
 .font-bit-bold{
   // font-family: "PixelMplus10";
-  font-family: "Silkscreen", sans-serif;
-  letter-spacing: -0.2vw;
+  font-family: "Jersey 10", sans-serif;
+  letter-spacing: 0.2rem;
+  line-height: 0.75;
 }
 *{
   box-sizing: border-box;
   position: relative;
-}
-.resizeXYbar{
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 10px;
-  height: 10px;
-  background-color: transparent;
-}
-.rightBar{
-  position: absolute;
-  right: -8px;
-  top: 20px;
-  width: 8px;
-  height: calc(100% - 40px);
-  background-color: transparent;
-}
-.rightBar:hover span{
-  position: absolute;
-  right: 4px;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  background-color: #3a3a3a;
-}
-.bottomBar{
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 100%;
-  height: 8px;
-  background-color: transparent;
-}
-.bottomBar:hover span{
-  position: absolute;
-  left: 20px;
-  bottom: 2px;
-  width: calc(100% - 40px);
-  height: 2px;
-  background-color: #3a3a3a;
-}
-
-.wrapper{
-  background-size: cover;
-}
-.contents{
-  width: 60%;
-  margin: 0 0 0 40%;
-}
-.main{
-  height: 480px;
-  width: 100%;
-  overflow: hidden;
-}
-.container {
-	.MainHeader {
-    width: 180px;
-    background-color: rgba(229, 229, 229, 0.2);;
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	}
-  .Main{
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;    
-  }
-  .MainColumHeader{
-    background-color: #faf4f2;
-    width: 100%;
-    padding: 20px;
-  }
-  .MainColumn{
-    display: flex;
-    // height: 100%;
-    height: calc(100% - 64px);
-    width: 100%;
-    overflow-x: initial;
-  }
-  .Column{
-    min-width: calc(100% / 3);
-    border-right: 1px solid #ededed;
-    height: 100%;
-    overflow: overlay;
-    padding: 8px 10px;
-  }
-
-  .Column li{
-    margin: 0px 0;
-    padding: 6px 8px;
-    font-size: 10px;
-    border-radius: 4px;
-    font-weight: bold;
-    line-height: 1.15;
-    display: flex;
-    align-items: center;
-  }
-  .Column li:hover{
-    background-color: #f2f2f2;
-  }
-  .Column .folderIcon{
-    margin-right: 4px;
-  }
-}
-.draggable:hover{
-  cursor: grab;
-}
-.btnClose {
-  display: block;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 16px;
-  height: 16px;
-  border-radius: 10px;
-  background-color: #e3695d;
-  z-index: 100;
-}
-.btnClose:hover{
-  background-color: #d22323;
-}
-.btnClose:hover::before,
-.btnClose:hover::after{
-  display: block;
-}
-.btnClose::before, .btnClose::after { /* 共通設定 */
-  display: none;
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1px; /* 棒の幅（太さ） */
-  height: 10px; /* 棒の高さ */
-  background: #ffffff;
-}
- 
-.btnClose::before {
-  transform: translate(-50%,-50%) rotate(45deg);
-}
- 
-.btnClose::after {
-  transform: translate(-50%,-50%) rotate(-45deg);
-}
-
-.l-thumbs{
-  padding: 20px 20px;
-  display: flex;
-}
-
-.MainWrap{
-  width: 100%;
-  background-color: #F15928;
-  position: relative;
-  display: flex;
-}
-.MainImage{
-  // position: fixed;
-  width: 40%;
-  position: fixed;
-  .webGLbox{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    align-items: center;
-    width: 100%;
-    justify-content: center;
-    display: flex;    
-  }
-}
-.ContentsWrap{
-  // margin: 0 0 0 40%;
-  // width: 60%;
-  position: relative;
-  .ContentsWrapInner{
-    padding: 100px 0 0 0;
-  }
-  .webGLbox{
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    height: auto;
-    margin: 100px auto;
-    z-index: 1;
-    pointer-events: none;
-    }
-    .webGLbox canvas{
-      width: 100% !important;
-      height: auto !important;
-      pointer-events: none;
-    }  
-}
-.SelectCursor{
-  position: fixed;
-  top: calc(50% - 210px);
-  left: calc(60% - 100px);
-  width: 400px;
-  height: 300px;
-  border: 2px solid #FFF;
 }

@@ -1,7 +1,6 @@
-.sizeSticker{
+.l-sizeSticker{
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 900;
   font-style: normal;
   position: absolute;
   bottom: 10px;
@@ -13,34 +12,47 @@
   z-index: 10;
   // display: flex;
   position: fixed;
+  
 }
-.jan-code{
+.l-sizeSticker-innner{
+  display: flex;
+}
+.l-jan-code{
+  width: 25%;
   background-color: #FFF;
   padding: 10px;
   display: flex;
   align-items: center;
 }
+.c-jan-code{
+  width: 100%;
+}
 .sizeListWrap{
-  padding: 10px 50px 10px 20px; 
+  padding: 10px 0px 10px 20px; 
+  width: 75%;
 }
 .sizeListName{
   font-size: 12px;
-  font-weight: normal;
   margin: 0 0 10px 0;
+  width: auto;
+  display: inline-block;
 }
 .sizeList{
   display: flex;
-  line-height: 1;
+  margin: 0 0 4px 0;
   align-items: flex-end;
   display: flex;
-  margin: 0 0 10px 0;
   &:last-child{
     margin-bottom: 0;
+  }
+  *{
+    line-height: 0.75;
   }
 }
 .sizeListBox{
   position: relative;
-  padding: 2px 0 4px 0;
+  padding: 0 0 0 0;
+  
   &:before{
     content: "";
     position: absolute;
@@ -52,10 +64,9 @@
   }
 }
 .sizeName{
-  font-weight: normal;
   width: 50px;
-  padding: 0 10px 0 0;
-  margin: 0 20px 0 0 ;
+  padding: 0px 4px 0 0;
+  margin: 0 10px 0 0;
   text-align: right;
 }
 
@@ -68,9 +79,7 @@
 }
 .sizeUS_number{
   font-size: 50px;
-  font-weight: bold;
 }
 .sizeJP_number{
   font-size: 26px;
-  font-weight: 700;
 }

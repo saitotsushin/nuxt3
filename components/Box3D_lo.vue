@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/product/sneaker">
+  <NuxtLink to="/product/sneaker" @click="duplicateComponent">
     <div class="webGLbox" ref="container"></div>
   </NuxtLink>
 </template>
@@ -11,13 +11,22 @@ import {
   PerspectiveCamera,
   ACESFilmicToneMapping, Scene, SphereGeometry, Vector3, WebGLRenderer, AmbientLight, SpotLight, Object3D,
   DirectionalLight,
+  AnimationMixer,
+  LoopOnce,
   type Object3DEventMap
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { bool } from 'three/examples/jsm/nodes/Nodes.js';
 
+
 // DOM要素への参照を作成
 // const elementARef = ref(null)
+let mixers: AnimationMixer[] = [];
+let clips: any[] | null = null;
+
+let model: Object3D<Object3DEventMap>;
+
+let isAnimePlay = false;
 
 // import { ref } from 'vue'
 const container: Ref<HTMLElement> = ref(null!);
@@ -25,7 +34,8 @@ const container: Ref<HTMLElement> = ref(null!);
 
 const props = defineProps({
   title: String,    // 親コンポーネントから渡される title プロップ
-  cgPath: String // 親コンポーネントから渡される cgPath プロップ
+  cgPath: String, // 親コンポーネントから渡される cgPath プロップ
+  mainColor: String
 })
 const emit = defineEmits()
 
@@ -33,12 +43,46 @@ const emit = defineEmits()
 const sendTitle = () => {
   emit('getTitle', props.title) // titleを親に送信
 }
+const animationPlay = () => {
+  if (isAnimePlay) {
+    return;
+  }
+  // アニメーションクリップをループして、それぞれのアニメーションミキサーを作成
+  if (clips) {
+    clips.forEach((clip) => {
+      const mixer = new AnimationMixer(model);
+      const action = mixer.clipAction(clip);
+      // ループモードを無効にする
+      action.setLoop(LoopOnce,0);
+
+      // アニメーションの終了後に停止する
+      action.clampWhenFinished = true;
+      action.play();
+      mixers.push(mixer);  // 複数のアニメーションミキサーを保持
+      isAnimePlay = true;
+    });             
+  }
+}
 // 親コンポーネントにこの参照を公開
 defineExpose({
   container,
-  sendTitle
+  sendTitle,
+  animationPlay
 })
 
+// Piniaのストアインスタンスを取得
+const componentStore = useComponentStore()
+const { components } = storeToRefs(componentStore)
+
+const website = useWebsiteStore()
+
+// sampleComponentAを複製する関数
+const duplicateComponent = () => {
+  console.log("duplicateComponent**");
+  const newId = components.value.length + 1
+  const newComponent = { id: newId, content: `Sample Component A Copy ${newId}` }
+  componentStore.addComponent(newComponent)
+}
 
 let scrollPercentage = 0;
 let isScrolling: NodeJS.Timeout | null = null; // スクロール中かどうかのフラグ
@@ -100,6 +144,29 @@ const onScroll = () => {
 const lerp = (start:number, end:number, t:number) => {
   return start + (end - start) * t;
 }
+const handleIntersect = (entries: any[]) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      console.log("entry.isIntersecting", entry.isIntersecting);
+      website.setMainColor(`${props.mainColor}`);
+    } else {
+    }
+  });
+}
+
+const checkInDisplay = () => {
+  console.log("--checkInDisplay--")
+  const h = window.innerHeight * -1 + 60;
+  const observer = new IntersectionObserver(handleIntersect, {
+    root: null, // ビューポートを基準とする
+    rootMargin: '0% 0px ' + h +'px 0px', // 上部20%をトリガー領域に設定
+    threshold: 0 // 0%表示された時点でトリガーする
+  });
+  if (container.value) {
+    observer.observe(container.value);
+  }    
+}
+
 
 const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeight: number) => {
   const init = () => {
@@ -127,7 +194,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     const scene = new Scene();
     // カメラの作成
     const camera = new PerspectiveCamera(45, width / height, 0.1, 70);
-    camera.position.set(0, 3, 4);
+    camera.position.set(2, 2, 4);
     camera.lookAt(new Vector3(0, 1, 0));
 
     // 環境光
@@ -146,14 +213,19 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     
     // GLTFモデルの読み込み
     const loader = new GLTFLoader();
-    let model: Object3D<Object3DEventMap>;
+    
     loader.load(`${props.cgPath}`, (gltf) => {
       model = gltf.scene;
       model.position.set(0, 1.4,0);
       scene.add(model);
+
+      // 各オブジェクトのアニメーションを管理
+      clips = gltf.animations;
+
     }, undefined, function (e) {
       console.error(e);
     });   
+
     // 毎フレーム時に実行されるループイベント
     const tick = () => {
       requestAnimationFrame(tick)
@@ -184,6 +256,8 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
         // }  
         // model.rotation.y += 0.01;
       }
+      // アニメーションを更新
+      mixers.forEach(mixer => mixer.update(0.01));
       // レンダリング
       renderer.render(scene, camera)
       
@@ -202,6 +276,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 onMounted(() => {
   const { init } = useSphere(container, 500, 500)
   init()
+  checkInDisplay()
   window.addEventListener('scroll', onScroll);
   lastScrollY = window.scrollY;
 })

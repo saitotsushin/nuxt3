@@ -1,15 +1,28 @@
 <template>
-  <div class="wrapper" >    
+  <div class="l-wrapper" :style="{ backgroundColor: website.mainColor }">    
     <Header/>
-    <div class="MainWrap font-bit">
-      <div class="MainImage">
+    <div class="l-inner font-bit">
+      <div class="p-mainImage">
         <Box3D_main/>
+        <!-- 動的に複製されたコンポーネントを表示 -->
+        <div v-for="(component, index) in components" :key="component.id">
+          <Box3D_lo
+            title="NIKE AIR JORDAN 1"
+            cgPath="/nuxt3/object/sneaker_lo.glb"
+            @getTitle="receiveTitle"
+          />
+        </div>        
         <p v-if="isOverlapping">要素Aと要素Bが重なっています！</p>
       </div>
       <NuxtLayout>
-        <div class="contents">
+        <div class="l-contents">
           <NuxtPage :transition="transition"/>
-          <div id="js-next-display" ref="contentsLoading" :style="{ backgroundColor: website.subColor }"></div>
+          <div
+            id="js-next-display"
+            class="c-next-display"
+            ref="contentsLoading"
+            :style="{ backgroundColor: website.subColor }">
+          </div>
         </div>
       </NuxtLayout>
     </div>
@@ -21,7 +34,11 @@
 import gsap from 'gsap';
 const contentsLoading = ref(null); // 監視対象の要素
 
-const website = useWebsiteStore();
+// Piniaのストアインスタンスを取得
+const componentStore = useComponentStore()
+const { components } = storeToRefs(componentStore)
+
+const website = useWebsiteStore()
 
 const transition = {
   name: 'page',
@@ -64,17 +81,3 @@ const transition = {
   },
 }
 </script>
-<style lang="scss">
-.contents{
-  position: relative;
-}
-#js-next-display{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0%;
-  height: 100%;
-  z-index: 1000;
-  background-color: #f15927;
-}
-</style>

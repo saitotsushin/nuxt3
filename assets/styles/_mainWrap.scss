@@ -1,0 +1,61 @@
+.l-wrapper{
+  background-color: #F15928;
+  transition: background-color 1s ease;
+}
+.l-inner{
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+.p-mainImage{
+  // position: fixed;
+  width: 30%;
+  position: fixed;
+  .webGLbox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    display: flex;    
+  }
+}
+.l-content-wrapper{
+  // margin: 0 0 0 40%;
+  // width: 60%;
+  position: relative;
+  border-left: 1px solid #FFF;
+  .l-content-wrapper-inner{
+    padding: 100px 0 0 0;
+  }
+  .webGLbox{
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    margin: 100px auto;
+    z-index: 1;
+    pointer-events: none;
+    }
+    .webGLbox canvas{
+      width: 100% !important;
+      height: auto !important;
+      pointer-events: none;
+    }  
+}
+.l-contents{
+  width: 70%;
+  margin: 0 0 0 30%;
+  position: relative;
+}
+.c-next-display{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  z-index: 1000;
+  background-color: #f15927;
+}

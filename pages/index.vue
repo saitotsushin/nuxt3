@@ -1,51 +1,41 @@
 <template>
   <div>
-    <div class="MainWrap" ref="scrollContent">
-      <div class="MainImage">
+    <div class="" ref="scrollContent">
+      <!-- <div class="debug-text">
         <p v-if="isOverlapping">要素Aと要素Bが重なっています！</p>
-      </div>
-      <div class="ContentsWrap">
-        <div class="ContentsWrapInner">
-          <div class="SelectCursor" ref="elementB">
-            <div class="SelectTitle">{{ title }}</div>
+      </div> -->
+      <div class="l-content-wrapper">
+        <div class="l-content-wrapper-inner">
+          <div class="l-selectCursor">
+            <div class="p-selectCursor" ref="selectCursor">
+              <div class="c-selectCursor-title">{{ title }}</div>
+            </div>
           </div>
           <Box3D_lo ref="Box3D_lo_1"
             title="NIKE AIR JORDAN 1" 
             cgPath="/nuxt3/object/sneaker_lo.glb"
+            mainColor="#000"
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_2"
             title="NIKE DUNK LOW Pro B" 
-            cgPath="/nuxt3/object/sneaker_box.glb"
+            cgPath="/nuxt3/object/face.glb"
+            mainColor="#F00"
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_3"
-            title="要素Cのタイトル"
-            cgPath="/nuxt3/object/sneaker_lo.glb"
+            title="NIKE SNEAKER AAAAA"
+            cgPath="/nuxt3/object/sneaker_lo_others.glb"
+            mainColor="#FFF"
             @getTitle="receiveTitle"/>
           <Box3D_lo ref="Box3D_lo_4"
-            title="要素Dのタイトル"
-            cgPath="/nuxt3/object/face.glb"
+            title="NIKE OTHERS"
+            cgPath="/nuxt3/object/sneaker_lo_others.glb"
+            mainColor="#CCC"
             @getTitle="receiveTitle"/>
         </div>
       </div>
-      <div style="height: 1000px;"></div>
-      <div class="sizeSticker">
-        <div class="jan-code"><img src="/images/jan_3110241464916 1.svg"/></div>
-        <div class="sizeListWrap">
-          <div class="sizeListName">SAITOTSUSHIN</div>
-          <div class="sizeListBox">
-            <div class="sizeList sizeUS">
-              <div class="sizeName sizeUS_name">US</div>
-              <div class="sizeNumb sizeUS_number">9.5</div>
-            </div>
-            <div class="sizeList sizeJP">
-              <div class="sizeName sizeJP_name">CM</div>
-              <div class="sizeNumb sizeJP_number">27.5</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SizeSticker/>
     </div>
     <ScrollBar v-if="scrollContent" :scrollContent="scrollContent"/>
   </div>
@@ -68,7 +58,7 @@ const Box3D_lo_1 = ref(null)
 const Box3D_lo_2 = ref(null)
 const Box3D_lo_3 = ref(null)
 const Box3D_lo_4 = ref(null)
-const elementB = ref(null)
+const selectCursor = ref(null)
 const isOverlappingDebug = ref(false)
 
 // 子コンポーネントからタイトルを受け取る関数
@@ -79,7 +69,7 @@ const receiveTitle = (_title) => {
 const isOverlapping = ref(false);
 
 const checkOverlap = () => {
-  const rectB = elementB.value.getBoundingClientRect()
+  const rectB = selectCursor.value.getBoundingClientRect()
   // 比率を変数化 (例: 50% -> 0.5)
   const overlapRatio = 0.5 // 50%を変数化
 
@@ -99,13 +89,14 @@ const checkOverlap = () => {
     bottom: centerY + heightRatioB / 2
   }
   
-  // 各ElementAとElementBの重なりを判定
+  // 各ElementAとselectCursorの重なりを判定
   const elements = [Box3D_lo_1, Box3D_lo_2, Box3D_lo_3,Box3D_lo_4] // refを配列に格納
   isOverlapping.value = elements.some(comp => {
     const rectA = comp.value.container.getBoundingClientRect()
     let isActive = false;
     if (rectBPartial.top > rectA.top && rectBPartial.bottom < rectA.bottom) {
       comp.value.sendTitle()
+      comp.value.animationPlay()
       isActive = true;
       disableScroll();
     }
@@ -115,6 +106,8 @@ const checkOverlap = () => {
     return isActive;
   })
 }
+
+
 const disableScroll = () => {
   // if (isOverlapping.value == true) {
   //   return;

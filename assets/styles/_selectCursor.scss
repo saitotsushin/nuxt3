@@ -1,0 +1,21 @@
+.l-selectCursor{
+  position: fixed;
+  width: 70%;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.p-selectCursor{
+  width: 400px;
+  height: 300px;
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 1rem;
+}
+.c-selectCursor-title{
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}

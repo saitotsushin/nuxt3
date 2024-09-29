@@ -1,0 +1,102 @@
+
+header h1 a{
+  display: flex;
+}
+.menu-sneaker-name{
+  width: 100%;
+  font-weight: normal;
+  padding: 0 1rem;
+}
+.sticky-menu {
+    // position: -webkit-sticky; /* サポートされていないブラウザ用のプレフィックス */
+    // position: sticky;
+    position: fixed;
+    display: flex;
+    top: 0;
+    color: white;
+    // border-bottom: 3px solid #FFF;
+    padding: 0;
+    z-index: 10000; /* 必要に応じて調整 */
+    // background-color: #F15928;
+    justify-content:space-between;
+    /* align-items: center; */
+    width: 30%;
+}
+.sticky-menu h1{
+  font-size: 16px;
+  padding: 0.25rem 0.75rem;
+  // border-right: 2px solid #FFF;
+}
+.sticky-menu nav{
+  // border-left: 1px solid #FFF;
+}
+.sticky-menu nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.sticky-menu nav ul li {
+    font-size: 12px;
+}
+
+.sticky-menu nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    display: block;
+}
+
+// .sticky-menu nav ul li a:hover {
+//     background-color: #575757;
+// }
+.switchQualityBox{
+  // border-left: 1px dotted #FFF;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+.switchQuality{
+  display: flex;
+  align-items: center;
+  
+}
+.toggle-button {
+  display: inline-block;
+  position: relative;
+  width: 42px;
+  height: 20px;
+  border-radius: 50px;
+  box-sizing: content-box;
+  cursor: pointer;
+  transition: border-color 0.4s;
+  background-color: rgba(#FFF, 0.5);
+}
+
+.toggle-button::after {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #f15928;
+  content: "";
+  transition: left 0.4s;
+}
+
+.toggle-button:has(:checked)::after {
+    left: 24px;
+    background-color: #f15928;
+}
+
+.toggle-button input {
+    display: none;
+}
+.switchQualityName{
+  font-size: 0.75rem;
+  padding: 0 0.3rem;
+}
