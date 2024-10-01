@@ -1,18 +1,9 @@
 <template>
-  <div class="l-wrapper" :style="{ backgroundColor: website.mainColor }">    
+  <div class="l-wrapper" :style="{ backgroundColor: website.mainColor }" ref="scrollContent">    
     <Header/>
     <div class="l-inner font-bit">
       <div class="p-mainImage">
         <Box3D_main/>
-        <!-- 動的に複製されたコンポーネントを表示 -->
-        <div v-for="(component, index) in components" :key="component.id">
-          <Box3D_lo
-            title="NIKE AIR JORDAN 1"
-            cgPath="/nuxt3/object/sneaker_lo.glb"
-            @getTitle="receiveTitle"
-          />
-        </div>        
-        <p v-if="isOverlapping">要素Aと要素Bが重なっています！</p>
       </div>
       <NuxtLayout>
         <div class="l-contents">
@@ -39,6 +30,12 @@ const componentStore = useComponentStore()
 const { components } = storeToRefs(componentStore)
 
 const website = useWebsiteStore()
+
+const scrollContent = ref(null);
+
+// 子コンポーネントにscrollContentを提供する
+provide('scrollContent', scrollContent);
+
 
 const transition = {
   name: 'page',

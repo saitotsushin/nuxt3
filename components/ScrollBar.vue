@@ -5,76 +5,87 @@
   </div>
   </div>
 </template>
+<style>
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge用 */
+}
+</style>
 <script setup lang="ts">
 // 親から受け取る scrollContent を定義 (undefined の可能性を考慮)
-interface ScrollBarProps {
-  scrollContent: HTMLElement | null // HTMLElement | null に変更
-}
+// interface ScrollBarProps {
+//   scrollContent: HTMLElement | null // HTMLElement | null に変更
+// }
 
-const props = defineProps<ScrollBarProps>()
+// const props = defineProps<ScrollBarProps>()
 
 // ref を使ってスクロールバーとつまみの要素を参照
 const customScrollbar = ref<HTMLElement | null>(null)
 const scrollbarThumb = ref<HTMLElement | null>(null)
+// const scrollContent = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   // scrollContent が null でないか確認
-  if (!props.scrollContent) {
-    console.warn('scrollContent is null or undefined')
-    return
-  }
-  console.log("scroll");
   // スクロールイベントに基づいてスクロールバーを調整
-    props.scrollContent.addEventListener('scroll', () => {
-      if (!props.scrollContent) {
-        return;
-      }      
-      console.log("scroll");
-      const contentHeight = props.scrollContent.scrollHeight
-      const visibleHeight = props.scrollContent.clientHeight
-      const scrollTop = props.scrollContent.scrollTop
 
-      // スクロールバーのつまみの高さと位置を調整
-      const thumbHeight = (visibleHeight / contentHeight) * visibleHeight
-      const thumbPosition = (scrollTop / contentHeight) * visibleHeight
-
-      if (scrollbarThumb.value) {
-        scrollbarThumb.value.style.height = `${thumbHeight}px`
-        scrollbarThumb.value.style.transform = `translateY(${thumbPosition}px)`
-      }
-    })
-
-
-
-  // ドラッグ操作でスクロールを制御
-  let isDragging = false
-  console.log("isDragging", isDragging);
-
-  let startY: number, startScrollTop: number
-  if (scrollbarThumb.value) {
-    scrollbarThumb.value.addEventListener('mousedown', (e: MouseEvent) => {
-      if (!props.scrollContent) {
-        return;
-      }
-      isDragging = true
-      startY = e.pageY
-      startScrollTop = props.scrollContent.scrollTop
-      document.body.style.userSelect = 'none' // テキスト選択を無効化
-    })
+  // DOM 要素がマウントされた後に scrollContent を設定
+  const contentElement = document.querySelector('.l-wrapper');
+  if (!contentElement) {
+    return;
   }
+  // scrollContent.value = contentElement
 
-  document.addEventListener('mousemove', (e: MouseEvent) => {
-    if (isDragging && props.scrollContent) {
-      const deltaY = e.pageY - startY
-      const scrollDelta = (deltaY / props.scrollContent.clientHeight) * props.scrollContent.scrollHeight
-      props.scrollContent.scrollTop = startScrollTop + scrollDelta
+  window.addEventListener('scroll', () => {
+    const contentHeight = contentElement.scrollHeight
+    const visibleHeight = window.innerHeight
+    const scrollTop = window.scrollY
+
+    // スクロールバーのつまみの高さと位置を調整
+    const thumbHeight = (visibleHeight / contentHeight) * visibleHeight
+    const thumbPosition = (scrollTop / contentHeight) * visibleHeight
+
+    if (scrollbarThumb.value) {
+      scrollbarThumb.value.style.height = `${thumbHeight}px`
+      scrollbarThumb.value.style.transform = `translateY(${thumbPosition}px)`
     }
   })
 
-  document.addEventListener('mouseup', () => {
-    isDragging = false
-    document.body.style.userSelect = '' // テキスト選択を再度有効化
-  })
+  // ドラッグ操作でスクロールを制御
+  let isDragging = false
+
+  let startY: number, startScrollTop: number
+
+  if (scrollbarThumb.value) {
+    scrollbarThumb.value.addEventListener('mousedown', (e: MouseEvent) => {
+      console.log("mousedown");
+      isDragging = true
+      startY = e.pageY
+      startScrollTop = contentElement.scrollTop
+      document.body.style.userSelect = 'none' // テキスト選択を無効化
+    })
+    console.log("contentElement.clientHeight", contentElement.clientHeight);
+    console.log("contentElement.scrollHeight", contentElement.scrollHeight);
+    scrollbarThumb.value.addEventListener('mousemove', (e: MouseEvent) => {
+      // console.log("mousemove");
+      if (isDragging && contentElement) {
+        console.log("mousemove__2");
+        const deltaY = e.pageY - startY
+        console.log("deltaY", deltaY);
+        const scrollDelta = (deltaY / contentElement.clientHeight) * contentElement.scrollHeight
+        window.scrollTo({
+            top: startScrollTop + scrollDelta,
+            left: 0,
+            behavior: 'smooth'
+          }
+        )
+      }
+    })
+
+    scrollbarThumb.value.addEventListener('mouseup', () => {
+      console.log("mouseup");
+      isDragging = false
+      document.body.style.userSelect = '' // テキスト選択を再度有効化
+    })
+  }
 })
 </script>
 <style lang="scss">

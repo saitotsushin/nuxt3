@@ -61,13 +61,12 @@ const onScroll = () => {
 //   const scrollTop = window.scrollY;
 //   const docHeight = document.body.scrollHeight - window.innerHeight;
 //   scrollPercentage = scrollTop / docHeight;
-//   console.log("scrollPercentage", scrollPercentage);
 //   const currentScrollY = window.scrollY;
 
 //   if (currentScrollY > lastScrollY) {
-//     console.log('スクロールダウン'); // 下にスクロール
+// 下にスクロール
 //   } else {
-//     console.log('スクロールアップ'); // 上にスクロール
+// 上にスクロール
 //   }
 
 //   lastScrollY = currentScrollY;  
@@ -138,9 +137,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
         //   camera.rotation.x += scrollSpeed; // 0から2πの範囲に制限;
         //   model_now_rot_z = camera.rotation.x;
         // } else {
-        //   console.log("何もしない1 model_now_rot_z="+model_now_rot_z+"/scrollSpeed="+scrollSpeed);
         //   if (camera.rotation.x == 0) {
-        //     console.log("何もしない_2");
         //   } else {
         //     if (model_now_rot_z > 0) {
         //       camera.rotation.x -= Math.abs(scrollSpeed);

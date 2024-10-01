@@ -19,6 +19,9 @@ export const useWebsiteStore = defineStore('websiteStore', {
       mainColor: string
     ) {
       this.mainColor = mainColor
-    }
+    },
+    setMainBasicColor() {
+      this.mainColor = "#F15928"
+    }    
   }
 })

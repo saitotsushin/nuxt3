@@ -1,20 +1,19 @@
 <template>
   <div>
-    <div class="" ref="scrollContent">
-      <!-- <div class="debug-text">
-        <p v-if="isOverlapping">要素Aと要素Bが重なっています！</p>
-      </div> -->
+    <div class="l-content-scroll">
       <div class="l-content-wrapper">
         <div class="l-content-wrapper-inner">
           <div class="l-selectCursor">
-            <div class="p-selectCursor" ref="selectCursor">
+            <div class="p-selectCursor">
+              <div class="c-selectCursor" ref="selectCursor"></div>
               <div class="c-selectCursor-title">{{ title }}</div>
             </div>
           </div>
+          <PageTitle/>
           <Box3D_lo ref="Box3D_lo_1"
-            title="NIKE AIR JORDAN 1" 
+            title="NIKE AIR JORDAN 2" 
             cgPath="/nuxt3/object/sneaker_lo.glb"
-            mainColor="#000"
+            mainColor="#473acc"
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_2"
@@ -37,7 +36,7 @@
       </div>
       <SizeSticker/>
     </div>
-    <ScrollBar v-if="scrollContent" :scrollContent="scrollContent"/>
+    <ScrollBar :scrollContent="scrollContent"/>
   </div>
 </template>
 <script setup>
@@ -45,9 +44,12 @@ const MainColumHeader = ref("/");
 const messages = 'Hello from Parent Component'
 const items = ref([
 ]);
+
+const scrollContentW = inject('scrollContent');
+
+const website = useWebsiteStore()
 // scrollContent の参照を作成
 const scrollContent = ref(null)
-// const scrollContent = ref<HTMLElement | null>(null)
 
 const targetElement = ref(null)
 const isFixed = ref(false)
@@ -71,7 +73,7 @@ const isOverlapping = ref(false);
 const checkOverlap = () => {
   const rectB = selectCursor.value.getBoundingClientRect()
   // 比率を変数化 (例: 50% -> 0.5)
-  const overlapRatio = 0.5 // 50%を変数化
+  const overlapRatio = 1.0 // 50%を変数化->0.5
 
   // rectBの指定された比率の領域を計算
   const widthRatioB = rectB.width * overlapRatio
@@ -106,7 +108,15 @@ const checkOverlap = () => {
     return isActive;
   })
 }
+const checkScrollTop = () => {
+  // ページの一番上にいるかどうかを確認
+  if (window.scrollY === 0) {
+    console.log('スクロールが一番上に達しました');
+    website.setMainBasicColor();
+    // ここに、スクロールが上に到達したときの処理を追加します
 
+  }  
+}
 
 const disableScroll = () => {
   // if (isOverlapping.value == true) {
@@ -142,9 +152,9 @@ onMounted(() => {
   // スクロールやウィンドウのリサイズを監視して重なりを判定
   window.addEventListener('scroll', checkOverlap)
 
-  // DOM 要素がマウントされた後に scrollContent を設定
-  const contentElement = document.querySelector('.scroll-content');
-  scrollContent.value = contentElement
+  // スクロールイベントを監視
+  window.addEventListener('scroll', checkScrollTop)
+
 })
 
 onUnmounted(() => {

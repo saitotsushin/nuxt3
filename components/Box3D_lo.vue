@@ -78,7 +78,6 @@ const website = useWebsiteStore()
 
 // sampleComponentAを複製する関数
 const duplicateComponent = () => {
-  console.log("duplicateComponent**");
   const newId = components.value.length + 1
   const newComponent = { id: newId, content: `Sample Component A Copy ${newId}` }
   componentStore.addComponent(newComponent)
@@ -110,9 +109,9 @@ const onScroll = () => {
   scrollOffset = targetScrollY - currentScrollY;
 
   if (currentScrollY > lastScrollY) {
-    // console.log('スクロールダウン'); // 下にスクロール
+    // スクロールダウン
   } else {
-    // console.log('スクロールアップ',scrollOffset); // 上にスクロール
+    // スクロールアップ
   }
   scrollSpeed = ((currentScrollY - lastScrollY) / docHeight);
   lastScrollY = currentScrollY;
@@ -122,7 +121,7 @@ const onScroll = () => {
     clearTimeout(isScrolling);
   }
   isScrolling = setTimeout(() => {
-    // console.log('スクロールしていない');
+    // スクロールしていない
     isScrolling = null; // タイマーIDをリセット
   }, 300); // 300ms後にスクロールが止まったと判断
 };
@@ -130,13 +129,12 @@ const onScroll = () => {
 //   const scrollTop = window.scrollY;
 //   const docHeight = document.body.scrollHeight - window.innerHeight;
 //   scrollPercentage = scrollTop / docHeight;
-//   console.log("scrollPercentage", scrollPercentage);
 //   const currentScrollY = window.scrollY;
 
 //   if (currentScrollY > lastScrollY) {
-//     console.log('スクロールダウン'); // 下にスクロール
+//     //下にスクロール
 //   } else {
-//     console.log('スクロールアップ'); // 上にスクロール
+//     // 上にスクロール
 //   }
 
 //   lastScrollY = currentScrollY;  
@@ -147,7 +145,6 @@ const lerp = (start:number, end:number, t:number) => {
 const handleIntersect = (entries: any[]) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      console.log("entry.isIntersecting", entry.isIntersecting);
       website.setMainColor(`${props.mainColor}`);
     } else {
     }
@@ -155,11 +152,10 @@ const handleIntersect = (entries: any[]) => {
 }
 
 const checkInDisplay = () => {
-  console.log("--checkInDisplay--")
-  const h = window.innerHeight * -1 + 60;
+  // const h = window.innerHeight * -1 + 60;
   const observer = new IntersectionObserver(handleIntersect, {
     root: null, // ビューポートを基準とする
-    rootMargin: '0% 0px ' + h +'px 0px', // 上部20%をトリガー領域に設定
+    rootMargin: '-50% 0px', // 上部20%をトリガー領域に設定
     threshold: 0 // 0%表示された時点でトリガーする
   });
   if (container.value) {
@@ -235,9 +231,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
         //   camera.rotation.x += scrollSpeed; // 0から2πの範囲に制限;
         //   model_now_rot_z = camera.rotation.x;
         // } else {
-        //   console.log("何もしない1 model_now_rot_z="+model_now_rot_z+"/scrollSpeed="+scrollSpeed);
         //   if (camera.rotation.x == 0) {
-        //     console.log("何もしない_2");
         //   } else {
         //     if (model_now_rot_z > 0) {
         //       camera.rotation.x -= Math.abs(scrollSpeed);
