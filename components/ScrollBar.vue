@@ -4,10 +4,27 @@
     <div ref="scrollbarThumb" class="custom-scrollbar-thumb"></div>
   </div>
   </div>
+  <div class="debug">
+    <div>高さ: {{ debug_clientHeight }}</div>
+    <div>スクロール高さ: {{ debug_scrollHeight }}</div>
+    <div>イベント名: {{ debug_mouseEvent }}</div>
+    <div>deltaY: {{ debug_mdeltaY }}</div>
+    <div>debug_scrollDelta: {{ debug_scrollDelta }}</div>
+    <div>debug_pageY: {{ debug_pageY }}</div>
+    <div>debug_startY: {{ debug_startY }}</div>
+    <div>debug_startScrollTop: {{ debug_startScrollTop }}</div>
+    <div>debug_thumbPosition: {{ debug_thumbPosition }}</div>
+
+  </div>
 </template>
 <style>
 body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge用 */
+}
+.debug{
+  position: fixed;
+  top: 100px;
+  left: 0;
 }
 </style>
 <script setup lang="ts">
@@ -22,6 +39,15 @@ body::-webkit-scrollbar {
 const customScrollbar = ref<HTMLElement | null>(null)
 const scrollbarThumb = ref<HTMLElement | null>(null)
 // const scrollContent = ref<HTMLElement | null>(null)
+const debug_clientHeight = ref('')
+const debug_scrollHeight = ref('')
+const debug_mouseEvent = ref('')
+const debug_mdeltaY = ref('')
+const debug_scrollDelta = ref('');
+const debug_pageY = ref('');
+const debug_startY = ref('');
+const debug_startScrollTop = ref('');
+const debug_thumbPosition = ref('');
 
 onMounted(() => {
   // scrollContent が null でないか確認
@@ -33,18 +59,27 @@ onMounted(() => {
     return;
   }
   // scrollContent.value = contentElement
+  let contentHeight = contentElement.scrollHeight
+  let visibleHeight = window.innerHeight
+  let thumbHeight = (visibleHeight / contentHeight) * visibleHeight
+  let scrollTop = window.scrollY
+  // スクロールバーのつまみの高さと位置を調整
+  let thumbPosition = (scrollTop / contentHeight) * visibleHeight
+
+  if (scrollbarThumb.value) {
+    scrollbarThumb.value.style.height = `${thumbHeight}px`
+    scrollbarThumb.value.style.transform = `translateY(${thumbPosition}px)`
+  }
 
   window.addEventListener('scroll', () => {
-    const contentHeight = contentElement.scrollHeight
-    const visibleHeight = window.innerHeight
-    const scrollTop = window.scrollY
-
-    // スクロールバーのつまみの高さと位置を調整
-    const thumbHeight = (visibleHeight / contentHeight) * visibleHeight
-    const thumbPosition = (scrollTop / contentHeight) * visibleHeight
-
+    if (isDragging) {
+      return;
+    }
     if (scrollbarThumb.value) {
-      scrollbarThumb.value.style.height = `${thumbHeight}px`
+      scrollTop = window.scrollY
+      // スクロールバーのつまみの高さと位置を調整
+      thumbPosition = (scrollTop / contentHeight) * visibleHeight
+
       scrollbarThumb.value.style.transform = `translateY(${thumbPosition}px)`
     }
   })
@@ -52,36 +87,69 @@ onMounted(() => {
   // ドラッグ操作でスクロールを制御
   let isDragging = false
 
-  let startY: number, startScrollTop: number
+  let startY: number;
+  let startScrollTop: number;
+  let start_C_Y: number;
 
   if (scrollbarThumb.value) {
+    /*
+    マウスダウン
+    */
     scrollbarThumb.value.addEventListener('mousedown', (e: MouseEvent) => {
-      console.log("mousedown");
       isDragging = true
       startY = e.pageY
-      startScrollTop = contentElement.scrollTop
+      start_C_Y = e.clientY
+      debug_startY.value = startY.toString();
+
+      scrollTop = window.scrollY
+      thumbPosition = (scrollTop / contentHeight) * visibleHeight
+
+
+      startScrollTop = window.scrollY
+      debug_startScrollTop.value = startScrollTop.toString();
+
       document.body.style.userSelect = 'none' // テキスト選択を無効化
     })
-    console.log("contentElement.clientHeight", contentElement.clientHeight);
-    console.log("contentElement.scrollHeight", contentElement.scrollHeight);
-    scrollbarThumb.value.addEventListener('mousemove', (e: MouseEvent) => {
-      // console.log("mousemove");
-      if (isDragging && contentElement) {
-        console.log("mousemove__2");
-        const deltaY = e.pageY - startY
-        console.log("deltaY", deltaY);
-        const scrollDelta = (deltaY / contentElement.clientHeight) * contentElement.scrollHeight
-        window.scrollTo({
-            top: startScrollTop + scrollDelta,
-            left: 0,
-            behavior: 'smooth'
+
+    debug_clientHeight.value = contentElement.clientHeight.toString();
+    debug_scrollHeight.value = contentElement.scrollHeight.toString();
+    /*
+    スクロール中
+    */
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+      if (isDragging) {
+        const deltaY = e.pageY - startY//どのくらいドラッグしたか
+        const deltaW_Y = e.clientY - start_C_Y//どのくらいドラッグしたか
+        const scrollDelta = (deltaW_Y / window.innerHeight) * document.documentElement.scrollHeight
+        window.scrollTo(0, startScrollTop + scrollDelta); 
+        debug_pageY.value = e.pageY.toString();
+        debug_startY.value = startY.toString();
+        debug_mdeltaY.value = deltaY.toString();
+        debug_scrollDelta.value = scrollDelta.toString();
+
+        if (scrollbarThumb.value) {
+       
+          // スクロールバーのつまみの高さと位置を調整
+          let setPos = (deltaW_Y / window.innerHeight) * visibleHeight + thumbPosition;
+
+          scrollbarThumb.value.style.transform = `translateY(${setPos}px)`
+
+          debug_thumbPosition.value = setPos.toString();
+          if (setPos < 0) {
+            setPos = 0;
+            scrollbarThumb.value.style.transform = `translateY(${setPos}px)`
+            debug_thumbPosition.value = thumbPosition.toString();
           }
-        )
+          if (setPos > window.innerHeight - thumbHeight) {
+            setPos = window.innerHeight - thumbHeight;
+            scrollbarThumb.value.style.transform = `translateY(${setPos}px)`
+            debug_thumbPosition.value = thumbPosition.toString();
+          }  
+        }
       }
     })
 
-    scrollbarThumb.value.addEventListener('mouseup', () => {
-      console.log("mouseup");
+    document.addEventListener('mouseup', () => {
       isDragging = false
       document.body.style.userSelect = '' // テキスト選択を再度有効化
     })

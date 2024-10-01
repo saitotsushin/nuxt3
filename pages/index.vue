@@ -25,12 +25,12 @@
           <Box3D_lo ref="Box3D_lo_3"
             title="NIKE SNEAKER AAAAA"
             cgPath="/nuxt3/object/sneaker_lo_others.glb"
-            mainColor="#FFF"
+            mainColor="#333"
             @getTitle="receiveTitle"/>
           <Box3D_lo ref="Box3D_lo_4"
             title="NIKE OTHERS"
             cgPath="/nuxt3/object/sneaker_lo_others.glb"
-            mainColor="#CCC"
+            mainColor="#333"
             @getTitle="receiveTitle"/>
         </div>
       </div>
