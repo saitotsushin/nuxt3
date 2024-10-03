@@ -72,15 +72,22 @@ defineExpose({
 
 // Piniaのストアインスタンスを取得
 const componentStore = useComponentStore()
-const { components } = storeToRefs(componentStore)
+// const { components } = storeToRefs(componentStore)
 
 const website = useWebsiteStore()
 
 // sampleComponentAを複製する関数
 const duplicateComponent = () => {
-  const newId = components.value.length + 1
-  const newComponent = { id: newId, content: `Sample Component A Copy ${newId}` }
-  componentStore.addComponent(newComponent)
+  console.log("1 duplicateComponent"+props.cgPath);
+  if (props.title && props.cgPath) {
+    console.log("1.1 eeee");
+    componentStore.addComponent(props.title,props.cgPath);
+  }
+  // let mainImage = document.getElementById('js-mainImage');
+  // mainImage?.appendChild(container.value);
+  // const newId = components.value.length + 1
+  // const newComponent = { id: newId, content: `Sample Component A Copy ${newId}` }
+  // componentStore.addComponent(newComponent)
 }
 
 let scrollPercentage = 0;

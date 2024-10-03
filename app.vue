@@ -2,7 +2,7 @@
   <div class="l-wrapper" :style="{ backgroundColor: website.mainColor }" ref="scrollContent">    
     <Header/>
     <div class="l-inner font-bit">
-      <div class="p-mainImage">
+      <div class="p-mainImage" ref="mainImage" id="js-mainImage">
         <Box3D_main/>
       </div>
       <NuxtLayout>
@@ -37,6 +37,7 @@ const scrollContent = ref(null);
 provide('scrollContent', scrollContent);
 
 
+
 const transition = {
   name: 'page',
   mode: 'out-in',
@@ -52,6 +53,18 @@ const transition = {
   // leave トランジションの開始時に呼ばれる
   // leave アニメーションを開始する時に使用する
   onLeave: (el, done) => {
+    console.log("2. onLeave");
+    // // ComponentBを.box内にコピー
+    // if (box.value && contents.value) {
+    //   const componentB = contents.value.querySelector('componentB')
+    //   if (componentB) {
+    //     // ComponentBの要素を.boxの最後にコピー
+    //     box.value.appendChild(componentB.cloneNode(true))
+    //   }
+    // }
+
+    console.log("componentStore.title="+componentStore.value);
+
     gsap.to(contentsLoading.value, {
       width: "100%",
       duration: 0.5,

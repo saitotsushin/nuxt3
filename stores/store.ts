@@ -1,12 +1,13 @@
 export const useComponentStore = defineStore('componentStore', {
   state: () => ({
-    components: [
-      { id: 1, content: 'Original Component Content' }
-    ],
+    title: '',
+    cdPath: ''
   }),
   actions: {
-    addComponent(newComponent: { id: number, content: string }) {
-      this.components.push(newComponent)
+    addComponent(title: string, cdPath: string) {
+      console.log("addComponent");
+      this.title = title;
+      this.cdPath = cdPath;
     },
   },
 })

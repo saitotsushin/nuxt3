@@ -1,7 +1,11 @@
 <template>
   <div class="ScrollBar">
+    <img src="/images/scroll_arrow_top.png" class="ScrollBarArrow ScrollBarArrow--top"/>
+    <img src="/images/scroll_arrow_bottom.png" class="ScrollBarArrow ScrollBarArrow--bottom"/>
     <div ref="customScrollbar" class="custom-scrollbar">
-    <div ref="scrollbarThumb" class="custom-scrollbar-thumb"></div>
+    <div ref="scrollbarThumb" class="custom-scrollbar-thumb">
+      <div class="custom-scrollbar-thumb-inner"></div>
+    </div>
   </div>
   </div>
   <div class="debug">
@@ -22,6 +26,7 @@ body::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge用 */
 }
 .debug{
+  display: none;
   position: fixed;
   top: 100px;
   left: 0;
@@ -64,7 +69,7 @@ onMounted(() => {
   let thumbHeight = (visibleHeight / contentHeight) * visibleHeight
   let scrollTop = window.scrollY
   // スクロールバーのつまみの高さと位置を調整
-  let thumbPosition = (scrollTop / contentHeight) * visibleHeight
+  let thumbPosition = (scrollTop / contentHeight) * visibleHeight + 15
 
   if (scrollbarThumb.value) {
     scrollbarThumb.value.style.height = `${thumbHeight}px`
@@ -79,8 +84,15 @@ onMounted(() => {
       scrollTop = window.scrollY
       // スクロールバーのつまみの高さと位置を調整
       thumbPosition = (scrollTop / contentHeight) * visibleHeight
+      if (thumbPosition < 15) {
+        thumbPosition = 15;
+      }
+      if (thumbPosition > window.innerHeight - thumbHeight - 15) {
+        thumbPosition = window.innerHeight - thumbHeight - 15
+      }
 
       scrollbarThumb.value.style.transform = `translateY(${thumbPosition}px)`
+
     }
   })
 
@@ -135,13 +147,13 @@ onMounted(() => {
           scrollbarThumb.value.style.transform = `translateY(${setPos}px)`
 
           debug_thumbPosition.value = setPos.toString();
-          if (setPos < 0) {
-            setPos = 0;
+          if (setPos < 15) {
+            setPos = 15;
             scrollbarThumb.value.style.transform = `translateY(${setPos}px)`
             debug_thumbPosition.value = thumbPosition.toString();
           }
-          if (setPos > window.innerHeight - thumbHeight) {
-            setPos = window.innerHeight - thumbHeight;
+          if (setPos > window.innerHeight - thumbHeight - 15) {
+            setPos = window.innerHeight - thumbHeight - 15;
             scrollbarThumb.value.style.transform = `translateY(${setPos}px)`
             debug_thumbPosition.value = thumbPosition.toString();
           }  
@@ -159,9 +171,10 @@ onMounted(() => {
 <style lang="scss">
 .ScrollBar{
   position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 15px;
 }
 .scroll-container {
   position: relative;
@@ -181,9 +194,9 @@ onMounted(() => {
   position: absolute;
   top: 0;
   right: 0;
-  width: 8px;
-  background-color: rgba(0, 0, 0, 0.2); /* カスタムスクロールバーの背景色 */
-  border-radius: 4px;
+  width: 15px;
+  background-color: #E7E7E5; /* カスタムスクロールバーの背景色 */
+  border-radius: 0px;
   height: 100%;
 }
 
@@ -191,9 +204,33 @@ onMounted(() => {
   position: absolute;
   top: 0;
   right: 0;
-  width: 8px;
+  width: 13px;
   height: 60px;
-  background-color: rgba(0, 0, 0, 0.8); /* スクロールバーのつまみ */
-  border-radius: 4px;
+  border-top: 1px solid ;
+  background-color: #C5C2C6; /* スクロールバーのつまみ */
+  border-radius: 0px;
+  border-left: 1px solid #F7F7F7;
+  border-right: 1px solid #949293;
+  border-bottom: 1px solid #868686;
+}
+.custom-scrollbar-thumb-inner{
+  width: 100%;
+  height: 100%;
+  border-top: 1px sold #BDBCBF;
+  border-right: 1px solid #908D91;
+  border-bottom: 1px solid #999797;
+  border-left: 1px solid #E5E5E5;
+
+}
+.ScrollBarArrow{
+  position: absolute;
+  left: 0;
+  z-index: 20;
+}
+.ScrollBarArrow--top{
+  top: 0;
+}
+.ScrollBarArrow--bottom{
+  bottom: 0;
 }
 </style>
