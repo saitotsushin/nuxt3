@@ -11,24 +11,28 @@
           </div>
           <PageTitle/>
           <Box3D_lo ref="Box3D_lo_1"
+            modelIndex=1
             title="NIKE AIR JORDAN 2" 
             cgPath="/nuxt3/object/sneaker_lo.glb"
             mainColor="#473acc"
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_2"
-            title="NIKE DUNK LOW Pro B" 
+          modelIndex=2
+          title="NIKE DUNK LOW Pro B" 
             cgPath="/nuxt3/object/face.glb"
             mainColor="#F00"
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_3"
-            title="NIKE SNEAKER AAAAA"
+          modelIndex=3
+          title="NIKE SNEAKER AAAAA"
             cgPath="/nuxt3/object/sneaker_lo_others.glb"
             mainColor="#333"
             @getTitle="receiveTitle"/>
           <Box3D_lo ref="Box3D_lo_4"
-            title="NIKE OTHERS"
+          modelIndex=4
+          title="NIKE OTHERS"
             cgPath="/nuxt3/object/sneaker_lo_others.glb"
             mainColor="#333"
             @getTitle="receiveTitle"/>
@@ -111,7 +115,6 @@ const checkOverlap = () => {
 const checkScrollTop = () => {
   // ページの一番上にいるかどうかを確認
   if (window.scrollY === 0) {
-    console.log('スクロールが一番上に達しました');
     website.setMainBasicColor();
     // ここに、スクロールが上に到達したときの処理を追加します
 

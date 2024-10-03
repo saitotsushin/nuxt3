@@ -17,8 +17,10 @@
 </template>
 <script setup>
 const website = useWebsiteStore();
+const componentStore = useComponentStore()
 function handleClick(event) {
   const store = useWebsiteStore();
-  store.setSiteDate("", "","");
+  store.setSiteDate("", "", "");
+  componentStore.showPage(0);
 }
 </script>

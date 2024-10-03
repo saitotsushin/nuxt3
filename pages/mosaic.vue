@@ -220,8 +220,6 @@ void main(void){
         function SetPlaneGeometry(){
           const geo = new PlaneGeometry(w, h, 1);
 
-          console.log("texture", texture);
-
           uniforms.uTexture = texture;
 
           // console.log("uniforms.uTexture", uniforms.uTexture);

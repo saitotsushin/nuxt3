@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/product/sneaker" @click="duplicateComponent">
+  <NuxtLink to="/product/sneaker" @click="showPage">
     <div class="webGLbox" ref="container"></div>
   </NuxtLink>
 </template>
@@ -35,7 +35,8 @@ const container: Ref<HTMLElement> = ref(null!);
 const props = defineProps({
   title: String,    // 親コンポーネントから渡される title プロップ
   cgPath: String, // 親コンポーネントから渡される cgPath プロップ
-  mainColor: String
+  mainColor: String,
+  modelIndex: Number
 })
 const emit = defineEmits()
 
@@ -72,22 +73,17 @@ defineExpose({
 
 // Piniaのストアインスタンスを取得
 const componentStore = useComponentStore()
-// const { components } = storeToRefs(componentStore)
 
 const website = useWebsiteStore()
 
-// sampleComponentAを複製する関数
+const showPage = () => {
+  componentStore.showPage(Number(props.modelIndex));
+}
+  // sampleComponentAを複製する関数
 const duplicateComponent = () => {
-  console.log("1 duplicateComponent"+props.cgPath);
   if (props.title && props.cgPath) {
-    console.log("1.1 eeee");
-    componentStore.addComponent(props.title,props.cgPath);
+    componentStore.addComponent(props.title, props.cgPath,Number(props.modelIndex));
   }
-  // let mainImage = document.getElementById('js-mainImage');
-  // mainImage?.appendChild(container.value);
-  // const newId = components.value.length + 1
-  // const newComponent = { id: newId, content: `Sample Component A Copy ${newId}` }
-  // componentStore.addComponent(newComponent)
 }
 
 let scrollPercentage = 0;
@@ -221,6 +217,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       model = gltf.scene;
       model.position.set(0, 1.4,0);
       scene.add(model);
+      duplicateComponent();
 
       // 各オブジェクトのアニメーションを管理
       clips = gltf.animations;

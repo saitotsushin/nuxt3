@@ -1,5 +1,5 @@
 <template>
-  <div class="webGLbox" ref="container"></div>
+  <div class="webGLbox" ref="mainWebGLbox"></div>
 </template>
 
 <script setup lang="ts">
@@ -15,8 +15,12 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { bool } from 'three/examples/jsm/nodes/Nodes.js';
 
 // import { ref } from 'vue'
-const container: Ref<HTMLElement> = ref(null!);
+const mainWebGLbox: Ref<HTMLElement> = ref(null!);
 // const { clientWidth, clientHeight } = useWindowSize()
+// 親コンポーネントにこの参照を公開
+defineExpose({
+  mainWebGLbox
+})
 
 let scrollPercentage = 0;
 let isScrolling: NodeJS.Timeout | null = null; // スクロール中かどうかのフラグ
@@ -35,8 +39,6 @@ const onScroll = () => {
   scrollPercentage = scrollTop / docHeight;
   // スクロール位置を取得
   targetScrollY = document.documentElement.scrollTop;
-
-  // currentScrollY = window.scrollY;
 
   // リープ関数でスクロール位置をなめらかに追従
   currentScrollY = lerp(currentScrollY, targetScrollY, 0.1);
@@ -71,9 +73,32 @@ const onScroll = () => {
 
 //   lastScrollY = currentScrollY;  
 // }
+
+const models: Object3D<Object3DEventMap>[] = [];
+
 const lerp = (start:number, end:number, t:number) => {
   return start + (end - start) * t;
 }
+const componentStore = useComponentStore()
+
+let scene: Object3D<Object3DEventMap>;
+let activeModel: Object3D<Object3DEventMap>;
+// Piniaストアの特定の状態を監視する
+watch(
+  () => componentStore.cdPath, // 監視する状態
+  (newValue, oldValue) => {
+    console.log("状態変化")
+    // 状態が変更されたらこの関数が呼ばれる
+    add3D(newValue,false,componentStore.modelIndex);
+  }
+)
+watch(
+  () => componentStore.showModelIndex, // 監視する状態
+  (newValue, oldValue) => {
+    // 状態が変更されたらこの関数が呼ばれる
+    switch3D(componentStore.showModelIndex);
+  }  
+);
 
 const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeight: number) => {
   const init = () => {
@@ -98,7 +123,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
     container.value.appendChild(renderer.domElement)
     // シーン追加
-    const scene = new Scene();
+    scene = new Scene();
     // カメラの作成
     const camera = new PerspectiveCamera(45, width / height, 0.1, 70);
     camera.position.set(0, 3, 4);
@@ -117,44 +142,15 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     directionalLight.intensity = 4; // 光の強さを倍に
     directionalLight.position.set(0, 2, 1); // ライトの方向
     scene.add(directionalLight);
-    
-    // GLTFモデルの読み込み
-    const loader = new GLTFLoader();
-    let model: Object3D<Object3DEventMap>;
-    loader.load('/nuxt3/object/sneaker_box2.glb', (gltf) => {
-      model = gltf.scene;
-      model.position.set(0, 1.4,0);
-      scene.add(model);
-    }, undefined, function (e) {
-      console.error(e);
-    });   
+
+    add3D('/nuxt3/object/sneaker_box2.glb',true,0);
+
     // 毎フレーム時に実行されるループイベント
     const tick = () => {
       requestAnimationFrame(tick)
       // 球体を回転
-      if (model) {
-        // if (isScrolling) {
-        //   camera.rotation.x += scrollSpeed; // 0から2πの範囲に制限;
-        //   model_now_rot_z = camera.rotation.x;
-        // } else {
-        //   if (camera.rotation.x == 0) {
-        //   } else {
-        //     if (model_now_rot_z > 0) {
-        //       camera.rotation.x -= Math.abs(scrollSpeed);
-        //       if (camera.rotation.x < 0) {
-        //         camera.rotation.x = 0;
-        //       }
-        //     }
-        //     if (model_now_rot_z < 0) {
-        //       camera.rotation.x += Math.abs(scrollSpeed);
-        //       if (camera.rotation.x > 0) {
-        //         camera.rotation.x = 0;
-        //       }
-        //     }
-        //   }
-        //   // model.rotation.y += 0.01;
-        // }  
-        model.rotation.y += 0.01;
+      if (activeModel) {
+        activeModel.rotation.y += 0.01;
       }
       // レンダリング
       renderer.render(scene, camera)
@@ -171,8 +167,43 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
   return { init }
 }
+const add3D = (_cdPath: string, _isShow: boolean, _modelIndex: number) => {
+  if (componentStore.firstMounted) {
+    return;
+  }
+  console.log("add3D");
+  // GLTFモデルの読み込み
+  const loader = new GLTFLoader();
+  let model: Object3D<Object3DEventMap>;
+  loader.load(_cdPath, (gltf) => {
+    model = gltf.scene;
+    model.position.set(0, 1.4, 0);
+    model.userData.modelIndex = _modelIndex;
+    scene.add(model);
+    models.push(model);
+    if (_isShow) {
+      activeModel = model;
+    }else{
+      model.visible = false;
+    }
+  }, undefined, function (e) {
+    console.error(e);
+  });   
+}
+const switch3D = (_showModelIndex: number) => {
+  models.forEach((element) => {
+    // 各要素に対して実行する処理
+    if (element.userData.modelIndex == _showModelIndex) {
+      activeModel = element;
+      element.visible = true
+    } else {
+      element.visible = false      
+    }
+  });
+} 
+    
 onMounted(() => {
-  const { init } = useSphere(container, 500, 500)
+  const { init } = useSphere(mainWebGLbox, 500, 500)
   init()
   window.addEventListener('scroll', onScroll);
   lastScrollY = window.scrollY;
