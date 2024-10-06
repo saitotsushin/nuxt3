@@ -6,7 +6,7 @@
           <div class="l-selectCursor">
             <div class="p-selectCursor">
               <div class="c-selectCursor" ref="selectCursor"></div>
-              <div class="c-selectCursor-title">{{ title }}</div>
+              <div class="c-selectCursor-title" ref="selectCursorTitle"></div>
             </div>
           </div>
           <PageTitle/>
@@ -54,6 +54,7 @@ const scrollContentW = inject('scrollContent');
 const website = useWebsiteStore()
 // scrollContent の参照を作成
 const scrollContent = ref(null)
+const selectCursorTitle = ref(null);
 
 const targetElement = ref(null)
 const isFixed = ref(false)
@@ -66,6 +67,8 @@ const Box3D_lo_3 = ref(null)
 const Box3D_lo_4 = ref(null)
 const selectCursor = ref(null)
 const isOverlappingDebug = ref(false)
+
+let beforeTitle = "";
 
 // 子コンポーネントからタイトルを受け取る関数
 const receiveTitle = (_title) => {
@@ -105,6 +108,7 @@ const checkOverlap = () => {
       comp.value.animationPlay()
       isActive = true;
       disableScroll();
+      displayName();
     }
     if (!isActive) {
       title.value = "";
@@ -120,7 +124,38 @@ const checkScrollTop = () => {
 
   }  
 }
+const displayName = () => {
+  console.log("title.value", title.value)
+  if (beforeTitle == title.value) {
+    return;
+  }
+  beforeTitle = title.value;
 
+  selectCursorTitle.value.innerHTML = "";
+  const titleWoards = title.value.split("");
+  var setSpans = [];
+
+  titleWoards.forEach((word, i) => {
+    const spanElement = document.createElement('span');
+    if (word == " ") {
+      spanElement.classList.add('nameSpacer');
+    }
+    spanElement.textContent = word;
+    setSpans.push(spanElement);
+  });
+  const divElement = document.createElement('div');
+  divElement.classList.add('nameList');
+  setSpans.forEach((word, i) => {
+    divElement.appendChild(setSpans[i]);
+  });
+  selectCursorTitle.value.appendChild(divElement);
+  const spa = divElement.querySelectorAll('span');
+  spa.forEach((spa_t, k) => {
+    setTimeout(() => {
+      spa_t.style.display = "block" // 指定したタイミングで文字を表示
+    }, k * 100); // 200ms 間隔で表示
+  });
+}
 const disableScroll = () => {
   // if (isOverlapping.value == true) {
   //   return;

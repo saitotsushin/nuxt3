@@ -4,6 +4,9 @@ body.isMouseMove{
 .nameList{
   display: flex;
 }
+.nameList span{
+  display: none;
+}
 .nameSpacer{
   margin-right: 2rem;
 }
