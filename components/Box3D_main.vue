@@ -13,6 +13,7 @@ import {
 } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { bool } from 'three/examples/jsm/nodes/Nodes.js';
+import gsap from 'gsap';
 
 // import { ref } from 'vue'
 const mainWebGLbox: Ref<HTMLElement> = ref(null!);
@@ -194,10 +195,43 @@ const switch3D = (_showModelIndex: number) => {
   models.forEach((element) => {
     // 各要素に対して実行する処理
     if (element.userData.modelIndex == _showModelIndex) {
-      activeModel = element;
+      element.rotation.y = 0;
+      // 大きさ（スケール）をアニメーション
+      gsap.to(activeModel.scale, {
+        x: 0,
+        y: 0,
+        z: 0,   // Z軸方向に2倍
+        duration: 0.5, // 2秒でスケール変更
+        repeat: 0,  // 無限ループ
+        // yoyo: true,  // スケールを戻す
+        ease: "power1.inOut",
+        onComplete: function () {
+        },
+      });  
       element.visible = true
+      element.scale.set(0, 0, 0)
+      gsap.to(element.rotation, {
+        y: Math.PI * 6, // 2π（1回転）
+        duration: 0.5, // 2秒で回転
+        repeat: 0,  // 無限ループ
+        ease: "power1.inOut" // イージング
+      });
+      // 大きさ（スケール）をアニメーション
+      gsap.to(element.scale, {
+        x: 1,
+        y: 1,
+        z: 1,   // Z軸方向に2倍
+        duration: 0.5, // 2秒でスケール変更
+        repeat: 0,  // 無限ループ
+        // yoyo: true,  // スケールを戻す
+        ease: "power1.inOut"
+      });            
+
+
+      activeModel = element;
+      // element.visible = true
     } else {
-      element.visible = false      
+      // element.visible = false      
     }
   });
 } 

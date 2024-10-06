@@ -15,9 +15,10 @@ import {
   LoopOnce,
   type Object3DEventMap
 } from 'three'
+
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { bool } from 'three/examples/jsm/nodes/Nodes.js';
-
+import gsap from 'gsap';
 
 // DOM要素への参照を作成
 // const elementARef = ref(null)
@@ -77,6 +78,26 @@ const componentStore = useComponentStore()
 const website = useWebsiteStore()
 
 const showPage = () => {
+  // GSAPを使ってメッシュのY軸の回転をアニメーション
+  gsap.to(model.rotation, {
+    y: Math.PI * 6, // 2π（1回転）
+    duration: 0.5, // 2秒で回転
+    repeat: 0,  // 無限ループ
+    ease: "power1.inOut", // イージング
+    onComplete: function () {
+      console.log("右の要素の回転完了")
+    }
+  });
+  
+  // 大きさ（スケール）をアニメーション
+  gsap.to(model.scale, {
+    x: 0,
+    z: 0,   // Z軸方向に2倍
+    duration: 0.5, // 2秒でスケール変更
+    repeat: 0,  // 無限ループ
+    // yoyo: true,  // スケールを戻す
+    ease: "power1.inOut"
+  });  
   componentStore.showPage(Number(props.modelIndex));
 }
   // sampleComponentAを複製する関数

@@ -63,11 +63,10 @@ const transition = {
     //   }
     // }
 
-    console.log("componentStore.title="+componentStore.value);
-
     gsap.to(contentsLoading.value, {
       width: "100%",
       duration: 0.5,
+      delay: 0.25,
       ease: "power1.inOut",
       onComplete: done
     });
