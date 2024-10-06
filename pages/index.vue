@@ -18,9 +18,9 @@
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_2"
-          modelIndex=2
-          title="NIKE DUNK LOW Pro B" 
-            cgPath="/nuxt3/object/face.glb"
+            modelIndex=2
+            title="NIKE DUNK LOW Pro B" 
+            cgPath="/nuxt3/object/sneaker_lo_2.glb"
             mainColor="#F00"
             @getTitle="receiveTitle"
           />

@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink to="/product/sneaker" @click="showPage">
+  <NuxtLink :to="`/sneaker/${modelIndex}`" @click="showPage">
     <div class="webGLbox" ref="container"></div>
   </NuxtLink>
 </template>
