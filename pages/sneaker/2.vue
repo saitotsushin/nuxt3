@@ -1,10 +1,14 @@
 <template>
-  <ul class="SneakerList">
-    <li><img src="/images/sneaker/2/1.jpg"/></li>
-    <li><img src="/images/sneaker/2/2.jpg"/></li>
-    <li><img src="/images/sneaker/2/3.jpg"/></li>
-    <li><img src="/images/sneaker/2/4.jpg"/></li>
-  </ul>
+	<div>
+		<ul class="SneakerList">
+			<li><img src="/images/sneaker/2/1.jpg"/></li>
+			<li><img src="/images/sneaker/2/2.jpg"/></li>
+			<li><img src="/images/sneaker/2/3.jpg"/></li>
+			<li><img src="/images/sneaker/2/4.jpg"/></li>
+		</ul>
+		<NextPage :modelIndex="1"/>
+		<NextPage :modelIndex="3"/>
+	</div>
 </template>
 <script setup lang="ts">
 </script>

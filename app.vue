@@ -5,6 +5,7 @@
       <div class="p-mainImage" ref="mainImage" id="js-mainImage">
         <Box3D_main/>
       </div>
+      <SizeSticker/>
       <NuxtLayout>
         <div class="l-contents">
           <NuxtPage :transition="transition"/>

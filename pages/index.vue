@@ -38,7 +38,7 @@
             @getTitle="receiveTitle"/>
         </div>
       </div>
-      <SizeSticker/>
+      
     </div>
     <ScrollBar :scrollContent="scrollContent"/>
   </div>
