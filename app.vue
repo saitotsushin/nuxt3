@@ -54,7 +54,6 @@ const transition = {
   // leave トランジションの開始時に呼ばれる
   // leave アニメーションを開始する時に使用する
   onLeave: (el, done) => {
-    console.log("2. onLeave");
     // // ComponentBを.box内にコピー
     // if (box.value && contents.value) {
     //   const componentB = contents.value.querySelector('componentB')
