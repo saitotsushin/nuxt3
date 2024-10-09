@@ -157,16 +157,16 @@ const displayName = () => {
   });
 }
 const disableScroll = () => {
-  // if (isOverlapping.value == true) {
-  //   return;
-  // }
-  // // スクロールを無効にする
-  // document.documentElement.style.overflow = 'hidden';
+  if (isOverlapping.value == true) {
+    return;
+  }
+  // スクロールを無効にする
+  document.documentElement.style.overflow = 'hidden';
 
-  // // 0.5秒後にスクロールを再び有効にする
-  // setTimeout(function() {
-  //   document.documentElement.style.overflow = '';
-  // }, 500);
+  // 0.5秒後にスクロールを再び有効にする
+  setTimeout(function() {
+    document.documentElement.style.overflow = '';
+  }, 500);
 }
 
 // スクロールを無効にするタイミングで関数を呼び出す
