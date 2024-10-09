@@ -10,7 +10,7 @@
             </div>
           </div>
           <PageTitle/>
-          <Box3D_lo ref="Box3D_lo_1"
+          <Box3D_lo_mos ref="Box3D_lo_1"
             modelIndex=1
             title="NIKE AIR JORDAN 2" 
             cgPath="/nuxt3/object/sneaker_lo.glb"

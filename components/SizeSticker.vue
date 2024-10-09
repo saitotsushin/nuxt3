@@ -81,12 +81,10 @@ const ShowRandomText = (_elem:Ref<HTMLElement>,_time:number,_text:string) => {
     if (_elem.value) {
       _elem.value.textContent = randamText[_textIndex];
     }
-    console.log("繰り返し実行中");
   }, 80); // 1000ミリ秒 (1秒) ごとに繰り返し実行
   // 5秒後に繰り返しを停止する
   setTimeout(function () {
     clearInterval(intervalId);
-    console.log("繰り返しを停止しました");
     _elem.value.textContent = _text;
   }, _time); // 5000ミリ秒 (5秒) 後に停止
 }
