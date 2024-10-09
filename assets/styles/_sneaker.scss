@@ -8,7 +8,15 @@ body.isMouseMove{
   display: none;
 }
 .nameSpacer{
-  margin-right: 2rem;
+  margin-right: 1rem;
+}
+.c-sneaker-list{
+  display: block;
+  max-width: 420px;
+  height: auto;
+  margin: 100px auto;
+  z-index: 1;
+  // pointer-events: none;
 }
 .sneakerThumb{
   border-top: 1px solid #f15928;

@@ -72,6 +72,11 @@ yarn preview
 bun run preview
 ```
 
+```githubpages->deploy
+# npm
+npm run deploy
+```
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
 # 画像加工

@@ -33,11 +33,7 @@
   .webGLbox{
     position: relative;
     // width: 100%;
-    max-width: 420px;
-    height: auto;
-    margin: 100px auto;
-    z-index: 1;
-    pointer-events: none;
+
     }
     .webGLbox canvas{
       width: 100% !important;
