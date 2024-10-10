@@ -1,29 +1,22 @@
 <template>
   <NuxtLink :to="`/sneaker/${modelIndex}`" @click="showPage" class="c-sneaker-list">
+    <div>{{ isActive }}</div>
     <div class="webGLbox" ref="container"></div>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
 import {
-  Line,
-  LineBasicMaterial,
   PerspectiveCamera,
-  ACESFilmicToneMapping, Scene, SphereGeometry, Vector3, WebGLRenderer, AmbientLight, SpotLight, Object3D,
+  Scene,Vector3, WebGLRenderer,Object3D,
   DirectionalLight,
   AnimationMixer,
   WebGLRenderTarget,
   LoopOnce,
-  RGBAFormat,
-  UnsignedByteType,
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
-  PointLight,
-
   type Object3DEventMap,
-  Texture,
-  WebGLMultipleRenderTargets
 } from 'three'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -33,13 +26,42 @@ import gsap from 'gsap';
 import vertexShader from '~/assets/shaders/mosiac2_vs.glsl?raw';
 import fragmentShader from '~/assets/shaders/mos_fs.glsl?raw';    
 
+
+const container: Ref<HTMLElement> = ref(null!);
+
+const props = defineProps({
+  title: String,    // 親コンポーネントから渡される title プロップ
+  cgPath: String, // 親コンポーネントから渡される cgPath プロップ
+  mainColor: String,
+  modelIndex: Number,
+  isActive: {
+    type: Boolean,
+    default: false
+  }
+})
+const mosPer = 4.0;
+const mosClearSpeed = 0.05;
+const mosStepTime = 1.0;
+let saveMosTime = mosStepTime;
+let isEffect = false;
+
+const emit = defineEmits()
+
+// Piniaのストアインスタンスを取得
+const componentStore = useComponentStore()
+
+const website = useWebsiteStore()
+
 // DOM要素への参照を作成
 // const elementARef = ref(null)
 let mixers: AnimationMixer[] = [];
 let clips: any[] | null = null;
 
-  // オフスクリーンレンダリングには欠かせないレンダーターゲットを作ります
+// オフスクリーンレンダリングには欠かせないレンダーターゲットを作ります
 let renderTarget: any | null = null;
+let scene: any | null = null;
+let camera: any | null = null;
+  
 let offScene: any | null = null;
 let offCamera: any | null = null;
   
@@ -47,17 +69,8 @@ let model: Object3D<Object3DEventMap>;
 
 let isAnimePlay = false;
 
-// import { ref } from 'vue'
-const container: Ref<HTMLElement> = ref(null!);
-// const { clientWidth, clientHeight } = useWindowSize()
-
-const props = defineProps({
-  title: String,    // 親コンポーネントから渡される title プロップ
-  cgPath: String, // 親コンポーネントから渡される cgPath プロップ
-  mainColor: String,
-  modelIndex: Number
-})
-const emit = defineEmits()
+let isEffectStart = false;
+let isEffectEnd = false;
 
 // タイトルを親に送信する関数
 const sendTitle = () => {
@@ -83,17 +96,6 @@ const animationPlay = () => {
     });             
   }
 }
-// 親コンポーネントにこの参照を公開
-defineExpose({
-  container,
-  sendTitle,
-  animationPlay
-})
-
-// Piniaのストアインスタンスを取得
-const componentStore = useComponentStore()
-
-const website = useWebsiteStore()
 
 const showPage = () => {
   // GSAPを使ってメッシュのY軸の回転をアニメーション
@@ -103,7 +105,6 @@ const showPage = () => {
     repeat: 0,  // 無限ループ
     ease: "power1.inOut", // イージング
     onComplete: function () {
-      console.log("右の要素の回転完了")
     }
   });
   
@@ -125,71 +126,13 @@ const duplicateComponent = () => {
   }
 }
 var texture: any;
-var uniforms = {
-  uPos: 20.0,
-  uTime: 0.0,
-  uTexture: texture
-}
-    
-let scrollPercentage = 0;
-let isScrolling: NodeJS.Timeout | null = null; // スクロール中かどうかのフラグ
-let lastScrollY = 0;
-let start:number = 0;
-let end:number = 10;
-const t:number = 0.5;
-let targetScrollY = 0; // 本来のスクロール位置
-let currentScrollY = 0; // 線形補間を適用した現在のスクロール位置
-let scrollOffset = 0; // 上記2つの差分
-let scrollSpeed = 0;
-let model_now_rot_z = 0;
-const onScroll = () => {
-  const scrollTop = window.scrollY;
-  const docHeight = document.body.scrollHeight - window.innerHeight;
-  scrollPercentage = scrollTop / docHeight;
-  // スクロール位置を取得
-  targetScrollY = document.documentElement.scrollTop;
-
-  // currentScrollY = window.scrollY;
-
-  // リープ関数でスクロール位置をなめらかに追従
-  currentScrollY = lerp(currentScrollY, targetScrollY, 0.1);
-
-  scrollOffset = targetScrollY - currentScrollY;
-
-  if (currentScrollY > lastScrollY) {
-    // スクロールダウン
-  } else {
-    // スクロールアップ
-  }
-  scrollSpeed = ((currentScrollY - lastScrollY) / docHeight);
-  lastScrollY = currentScrollY;
-
-  // スクロール中の状態を更新
-  if (isScrolling) {
-    clearTimeout(isScrolling);
-  }
-  isScrolling = setTimeout(() => {
-    // スクロールしていない
-    isScrolling = null; // タイマーIDをリセット
-  }, 300); // 300ms後にスクロールが止まったと判断
-};
-// const onScroll = () => {
-//   const scrollTop = window.scrollY;
-//   const docHeight = document.body.scrollHeight - window.innerHeight;
-//   scrollPercentage = scrollTop / docHeight;
-//   const currentScrollY = window.scrollY;
-
-//   if (currentScrollY > lastScrollY) {
-//     //下にスクロール
-//   } else {
-//     // 上にスクロール
-//   }
-
-//   lastScrollY = currentScrollY;  
+// var uniforms = {
+//   uPos: 20.0,
+//   uTime: 0.0,
+//   uTexture: texture
 // }
-const lerp = (start:number, end:number, t:number) => {
-  return start + (end - start) * t;
-}
+let mat: any;
+    
 const handleIntersect = (entries: any[]) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -222,99 +165,57 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
     
     // サイズを取得
-    // const width = window.innerWidth;
-    // const height = window.innerHeight;
     const width = 256;
     const height = 192;    
-    renderTarget = new WebGLRenderTarget(width, height,{
-      format: RGBAFormat,
-  type: UnsignedByteType,
-  depthBuffer: true,
-  stencilBuffer: true     
-    });
+    renderTarget = new WebGLRenderTarget(width, height);
 
     // レンダラーのサイズを調整する
     renderer.setPixelRatio(1);
     renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 0);
+    // renderer.setClearColor(0x000000, 0);
 
     container.value.appendChild(renderer.domElement)
+
     // シーン追加
-    const scene = new Scene();
+    scene = new Scene();
     // カメラの作成
-    const camera = new PerspectiveCamera(45, width / height, 0.1, 70);
+    camera = new PerspectiveCamera(45, width / height, 0.1, 70);
     camera.position.set(2, 2, 4);
     camera.lookAt(new Vector3(0, 1.4, 0));
 
     //オフスクリーンレンダリング用のシーンとカメラ
     offScene = new Scene();
+
     // 視野角をラジアンに変換
-    // offCamera = new PerspectiveCamera(45, width / height, 0.1, 70);
-    const fov    = 60;
+    const fov = 60;
     const fovRad = (fov / 2) * (Math.PI / 180);
     const dist = (height / 2) / Math.tan(fovRad);
     offCamera = new PerspectiveCamera(fov, width / height, 1, dist * 2);
     offCamera.position.z = dist;// カメラを遠ざける
 
-    // offCamera.position.set(2, 2, 4);
-    // offCamera.lookAt(new Vector3(0, 1.4, 0));
-
     //スクリーン用の平面
-    // const geo = new PlaneGeometry(2, 2, 1); // 板ポリをウィンドウぴったりにするために２×２
-    const geo = new PlaneGeometry(width, height, 1); // 板ポリをウィンドウぴったりにするために２×２
-    const mat = new ShaderMaterial({
+    const geo = new PlaneGeometry(width, height); // 板ポリをウィンドウぴったりにするために２×２
+    mat = new ShaderMaterial({
       uniforms: {
-        uTime: {value: 0.0},
-        uPos:{value: uniforms.uPos},
+        // uTime: { value: 0.0 },
+        uPercent: {value: mosPer},
         uTexture:{value:renderTarget.texture}
       },
       vertexShader: vertexShader, // 頂点シェーダー
       fragmentShader: fragmentShader, // フラグメントシェーダー
     });
+    // texture.colorSpace = SRGBColorSpace
     const plane = new Mesh(geo, mat);
 
     offScene.add(plane)
 
-    // 環境光
-    const ambientLight = new AmbientLight(0xffffff, 0.3);
-    offScene.add(ambientLight);
-
-    // 光源
-    // const spotLight = new SpotLight(0xffffff, 0.7);
-    // spotLight.position.set(0, 0, 0);
-    // scene.add(spotLight);
-
-    // ライトを２種類作ります
-    // const ambientLight = new AmbientLight(0xffffff);
-    // scene.add(ambientLight);
-
-    // const directionalLight = new DirectionalLight(0xffffff, 1.0);
-    // directionalLight.position.set(-1, 2, 2);
-    // scene.add(directionalLight);
-      
-    // const pointLight = new PointLight(0xffffff, 1, 10); // 色、強度、距離
-    // pointLight.position.set(2, 3, 5); // 光源の位置
-    // scene.add(pointLight);
-    
-    // const directionalLight = new DirectionalLight(0xffffff);
-    // directionalLight.intensity = 8; // 光の強さを倍に
-    // directionalLight.position.set(0, 4, 1); // ライトの方向
-    // scene.add(directionalLight);
-
-    // const directionalLight2 = new DirectionalLight(0xffffff);
-    // directionalLight2.intensity = 1; // 光の強さを倍に
-    // directionalLight2.position.set(3, 4, 10); // ライトの方向
-
-    // offScene.add(directionalLight2);
     const directionalLight = new DirectionalLight(0xffffff);
     directionalLight.intensity = 4; // 光の強さを倍に
-    directionalLight.position.set(0, 2, 1); // ライトの方向
+    directionalLight.position.set(2, 2, 1); // ライトの方向
     scene.add(directionalLight);
+    // const light = new AmbientLight(0xffffff, 1.0);
+    // scene.add(light);
 
-    const directionalLight2 = new DirectionalLight(0xffffff);
-    directionalLight2.intensity = 4; // 光の強さを倍に
-    directionalLight2.position.set(0, 2, 1); // ライトの方向
-    offScene.add(directionalLight2);
 
     // GLTFモデルの読み込み
     const loader = new GLTFLoader();
@@ -323,8 +224,6 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       model = gltf.scene;
       model.position.set(0, 1.4,0);
       scene.add(model);
-      // let clone = model.clone();
-      // offScene.add(clone);
       duplicateComponent();
 
       // 各オブジェクトのアニメーションを管理
@@ -337,44 +236,45 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     // 毎フレーム時に実行されるループイベント
     const tick = () => {
       requestAnimationFrame(tick)
-      // 球体を回転
-      if (model) {
-        // if (isScrolling) {
-        //   camera.rotation.x += scrollSpeed; // 0から2πの範囲に制限;
-        //   model_now_rot_z = camera.rotation.x;
-        // } else {
-        //   if (camera.rotation.x == 0) {
-        //   } else {
-        //     if (model_now_rot_z > 0) {
-        //       camera.rotation.x -= Math.abs(scrollSpeed);
-        //       if (camera.rotation.x < 0) {
-        //         camera.rotation.x = 0;
-        //       }
-        //     }
-        //     if (model_now_rot_z < 0) {
-        //       camera.rotation.x += Math.abs(scrollSpeed);
-        //       if (camera.rotation.x > 0) {
-        //         camera.rotation.x = 0;
-        //       }
-        //     }
-        //   }
-        //   // model.rotation.y += 0.01;
-        // }
-        // model.rotation.y += 0.01;
-        
-      }
       // アニメーションを更新
       mixers.forEach(mixer => mixer.update(0.01));
+      // console.log("isDisplayCenter", isDisplayCenter);
+      console.log("mat.uniforms.uPercent.value=" + mat.uniforms.uPercent.value + "/mosPer=" + mosPer);
+      if (isEffectStart || isEffectEnd) {
+        saveMosTime -= mosClearSpeed;
+      }
+      if (isEffectStart) {
+        isEffect = true;
+        if (saveMosTime - mosClearSpeed < 0) {
+          mat.uniforms.uPercent.value -= mosStepTime;
+          saveMosTime = mosStepTime;
+        }
+        if (mat.uniforms.uPercent.value == 0) {
+          mat.uniforms.uPercent.value = 0;
+          isEffectStart = false;
+        }
+      }
+      if (isEffectEnd) {
+        if (saveMosTime - mosClearSpeed < 0) {
+          mat.uniforms.uPercent.value += mosStepTime;
+          saveMosTime = mosStepTime;
+        }
+        if (mat.uniforms.uPercent.value == mosPer) {
+          mat.uniforms.uPercent.value = mosPer;
+          isEffectEnd = false;
+        }        
+      }    
+
 
       // uniforms.uTexture = renderTarget.texture;
 
       renderer.setRenderTarget(renderTarget);
-      renderer.setClearColor(0xf5f542);
+      // renderer.setClearColor(0xf5f542);
       renderer.clear(); // クリアを行う
       renderer.render(scene, camera);
 
       renderer.setRenderTarget(null); // レンダーターゲットを解除します
-      // renderer.setClearColor(0x000000); // 背景色(今回は無くてもいい)
+      renderer.clear();
 
       renderer.render(offScene, offCamera)
       
@@ -394,10 +294,26 @@ onMounted(() => {
   const { init } = useSphere(container, 500, 500)
   init()
   checkInDisplay()
-  window.addEventListener('scroll', onScroll);
-  lastScrollY = window.scrollY;
 })
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', onScroll);
 });
+watch(() => props.isActive, (newValue) => {
+  if (newValue) {
+    console.log('isActive が true になりました');
+    isEffectStart = true;
+    isEffectEnd = false
+    // ここで必要な処理を行うことができます
+  } else {
+    console.log('isActive が false になりました');
+    isEffectStart = false;
+    isEffectEnd = true;
+  }
+  
+});
+// 親コンポーネントにこの参照を公開
+defineExpose({
+  container,
+  sendTitle,
+  animationPlay
+})
 </script>

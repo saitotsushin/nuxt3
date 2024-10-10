@@ -85,7 +85,6 @@ const showPage = () => {
     repeat: 0,  // 無限ループ
     ease: "power1.inOut", // イージング
     onComplete: function () {
-      console.log("右の要素の回転完了")
     }
   });
   

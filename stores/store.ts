@@ -8,7 +8,6 @@ export const useComponentStore = defineStore('componentStore', {
   }),
   actions: {
     addComponent(title: string, cdPath: string, modelIndex: number) {
-      console.log("this.cdPath",this.cdPath)
       this.title = title;
       this.cdPath = cdPath;
       this.modelIndex = modelIndex;

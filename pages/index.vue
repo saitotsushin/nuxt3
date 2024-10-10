@@ -10,18 +10,21 @@
             </div>
           </div>
           <PageTitle/>
+          <div style="position: fixed; top: 10px;right:40px;">{{ activeIndex }}</div>
           <Box3D_lo_mos ref="Box3D_lo_1"
             modelIndex=1
             title="NIKE AIR JORDAN 2" 
             cgPath="/nuxt3/object/sneaker_lo.glb"
             mainColor="#473acc"
+            :isActive="activeIndex === 0"
             @getTitle="receiveTitle"
           />
-          <Box3D_lo ref="Box3D_lo_2"
+          <Box3D_lo_mos ref="Box3D_lo_2"
             modelIndex=2
             title="NIKE DUNK LOW Pro B" 
             cgPath="/nuxt3/object/sneaker_lo_2.glb"
             mainColor="#F00"
+            :isActive="activeIndex === 1"
             @getTitle="receiveTitle"
           />
           <Box3D_lo ref="Box3D_lo_3"
@@ -29,12 +32,14 @@
           title="NIKE SNEAKER AAAAA"
             cgPath="/nuxt3/object/sneaker_lo_others.glb"
             mainColor="#333"
+            :isActive="activeIndex === 2"
             @getTitle="receiveTitle"/>
           <Box3D_lo ref="Box3D_lo_4"
           modelIndex=4
           title="NIKE OTHERS"
             cgPath="/nuxt3/object/sneaker_lo_others.glb"
             mainColor="#333"
+            :isActive="activeIndex === 3"
             @getTitle="receiveTitle"/>
         </div>
       </div>
@@ -45,6 +50,7 @@
 </template>
 <script setup>
 const MainColumHeader = ref("/");
+const activeIndex = ref(-1)
 const messages = 'Hello from Parent Component'
 const items = ref([
 ]);
@@ -100,17 +106,21 @@ const checkOverlap = () => {
   
   // 各ElementAとselectCursorの重なりを判定
   const elements = [Box3D_lo_1, Box3D_lo_2, Box3D_lo_3,Box3D_lo_4] // refを配列に格納
-  isOverlapping.value = elements.some(comp => {
+  isOverlapping.value = elements.some((comp,index) => {
     const rectA = comp.value.container.getBoundingClientRect()
     let isActive = false;
     if (rectBPartial.top > rectA.top && rectBPartial.bottom < rectA.bottom) {
       comp.value.sendTitle()
       comp.value.animationPlay()
       isActive = true;
+      activeIndex.value = index;
       disableScroll();
       displayName();
+    } else {
+      
     }
     if (!isActive) {
+      activeIndex.value = -1;
       title.value = "";
     }
     return isActive;
@@ -125,7 +135,6 @@ const checkScrollTop = () => {
   }  
 }
 const displayName = () => {
-  console.log("title.value", title.value)
   if (beforeTitle == title.value) {
     return;
   }

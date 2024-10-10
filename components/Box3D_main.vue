@@ -88,7 +88,6 @@ let activeModel: Object3D<Object3DEventMap>;
 watch(
   () => componentStore.cdPath, // 監視する状態
   (newValue, oldValue) => {
-    console.log("状態変化")
     // 状態が変更されたらこの関数が呼ばれる
     add3D(newValue,false,componentStore.modelIndex);
   }
@@ -172,7 +171,6 @@ const add3D = (_cdPath: string, _isShow: boolean, _modelIndex: number) => {
   if (componentStore.firstMounted) {
     return;
   }
-  console.log("add3D");
   // GLTFモデルの読み込み
   const loader = new GLTFLoader();
   let model: Object3D<Object3DEventMap>;
