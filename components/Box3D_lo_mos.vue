@@ -1,6 +1,6 @@
 <template>
   <NuxtLink :to="`/sneaker/${modelIndex}`" @click="showPage" class="c-sneaker-list">
-    <div>{{ isActive }}</div>
+    <div class="debugBox" :class="{ 'isActive': componentStore.isDebug }">表示エリアに接触：{{ isActive }}</div>
     <div class="webGLbox" ref="container"></div>
   </NuxtLink>
 </template>

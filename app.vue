@@ -19,6 +19,7 @@
       </NuxtLayout>
     </div>
     <Footer/>
+    <DebugUI/>
   </div>
 
 </template>

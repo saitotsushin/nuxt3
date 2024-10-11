@@ -4,7 +4,8 @@ export const useComponentStore = defineStore('componentStore', {
     cdPath: '',
     modelIndex: 0,
     showModelIndex: 0,
-    firstMounted: false
+    firstMounted: false,
+    isDebug: false
   }),
   actions: {
     addComponent(title: string, cdPath: string, modelIndex: number) {
@@ -15,6 +16,9 @@ export const useComponentStore = defineStore('componentStore', {
     showPage(showModelIndex: number) {
       this.showModelIndex = showModelIndex;    
       this.firstMounted = true;
+    },
+    switchDebug(isDebug: boolean) {
+      this.isDebug = isDebug;    
     }
   },
 })

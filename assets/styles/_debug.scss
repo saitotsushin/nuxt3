@@ -1,0 +1,19 @@
+.DebugUI{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 50vh;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: none;
+  &.isActive{
+    display: block;
+  }
+}
+.debugBox{
+  display: none;
+  &.isActive{
+    display: block;
+  }
+}
