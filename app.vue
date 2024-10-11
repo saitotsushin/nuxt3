@@ -1,5 +1,5 @@
 <template>
-  <div class="l-wrapper" :style="{ backgroundColor: website.mainColor }" ref="scrollContent">    
+  <div class="l-wrapper" :style="{ backgroundColor: website.mainColor }">    
     <Header/>
     <div class="l-inner font-bit">
       <div class="p-mainImage" ref="mainImage" id="js-mainImage">
@@ -7,7 +7,7 @@
       </div>
       <SizeSticker/>
       <NuxtLayout>
-        <div class="l-contents">
+        <div>
           <NuxtPage :transition="transition"/>
           <div
             id="js-next-display"
@@ -32,10 +32,10 @@ const { components } = storeToRefs(componentStore)
 
 const website = useWebsiteStore()
 
-const scrollContent = ref(null);
+// const scrollContent = ref(null);
 
-// 子コンポーネントにscrollContentを提供する
-provide('scrollContent', scrollContent);
+// // 子コンポーネントにscrollContentを提供する
+// provide('scrollContent', scrollContent);
 
 
 

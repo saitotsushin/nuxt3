@@ -37,7 +37,7 @@ const props = defineProps({
   title: String,    // 親コンポーネントから渡される title プロップ
   cgPath: String, // 親コンポーネントから渡される cgPath プロップ
   mainColor: String,
-  modelIndex: Number
+  modelIndex: String
 })
 const emit = defineEmits()
 

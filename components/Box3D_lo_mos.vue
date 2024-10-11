@@ -33,7 +33,7 @@ const props = defineProps({
   title: String,    // 親コンポーネントから渡される title プロップ
   cgPath: String, // 親コンポーネントから渡される cgPath プロップ
   mainColor: String,
-  modelIndex: Number,
+  modelIndex: String,
   isActive: {
     type: Boolean,
     default: false
@@ -126,11 +126,6 @@ const duplicateComponent = () => {
   }
 }
 var texture: any;
-// var uniforms = {
-//   uPos: 20.0,
-//   uTime: 0.0,
-//   uTexture: texture
-// }
 let mat: any;
     
 const handleIntersect = (entries: any[]) => {
@@ -143,7 +138,6 @@ const handleIntersect = (entries: any[]) => {
 }
 
 const checkInDisplay = () => {
-  // const h = window.innerHeight * -1 + 60;
   const observer = new IntersectionObserver(handleIntersect, {
     root: null, // ビューポートを基準とする
     rootMargin: '-50% 0px', // 上部20%をトリガー領域に設定
@@ -238,8 +232,6 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       requestAnimationFrame(tick)
       // アニメーションを更新
       mixers.forEach(mixer => mixer.update(0.01));
-      // console.log("isDisplayCenter", isDisplayCenter);
-      console.log("mat.uniforms.uPercent.value=" + mat.uniforms.uPercent.value + "/mosPer=" + mosPer);
       if (isEffectStart || isEffectEnd) {
         saveMosTime -= mosClearSpeed;
       }
@@ -299,12 +291,10 @@ onBeforeUnmount(() => {
 });
 watch(() => props.isActive, (newValue) => {
   if (newValue) {
-    console.log('isActive が true になりました');
     isEffectStart = true;
     isEffectEnd = false
     // ここで必要な処理を行うことができます
   } else {
-    console.log('isActive が false になりました');
     isEffectStart = false;
     isEffectEnd = true;
   }

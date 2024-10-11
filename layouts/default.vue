@@ -1,5 +1,7 @@
 <template>
-  <slot />
+  <div class="l-contents">
+    <slot />
+  </div>
 </template>
 
 <script setup>

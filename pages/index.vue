@@ -45,7 +45,7 @@
       </div>
       
     </div>
-    <ScrollBar :scrollContent="scrollContent"/>
+    <ScrollBar/>
   </div>
 </template>
 <script setup>
@@ -55,11 +55,9 @@ const messages = 'Hello from Parent Component'
 const items = ref([
 ]);
 
-const scrollContentW = inject('scrollContent');
 
 const website = useWebsiteStore()
 // scrollContent の参照を作成
-const scrollContent = ref(null)
 const selectCursorTitle = ref(null);
 
 const targetElement = ref(null)
