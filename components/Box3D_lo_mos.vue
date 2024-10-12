@@ -1,8 +1,15 @@
 <template>
   <NuxtLink :to="`/sneaker/${modelIndex}`" @click="showPage" class="c-sneaker-list">
-    <div class="debugBox" :class="{ 'isActive': componentStore.isDebug }">表示エリアに接触：{{ isActive }}</div>
-    <div class="webGLbox" ref="container"></div>
+    <div class="debugBox posTopLeft" :class="{ 'isActive': componentStore.isDebug }">
+      <div class="debugWebGLboxTextSS">Touching Area:</div>
+      <div class="debugWebGLboxTextSS">{{ isActive }}</div>
+    </div>
+    <div class="webGLbox" ref="container" :class="{ 'isDebug': componentStore.isDebug }"></div>
     <SneakerName :isActive="isActive" :title="title"/>
+    <div class="debugWebGLboxPos" :class="{ 'isDebug': componentStore.isDebug }">
+      <div class="debugWebGLboxTextS">WebGLCanvas</div>
+      <div class="debugWebGLboxText">({{ webGLPos.x }},{{ webGLPos.y }})</div>      
+    </div>
   </NuxtLink>
 </template>
 
@@ -49,6 +56,11 @@ const mosClearSpeed = 0.05;
 const mosStepTime = 1.0;
 let saveMosTime = mosStepTime;
 let isEffect = false;
+
+const webGLPos = ref({
+  x: "0",
+  y: "0"
+});
 
 const emit = defineEmits()
 
@@ -285,10 +297,24 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
   return { init }
 }
+const CheckScrollBoxPos = () => {
+  if (!container.value) return
+  
+  // 要素の位置を取得
+  const rect = container.value.getBoundingClientRect()
+  // rectBの中心点
+  const centerX = rect.left + rect.width / 2
+  const centerY = rect.top + rect.height / 2
+  webGLPos.value.x = Math.floor(centerX).toString();
+  webGLPos.value.y = Math.floor(centerY).toString();
+  
+}
+
 onMounted(() => {
   const { init } = useSphere(container, 500, 500)
   init()
   checkInDisplay()
+  window.addEventListener('scroll', CheckScrollBoxPos)
 })
 onBeforeUnmount(() => {
   if (observer) {
@@ -305,6 +331,7 @@ onUnmounted(() => {
     renderer.dispose()
     renderer.forceContextLoss()
   }
+  window.removeEventListener('scroll', CheckScrollBoxPos)
 })
 
 watch(() => props.isActive, (newValue) => {

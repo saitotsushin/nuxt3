@@ -2,10 +2,13 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 50%;
-  height: 50vh;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 1000;
+  width: auto;
+  height: auto;
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 10000;
+  color: #F00;
+  font-weight: bold;
   display: none;
   &.isActive{
     display: block;
@@ -15,5 +18,70 @@
   display: none;
   &.isActive{
     display: block;
+  }
+  &.posTopLeft{
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+.debugWebGLboxTextSS{
+  display: inline-block;
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+.debugWebGLboxPos{
+  display: none;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  .debugWebGLboxText{
+    margin-top: -2.0rem;
+    border-radius: 8px;
+    background-color: rgba(0,0,0,0.75);
+    padding: 0.25rem;
+  }
+  .debugWebGLboxTextS{
+    font-size: 0.7rem;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    margin-top: -3.2rem;
+    opacity: 0.75;
+  }
+
+  &.isDebug{
+    display: block;
+  }
+  &::after {
+    content: ''; /* 擬似要素の内容は空に設定 */
+    position: absolute; /* 絶対位置に設定 */
+    width: 6px; /* 円の幅 */
+    height: 6px; /* 円の高さ */
+    background-color: #FFF; /* 円の色 */
+    border-radius: 50%; /* 円形にするための半径 */
+    left: -3px;
+    top: -3px;
+  }
+}
+.webGLbox{
+  &.isDebug{
+    border: 1px solid #FFF;
+  }
+}
+.debugShowActiveObjIndex{
+  position: fixed;
+  top: 10px;
+  right:40px;
+  border-radius: 8px;
+  background-color: rgba(0,0,0,0.75);
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  opacity: 0.75;
+  font-size: 0.75rem;
+  &.isActive{
+
   }
 }

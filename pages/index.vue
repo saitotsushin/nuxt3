@@ -4,12 +4,38 @@
       <div class="l-content-wrapper">
         <div class="l-content-wrapper-inner">
           <div class="l-selectCursor">
-            <div class="p-selectCursor">
-              <div class="c-selectCursor" ref="selectCursor"></div>
+            <div class="p-selectCursor" :class="{ 'isDebug': componentStore.isDebug }">
+              <div 
+                class="c-selectCursor" 
+                ref="selectCursor"
+                :class="{ 'isDebug': componentStore.isDebug }"
+              >
+                <div 
+                  class="c-selectCursor-pos debugBox" :class="{ 'isActive': componentStore.isDebug }"
+                >
+                  <div class="c-selectCursor-pos-disp -topLeft" ref="selectCursorTopLeft">
+                    ({{ selectCursorPos.topLeft.x }},{{ selectCursorPos.topLeft.y }})
+                  </div>
+                  <div class="c-selectCursor-pos-disp -topRight" ref="selectCursorTopRight">
+                    ({{ selectCursorPos.topRight.x }},{{ selectCursorPos.topRight.y }})
+                  </div>
+                  <div class="c-selectCursor-pos-disp -bottomLeft" ref="selectCursorBottomLeft">
+                    ({{ selectCursorPos.bottomLeft.x }},{{ selectCursorPos.bottomLeft.y }})
+                  </div>
+                  <div class="c-selectCursor-pos-disp -bottomRight" ref="selectCursorBottomRight">
+                    ({{ selectCursorPos.bottomRight.x }},{{ selectCursorPos.bottomRight.y }})
+                  </div>
+                </div>
+                <div class="c-selectCursor-name" :class="{ 'isActive': componentStore.isDebug }">
+                  Touch Area
+                </div>
+              </div>
             </div>
           </div>
           <PageTitle/>
-          <div class="debugBox" :class="{ 'isActive': componentStore.isDebug }" style="position: fixed; top: 10px;right:40px;">表示領域でアクティブなindex: {{ activeIndex }}</div>
+          <div class="debugBox debugShowActiveObjIndex" :class="{ 'isActive': componentStore.isDebug }">
+            Active Obj index: {{ activeIndex }}
+          </div>
           <Box3D_lo_mos ref="Box3D_lo_1"
             modelIndex=1
             title="NIKE AIR JORDAN 2" 
@@ -48,12 +74,7 @@
   </div>
 </template>
 <script setup>
-const MainColumHeader = ref("/");
 const activeIndex = ref(-1)
-const messages = 'Hello from Parent Component'
-const items = ref([
-]);
-
 
 const website = useWebsiteStore()
 
@@ -74,6 +95,30 @@ const Box3D_lo_3 = ref(null)
 const Box3D_lo_4 = ref(null)
 const selectCursor = ref(null)
 const isOverlappingDebug = ref(false)
+
+const selectCursorTopLeft = ref(null)
+const selectCursorTopRight = ref(null)
+const selectCursorBottomLeft = ref(null)
+const selectCursorBottomRight = ref(null)
+
+const selectCursorPos = ref({
+  topLeft: {
+    x: "0",
+    y: "0"
+  },
+  topRight: {
+    x: "0",
+    y: "0"
+  },
+  bottomLeft: {
+    x: "0",
+    y: "0"
+  },
+  bottomRight: {
+    x: "0",
+    y: "0"
+  }
+})
 
 // let beforeTitle = "";
 
@@ -104,13 +149,26 @@ const checkOverlap = () => {
     top: centerY - heightRatioB / 2,
     bottom: centerY + heightRatioB / 2
   }
+  selectCursorPos.value.topLeft.x     = Math.floor(rectBPartial.left);
+  selectCursorPos.value.topLeft.y     = Math.floor(rectBPartial.top);
+  selectCursorPos.value.topRight.x    = Math.floor(rectBPartial.right);
+  selectCursorPos.value.topRight.y    = Math.floor(rectBPartial.top);
+  selectCursorPos.value.bottomLeft.x  = Math.floor(rectBPartial.left);
+  selectCursorPos.value.bottomLeft.y  = Math.floor(rectBPartial.bottom);
+  selectCursorPos.value.bottomRight.x = Math.floor(rectBPartial.right);
+  selectCursorPos.value.bottomRight.y = Math.floor(rectBPartial.bottom);
   
   // 各ElementAとselectCursorの重なりを判定
   const elements = [Box3D_lo_1, Box3D_lo_2, Box3D_lo_3,Box3D_lo_4] // refを配列に格納
   isOverlapping.value = elements.some((comp,index) => {
     const rectA = comp.value.container.getBoundingClientRect()
+    const rectACenter = {
+      x: (rectA.right - rectA.left) / 2 + rectA.left,
+      y: (rectA.bottom - rectA.top) / 2 + rectA.top
+    }
+
     let isActive = false;
-    if (rectBPartial.top > rectA.top && rectBPartial.bottom < rectA.bottom) {
+    if (rectBPartial.top < rectACenter.y && rectACenter.y < rectBPartial.bottom) {
       comp.value.sendTitle()
       comp.value.animationPlay()
       isActive = true;

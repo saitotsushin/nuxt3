@@ -2,7 +2,7 @@
   <div class="switchQualityBox">
     <div class="switchQuality">
       <div class="switchQualityName">
-        ABOUT
+        Debug
       </div>
       <label class="toggle-button">
         <input type="checkbox" @click="toggle"/>
