@@ -5,6 +5,9 @@
 .c-pageTitle{
   width: 64%;
   margin: auto;
+  @include breakPoint("sp") {
+    width: 100%;
+  }
   img{
     display: block;
     width: 100%;
@@ -18,6 +21,9 @@
 .c-pageTitle-scroll{
   width: 20%;
   margin: 20px auto 0;
+  @include breakPoint("sp") {
+    width: 40%;
+  }
   img{
     display: block;
     width: 100%;

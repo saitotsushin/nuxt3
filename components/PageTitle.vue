@@ -31,11 +31,12 @@ import {
   TextureLoader,
   PlaneGeometry,
   ShaderMaterial,
+  Vector2,
   Mesh
 } from 'three'
 // 外部ファイルからシェーダーをインポート
 import vertexShader from '~/assets/shaders/default_vs.glsl?raw';
-import fragmentShader from '~/assets/shaders/noise_fs.glsl?raw';    
+import fragmentShader from '~/assets/shaders/noise_fs3.glsl?raw';    
 
 const container: Ref<HTMLElement> = ref(null!);
 const pageLogo: Ref<HTMLElement> = ref(null!);
@@ -48,6 +49,8 @@ var uniforms = {
   uTime: 0.0,
   uTexture: texture
 } 
+var w = 0;
+var h = 0;
 const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeight: number) => {
   const init = () => {
     // レンダラー作成
@@ -56,8 +59,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       antialias: true
     })
 
-    var w = 0;
-    var h = 0;
+
     var camera = new PerspectiveCamera(45, window.innerWidth / window.outerWidth, 1, 2000);
     renderer.setSize(window.innerWidth,window.innerHeight);
 
@@ -73,7 +75,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
         h = texture.image.naturalHeight;
 
         renderer.setSize(w, h);
-        renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);        
+        // renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);        
 
         // 視野角をラジアンに変換
         const fov    = 60;
@@ -86,7 +88,8 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
         pageLogo.value.appendChild(renderer.domElement);
 
-        // renderer.domElement.style.width = "100%";
+        renderer.domElement.style.width = "100%";
+        renderer.domElement.style.height = "auto";
 
         SetPlaneGeometry();
 
@@ -105,19 +108,18 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       console.groupEnd()
 
     }
-    function SetPlaneGeometry(){
+    function SetPlaneGeometry() {
+      console.log("w="+w+"/h="+h)
       const geo = new PlaneGeometry(w, h, 1);
       // const geo = new PlaneGeometry(window.innerWidth, window.innerHeight, 1);
-
-      console.log("texture", texture);
-
       uniforms.uTexture = texture;
 
       mat = new ShaderMaterial({
         uniforms: {
           uTime: {value: 0.0},
-          uPos:{value: uniforms.uPos},
-          uTexture:{value:texture}
+          u_resolution:{value: new Vector2(w,h)},
+          uTexture: { value: texture },
+          u_glitchAmount: { value: 1.0 }
         },
         vertexShader: vertexShader,
         fragmentShader: fragmentShader
@@ -131,8 +133,10 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     function render(time: number) {
       requestAnimationFrame(render);
       if (isActive) {
-        mat.uniforms.uPos.value = 20.0;
+        // mat.uniforms.uPos.value = 20.0;
         mat.uniforms.uTime.value = time;
+        mat.uniforms.u_resolution.value = new Vector2(w, h)
+        mat.uniforms.u_glitchAmount.value = 0.5
       }
       renderer.render(scene, camera);
     }
