@@ -16,6 +16,8 @@ import {
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
+  RGBAFormat,
+  SRGBColorSpace,
   type Object3DEventMap,
 } from 'three'
 
@@ -156,22 +158,27 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       alpha: true,
       antialias: false
     })
-
     
     // サイズを取得
     const width = 256;
     const height = 192;    
-    renderTarget = new WebGLRenderTarget(width, height);
+    renderTarget = new WebGLRenderTarget(width, height,{
+      format: RGBAFormat,
+      colorSpace: SRGBColorSpace,
+    });
+    // renderTarget.setClearColor(0xffffff, 0);
 
     // レンダラーのサイズを調整する
     renderer.setPixelRatio(1);
     renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
     // renderer.setClearColor(0x000000, 0);
 
     container.value.appendChild(renderer.domElement)
 
     // シーン追加
     scene = new Scene();
+    scene.background = null;
     // カメラの作成
     camera = new PerspectiveCamera(45, width / height, 0.1, 70);
     camera.position.set(2, 2, 4);
@@ -179,13 +186,14 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
     //オフスクリーンレンダリング用のシーンとカメラ
     offScene = new Scene();
+    offScene.background = null;
 
     // 視野角をラジアンに変換
     const fov = 60;
     const fovRad = (fov / 2) * (Math.PI / 180);
     const dist = (height / 2) / Math.tan(fovRad);
     offCamera = new PerspectiveCamera(fov, width / height, 1, dist * 2);
-    offCamera.position.z = dist;// カメラを遠ざける
+    offCamera.position.z = 200;// カメラを遠ざける
 
     //スクリーン用の平面
     const geo = new PlaneGeometry(width, height); // 板ポリをウィンドウぴったりにするために２×２
@@ -197,9 +205,11 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       },
       vertexShader: vertexShader, // 頂点シェーダー
       fragmentShader: fragmentShader, // フラグメントシェーダー
+      transparent: true,  // 透明を有効にする
     });
     // texture.colorSpace = SRGBColorSpace
     const plane = new Mesh(geo, mat);
+    plane.material.transparent = true;
 
     offScene.add(plane)
 
@@ -207,6 +217,12 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     directionalLight.intensity = 4; // 光の強さを倍に
     directionalLight.position.set(2, 2, 1); // ライトの方向
     scene.add(directionalLight);
+
+    // const directionalLight2 = new DirectionalLight(0xffffff);
+    // directionalLight2.intensity = 4; // 光の強さを倍に
+    // directionalLight2.position.set(2, 2, 1); // ライトの方向
+    // offScene.add(directionalLight2);
+
     // const light = new AmbientLight(0xffffff, 1.0);
     // scene.add(light);
 
@@ -261,12 +277,14 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       // uniforms.uTexture = renderTarget.texture;
 
       renderer.setRenderTarget(renderTarget);
-      // renderer.setClearColor(0xf5f542);
       renderer.clear(); // クリアを行う
+      // renderer.setClearColor(0x000000, 0);
+
       renderer.render(scene, camera);
 
       renderer.setRenderTarget(null); // レンダーターゲットを解除します
       renderer.clear();
+      // renderer.setClearColor(0xFFFFFF, 0.1);
 
       renderer.render(offScene, offCamera)
       

@@ -105,3 +105,8 @@ https://blog.design-nkt.com/osyare-glsl2/
 # WebGLRenderTargetで色味が変わってしまう
 暗くなってしまう問題。
 https://blog.shoya-kajita.com/webglrendertarget-colorspace/
+
+# オフスクリーンレンダリングで背景が黒くなる
+シェーダーの問題でした。
+アルファ値が0でも処理->計算できない->黒にする
+になってた。アルファがある時は処理しないようにした。
