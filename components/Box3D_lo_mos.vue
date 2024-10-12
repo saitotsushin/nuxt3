@@ -2,13 +2,17 @@
   <NuxtLink :to="`/sneaker/${modelIndex}`" @click="showPage" class="c-sneaker-list">
     <div class="debugBox" :class="{ 'isActive': componentStore.isDebug }">表示エリアに接触：{{ isActive }}</div>
     <div class="webGLbox" ref="container"></div>
+    <SneakerName :isActive="isActive" :title="title"/>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
 import {
   PerspectiveCamera,
-  Scene,Vector3, WebGLRenderer,Object3D,
+  Scene,
+  Vector3,
+  WebGLRenderer,
+  Object3D,
   DirectionalLight,
   AnimationMixer,
   WebGLRenderTarget,
@@ -22,12 +26,11 @@ import {
 } from 'three'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { bool } from 'three/examples/jsm/nodes/Nodes.js';
 import gsap from 'gsap';
 // 外部ファイルからシェーダーをインポート
 import vertexShader from '~/assets/shaders/mosiac2_vs.glsl?raw';
 import fragmentShader from '~/assets/shaders/mos_fs.glsl?raw';    
-
+// import Sneaker from '~/layouts/sneaker.vue';
 
 const container: Ref<HTMLElement> = ref(null!);
 
@@ -55,11 +58,10 @@ const componentStore = useComponentStore()
 const website = useWebsiteStore()
 
 // DOM要素への参照を作成
-// const elementARef = ref(null)
 let mixers: AnimationMixer[] = [];
 let clips: any[] | null = null;
 
-// オフスクリーンレンダリングには欠かせないレンダーターゲットを作ります
+// オフスクリーンレンダリングには欠かせないレンダーターゲットを作る
 let renderTarget: any | null = null;
 let scene: any | null = null;
 let camera: any | null = null;
@@ -68,11 +70,14 @@ let offScene: any | null = null;
 let offCamera: any | null = null;
   
 let model: Object3D<Object3DEventMap>;
+let animationId: any | null = null;
 
 let isAnimePlay = false;
 
 let isEffectStart = false;
 let isEffectEnd = false;
+let observer: IntersectionObserver | null = null;
+let renderer: WebGLRenderer | null = null;
 
 // タイトルを親に送信する関数
 const sendTitle = () => {
@@ -140,7 +145,7 @@ const handleIntersect = (entries: any[]) => {
 }
 
 const checkInDisplay = () => {
-  const observer = new IntersectionObserver(handleIntersect, {
+  observer = new IntersectionObserver(handleIntersect, {
     root: null, // ビューポートを基準とする
     rootMargin: '-50% 0px', // 上部20%をトリガー領域に設定
     threshold: 0 // 0%表示された時点でトリガーする
@@ -154,7 +159,7 @@ const checkInDisplay = () => {
 const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeight: number) => {
   const init = () => {
     // レンダラー作成
-    const renderer = new WebGLRenderer({
+    renderer = new WebGLRenderer({
       alpha: true,
       antialias: false
     })
@@ -166,13 +171,11 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       format: RGBAFormat,
       colorSpace: SRGBColorSpace,
     });
-    // renderTarget.setClearColor(0xffffff, 0);
 
     // レンダラーのサイズを調整する
     renderer.setPixelRatio(1);
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
-    // renderer.setClearColor(0x000000, 0);
 
     container.value.appendChild(renderer.domElement)
 
@@ -207,7 +210,6 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
       fragmentShader: fragmentShader, // フラグメントシェーダー
       transparent: true,  // 透明を有効にする
     });
-    // texture.colorSpace = SRGBColorSpace
     const plane = new Mesh(geo, mat);
     plane.material.transparent = true;
 
@@ -217,14 +219,6 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
     directionalLight.intensity = 4; // 光の強さを倍に
     directionalLight.position.set(2, 2, 1); // ライトの方向
     scene.add(directionalLight);
-
-    // const directionalLight2 = new DirectionalLight(0xffffff);
-    // directionalLight2.intensity = 4; // 光の強さを倍に
-    // directionalLight2.position.set(2, 2, 1); // ライトの方向
-    // offScene.add(directionalLight2);
-
-    // const light = new AmbientLight(0xffffff, 1.0);
-    // scene.add(light);
 
 
     // GLTFモデルの読み込み
@@ -245,7 +239,7 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
     // 毎フレーム時に実行されるループイベント
     const tick = () => {
-      requestAnimationFrame(tick)
+      animationId = requestAnimationFrame(tick)
       // アニメーションを更新
       mixers.forEach(mixer => mixer.update(0.01));
       if (isEffectStart || isEffectEnd) {
@@ -272,30 +266,21 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
           isEffectEnd = false;
         }        
       }    
+      if (renderer) {
+        renderer.setRenderTarget(renderTarget);
+        renderer.clear(); // クリアを行う
 
+        renderer.render(scene, camera);
 
-      // uniforms.uTexture = renderTarget.texture;
+        renderer.setRenderTarget(null); // レンダーターゲットを解除します
+        renderer.clear();
 
-      renderer.setRenderTarget(renderTarget);
-      renderer.clear(); // クリアを行う
-      // renderer.setClearColor(0x000000, 0);
-
-      renderer.render(scene, camera);
-
-      renderer.setRenderTarget(null); // レンダーターゲットを解除します
-      renderer.clear();
-      // renderer.setClearColor(0xFFFFFF, 0.1);
-
-      renderer.render(offScene, offCamera)
+        renderer.render(offScene, offCamera)
+       
+      }
       
     }
     tick()
-    // renderer.render(scene, camera)
-    // コンテキスト削除
-    onUnmounted(() => {
-      renderer.dispose()
-      renderer.forceContextLoss()
-    })
   }
 
   return { init }
@@ -306,12 +291,26 @@ onMounted(() => {
   checkInDisplay()
 })
 onBeforeUnmount(() => {
+  if (observer) {
+    observer.unobserve(container.value);
+  }
+  // scene.dispose();
+
 });
+// コンテキスト削除
+onUnmounted(() => {
+  if (renderer) {
+    cancelAnimationFrame(animationId);
+    // mat.dispose();
+    renderer.dispose()
+    renderer.forceContextLoss()
+  }
+})
+
 watch(() => props.isActive, (newValue) => {
   if (newValue) {
     isEffectStart = true;
     isEffectEnd = false
-    // ここで必要な処理を行うことができます
   } else {
     isEffectStart = false;
     isEffectEnd = true;

@@ -6,11 +6,10 @@
           <div class="l-selectCursor">
             <div class="p-selectCursor">
               <div class="c-selectCursor" ref="selectCursor"></div>
-              <div class="c-selectCursor-title" ref="selectCursorTitle"></div>
             </div>
           </div>
           <PageTitle/>
-          <div style="position: fixed; top: 10px;right:40px;">{{ activeIndex }}</div>
+          <div class="debugBox" :class="{ 'isActive': componentStore.isDebug }" style="position: fixed; top: 10px;right:40px;">表示領域でアクティブなindex: {{ activeIndex }}</div>
           <Box3D_lo_mos ref="Box3D_lo_1"
             modelIndex=1
             title="NIKE AIR JORDAN 2" 
@@ -57,6 +56,10 @@ const items = ref([
 
 
 const website = useWebsiteStore()
+
+// Piniaのストアインスタンスを取得
+const componentStore = useComponentStore()
+
 // scrollContent の参照を作成
 const selectCursorTitle = ref(null);
 
@@ -72,7 +75,7 @@ const Box3D_lo_4 = ref(null)
 const selectCursor = ref(null)
 const isOverlappingDebug = ref(false)
 
-let beforeTitle = "";
+// let beforeTitle = "";
 
 // 子コンポーネントからタイトルを受け取る関数
 const receiveTitle = (_title) => {
@@ -113,7 +116,7 @@ const checkOverlap = () => {
       isActive = true;
       activeIndex.value = index;
       disableScroll();
-      displayName();
+      // displayName();
     } else {
       
     }
@@ -132,37 +135,7 @@ const checkScrollTop = () => {
 
   }  
 }
-const displayName = () => {
-  if (beforeTitle == title.value) {
-    return;
-  }
-  beforeTitle = title.value;
 
-  selectCursorTitle.value.innerHTML = "";
-  const titleWoards = title.value.split("");
-  var setSpans = [];
-
-  titleWoards.forEach((word, i) => {
-    const spanElement = document.createElement('span');
-    if (word == " ") {
-      spanElement.classList.add('nameSpacer');
-    }
-    spanElement.textContent = word;
-    setSpans.push(spanElement);
-  });
-  const divElement = document.createElement('div');
-  divElement.classList.add('nameList');
-  setSpans.forEach((word, i) => {
-    divElement.appendChild(setSpans[i]);
-  });
-  selectCursorTitle.value.appendChild(divElement);
-  const spa = divElement.querySelectorAll('span');
-  spa.forEach((spa_t, k) => {
-    setTimeout(() => {
-      spa_t.style.display = "block" // 指定したタイミングで文字を表示
-    }, k * 100); // 200ms 間隔で表示
-  });
-}
 const disableScroll = () => {
   // if (isOverlapping.value == true) {
   //   return;

@@ -110,3 +110,9 @@ https://blog.shoya-kajita.com/webglrendertarget-colorspace/
 シェーダーの問題でした。
 アルファ値が0でも処理->計算できない->黒にする
 になってた。アルファがある時は処理しないようにした。
+
+# ページ遷移時のエラー
+```
+Failed to execute 'shaderSource' on 'WebGL2RenderingContext': parameter 1 is not of type 'WebGLShader'
+```
+アニメーションループがページ遷移後も続いている場合、シェーダーが適切に解放されずにエラーが発生することがあります。アニメーションを正しく停止させるために、cancelAnimationFrame を呼び出すことを忘れないでください。
