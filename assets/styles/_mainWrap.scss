@@ -1,6 +1,9 @@
 .l-wrapper{
   background-color: #F15928;
   transition: background-color 1s ease;
+  padding: 0 $scrollwidth 0 0;
+  width: 100%;
+  overflow-x: hidden;  
 }
 .l-inner{
   width: 100%;

@@ -116,3 +116,6 @@ https://blog.shoya-kajita.com/webglrendertarget-colorspace/
 Failed to execute 'shaderSource' on 'WebGL2RenderingContext': parameter 1 is not of type 'WebGLShader'
 ```
 アニメーションループがページ遷移後も続いている場合、シェーダーが適切に解放されずにエラーが発生することがあります。アニメーションを正しく停止させるために、cancelAnimationFrame を呼び出すことを忘れないでください。
+
+# scss
+https://zenn.dev/shuto2828/articles/e21134245671ce

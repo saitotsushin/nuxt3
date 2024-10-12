@@ -12,6 +12,7 @@
   z-index: 10;
   // display: flex;
   position: fixed;
+  backdrop-filter: blur(10px);
   
 }
 .l-sizeSticker-innner{

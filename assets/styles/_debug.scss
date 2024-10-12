@@ -81,7 +81,8 @@
   line-height: 1;
   opacity: 0.75;
   font-size: 0.75rem;
+  display: none;
   &.isActive{
-
+    display: block;
   }
 }
