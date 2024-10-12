@@ -1,7 +1,9 @@
 <template>
     <div class="l-pageTitle">
       <h2 class="c-pageTitle">
-        <div ref="pageLogo"></div>
+        <div ref="pageLogo">
+          <img src="/images/logo_sneakerarchives1_dummy.png" class="pageLogoDummy"/>
+        </div>
       </h2>
       <div class="c-pageTitle-scroll">
         <img src="/images/logo_scrolldown.png" ref="logoScrolldown"/>
@@ -109,7 +111,6 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
 
     }
     function SetPlaneGeometry() {
-      console.log("w="+w+"/h="+h)
       const geo = new PlaneGeometry(w, h, 1);
       // const geo = new PlaneGeometry(window.innerWidth, window.innerHeight, 1);
       uniforms.uTexture = texture;

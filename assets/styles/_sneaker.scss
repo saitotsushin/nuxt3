@@ -3,6 +3,8 @@ body.isMouseMove{
 }
 .nameList{
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .nameList span{
   display: none;
@@ -17,6 +19,14 @@ body.isMouseMove{
   margin: 100px auto;
   z-index: 1;
   // pointer-events: none;
+  cursor: auto;
+  &:hover{
+    cursor: none;
+  }
+}
+.c-sneakerTitle{
+  text-align: center;
+  margin-top: -20px;
 }
 .sneakerThumb{
   border-top: 1px solid #f15928;

@@ -4,7 +4,19 @@
       <div class="debugWebGLboxTextSS">Touching Area:</div>
       <div class="debugWebGLboxTextSS">{{ isActive }}</div>
     </div>
-    <div class="webGLbox" ref="container" :class="{ 'isDebug': componentStore.isDebug }"></div>
+    
+    <div class="webGLbox" ref="container" :class="{ 'isDebug': componentStore.isDebug }">
+      <div class="webGLboxCursor" :class="{ 'isMouseOver': isMouseOver}">
+        <img src="/images/ObjectCursor1.png" class="webGLboxCursorArrow -pos1"/>
+        <img src="/images/ObjectCursor2.png" class="webGLboxCursorArrow -pos2"/>
+        <img src="/images/ObjectCursor3.png" class="webGLboxCursorArrow -pos3"/>
+        <img src="/images/ObjectCursor4.png" class="webGLboxCursorArrow -pos4"/>
+        <div class="webGLboxCursorBg" 
+          ref="r_webGLboxCursor"
+          :style="{ backgroundSize: contentsSize.w + 'px ' + contentsSize.h + 'px' }"></div>
+      </div>
+    </div>
+    <div class="webGLboxMouseOverCursor" ref="r_MouseOverCursor"><img src="/images/MouseOverCursor.png"/></div>
     <SneakerName :isActive="isActive" :title="title"/>
     <div class="debugWebGLboxPos" :class="{ 'isDebug': componentStore.isDebug }">
       <div class="debugWebGLboxTextS">WebGLCanvas</div>
@@ -40,6 +52,13 @@ import fragmentShader from '~/assets/shaders/mos_fs.glsl?raw';
 // import Sneaker from '~/layouts/sneaker.vue';
 
 const container: Ref<HTMLElement> = ref(null!);
+const r_webGLboxCursor: Ref<HTMLElement> = ref(null!);
+const r_MouseOverCursor: Ref<HTMLElement> = ref(null!);
+
+const contentsSize = ref({
+  w: 0,
+  h: 0
+})
 
 const props = defineProps({
   title: String,    // 親コンポーネントから渡される title プロップ
@@ -56,6 +75,8 @@ const mosClearSpeed = 0.05;
 const mosStepTime = 1.0;
 let saveMosTime = mosStepTime;
 let isEffect = false;
+
+const isMouseOver = ref(false);
 
 const webGLPos = ref({
   x: "0",
@@ -130,6 +151,7 @@ const showPage = () => {
   // 大きさ（スケール）をアニメーション
   gsap.to(model.scale, {
     x: 0,
+    y: 0.5,
     z: 0,   // Z軸方向に2倍
     duration: 0.5, // 2秒でスケール変更
     repeat: 0,  // 無限ループ
@@ -278,6 +300,9 @@ const useSphere = (container: Ref<HTMLElement>, clientWidth: number, clientHeigh
           isEffectEnd = false;
         }        
       }    
+      if (isMouseOver.value) {
+        model.rotation.y += 0.01;
+      }
       if (renderer) {
         renderer.setRenderTarget(renderTarget);
         renderer.clear(); // クリアを行う
@@ -309,18 +334,46 @@ const CheckScrollBoxPos = () => {
   webGLPos.value.y = Math.floor(centerY).toString();
   
 }
-
+const BoxMouseOver = (event: { clientX: any; clientY: any; }) => {
+  isMouseOver.value = true;
+  r_MouseOverCursor.value.style.display = "block";
+  const mouseX = event.clientX - 16; // マウスのX座標
+  const mouseY = event.clientY - 16; // マウスのY座標  
+  r_MouseOverCursor.value.style.left = `${mouseX}px`;
+  r_MouseOverCursor.value.style.top = `${mouseY}px`;
+}
+const BoxMouseMove = (event: { clientX: any; clientY: any; }) => {
+  if (!isMouseOver.value) {
+    return;
+  }
+  const mouseX = event.clientX - 16; // マウスのX座標
+  const mouseY = event.clientY - 16; // マウスのY座標  
+  r_MouseOverCursor.value.style.left = `${mouseX}px`;
+  r_MouseOverCursor.value.style.top = `${mouseY}px`;
+}
+const BoxMouseOut = () => {
+  isMouseOver.value = false;
+  r_MouseOverCursor.value.style.display = "none";
+};
 onMounted(() => {
   const { init } = useSphere(container, 500, 500)
   init()
   checkInDisplay()
   window.addEventListener('scroll', CheckScrollBoxPos)
+  container.value.addEventListener('mousemove', BoxMouseMove);
+  container.value.addEventListener('mouseover', BoxMouseOver);
+  container.value.addEventListener('mouseout', BoxMouseOut)
+  contentsSize.value.w = r_webGLboxCursor.value.clientWidth / 4;
+  contentsSize.value.h = r_webGLboxCursor.value.clientHeight / 4;
 })
 onBeforeUnmount(() => {
   if (observer) {
     observer.unobserve(container.value);
   }
   // scene.dispose();
+  container.value.removeEventListener('mousemove', BoxMouseMove)
+  container.value.removeEventListener('mouseover', BoxMouseOver)
+  container.value.removeEventListener('mouseout',BoxMouseOut)
 
 });
 // コンテキスト削除

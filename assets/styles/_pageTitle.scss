@@ -14,8 +14,18 @@
   }
   canvas{
     margin: auto;
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 0;
     // width: 100% !important;
     // height: auto !important;
+  }
+  .pageLogoDummy{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: block;
   }
 }
 .c-pageTitle-scroll{

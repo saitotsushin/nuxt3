@@ -36,19 +36,52 @@
   .webGLbox{
     position: relative;
     // width: 100%;
-
+    &:hover{
+      cursor: none;
     }
-    .webGLbox canvas{
-      width: 100% !important;
-      height: auto !important;
-      pointer-events: none;
-      background-color: transparent;
-    }  
+  }
+  .webGLbox canvas{
+    width: 100% !important;
+    height: auto !important;
+    pointer-events: none;
+    background-color: transparent;
+    z-index: 2;
+    position: relative;
+    &:hover{
+      cursor: none;
+    }    
+  }  
 }
 .l-contents{
   width: 70%;
   margin: 0 0 0 30%;
   position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #8f8f8f;
+    mix-blend-mode: plus-lighter;
+    opacity: 0.5;
+  }
+  &::before {
+    content: ''; /* 擬似要素の内容は空に設定 */
+    position: fixed; /* 絶対位置に設定 */
+    width: 5px; /* 円の幅 */
+    height: 10px; /* 円の高さ */
+    background-color: #8f8f8f; /* 円の色 */
+    left: calc(30% - 3px);
+    top: 50%;
+    border-radius: 0 10px 10px 0;
+    mix-blend-mode: plus-lighter;
+    opacity: 0.5;
+    // border-top: 1px solid #FFF;
+    // border-right: 1px solid #FFF;
+    // border-bottom: 1px solid #FFF;
+  }
 }
 .c-next-display{
   position: absolute;
@@ -58,4 +91,99 @@
   height: 100%;
   z-index: 1000;
   background-color: #f15927;
+}
+@keyframes slide {
+  0% {
+    background-position: 0% 0%; /* 開始位置 */
+  }
+  100% {
+    background-position: 100% 100%; /* 終了位置 */
+  }
+}
+.webGLboxCursor{
+  // border: 2px solid #FFF;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  .webGLboxCursorBg{
+    position: absolute;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
+    top: 30px;
+    left: 30px;
+    background-image: url(/nuxt3/images/bg_line.png);
+    // background-size: 120px 120px;
+    background-repeat: repeat;
+    animation: slide 5s linear infinite; /* アニメーションを設定 */
+    // display: none;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  &.isMouseOver{
+    .webGLboxCursorBg{
+      opacity: 0.2;
+    }
+    .webGLboxCursorArrow{
+      opacity: 1;
+      &.-pos1{
+        top: 0;
+        left: 0;
+      }
+      &.-pos2{
+        top: 0;
+        right: 0;
+      }
+      &.-pos3{
+        bottom: 0;
+        left: 0;
+      }
+      &.-pos4{
+        bottom: 0;
+        right: 0;
+      }      
+    }  
+  }  
+}
+
+.webGLboxCursorArrow{
+  position: absolute;
+  z-index: 100;
+  width: 80px;
+  opacity: 0;
+  pointer-events: none;
+  transition: top    0.1s cubic-bezier(.445, .05, .55, .95),
+              left   0.1s cubic-bezier(.445, .05, .55, .95),
+              right  0.1s cubic-bezier(.445, .05, .55, .95),
+              bottom 0.1s cubic-bezier(.445, .05, .55, .95),
+              opacity 0.1s cubic-bezier(.445, .05, .55, .95);
+  &.-pos1{
+    top: -5px;
+    left: -5px;
+  }
+  &.-pos2{
+    top: -5px;
+    right: -5px;
+  }
+  &.-pos3{
+    bottom: -5px;
+    left: -5px;
+  }
+  &.-pos4{
+    bottom: -5px;
+    right: -5px;
+  }
+}
+.webGLboxMouseOverCursor {
+  position: fixed; /* 絶対位置で配置 */
+  width: 32px; /* 画像の幅 */
+  height: auto; /* 高さは自動調整 */
+  pointer-events: none; /* 画像をクリックできないようにする */
+  z-index: 100;
+  &:hover{
+    cursor: none;
+  }
 }
