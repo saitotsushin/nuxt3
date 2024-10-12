@@ -1,0 +1,1 @@
+import{_ as t,c,b as e,$ as _,a as r,a0 as d,o as l,a1 as m,a2 as p}from"./NWOllZA8.js";const f={},i={class:"wrapper"},u=r("div",null,"layout:sneaker",-1);function B(o,g){const a=m,n=d("BgImage"),s=p;return l(),c("div",i,[e(a),u,_(o.$slots,"default"),e(n),e(s)])}const h=t(f,[["render",B]]);export{h as default};
