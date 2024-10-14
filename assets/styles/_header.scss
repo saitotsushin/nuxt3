@@ -77,18 +77,20 @@ header h1 a{
   box-sizing: content-box;
   cursor: pointer;
   transition: border-color 0.4s;
-  background-color: rgba(#FFF, 0.5);
+  // background-color: rgba(#FFF, 0.5);
+  border: 1px solid #FFF;
 }
 
 .toggle-button::after {
   position: absolute;
   top: 50%;
-  left: 5px;
+  left: 4px;
   transform: translateY(-50%);
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: #f15928;
+  border: 1px solid #FFF;
+  // background-color: #f15928;
   content: "";
   transition: left 0.4s;
 }
@@ -104,4 +106,12 @@ header h1 a{
 .switchQualityName{
   font-size: 0.75rem;
   padding: 0 0.3rem;
+  img,svg{
+    width: 24px;
+    display: block;    
+  }
+  .iconCheck{
+    fill: #FFF;
+    opacity: 0.6;
+  }
 }

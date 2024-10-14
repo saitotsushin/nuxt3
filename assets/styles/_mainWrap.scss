@@ -22,7 +22,11 @@
     align-items: center;
     width: 100%;
     justify-content: center;
-    display: flex;    
+    display: flex;  
+    canvas{
+      width: 50% !important;
+      height: auto !important;
+    }  
   }
 }
 .l-content-wrapper{
@@ -183,6 +187,7 @@
   height: auto; /* 高さは自動調整 */
   pointer-events: none; /* 画像をクリックできないようにする */
   z-index: 100;
+  display: none;
   &:hover{
     cursor: none;
   }
