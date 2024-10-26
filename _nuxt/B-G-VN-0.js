@@ -1,0 +1,1 @@
+import{_ as t,c,b as e,aa as _,a as r,ab as d,o as l,ac as m,ad as p}from"./moyrZwSY.js";const f={},i={class:"wrapper"},u=r("div",null,"layout:sneaker",-1);function B(o,g){const a=m,n=d("BgImage"),s=p;return l(),c("div",i,[e(a),u,_(o.$slots,"default"),e(n),e(s)])}const h=t(f,[["render",B]]);export{h as default};
