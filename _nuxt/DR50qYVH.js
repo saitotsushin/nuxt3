@@ -1,1 +1,0 @@
-import{_ as t,c as s,aa as o,o as c}from"./moyrZwSY.js";const a={},n={class:"l-contents"};function r(e,_){return c(),s("div",n,[o(e.$slots,"default")])}const d=t(a,[["render",r]]);export{d as default};

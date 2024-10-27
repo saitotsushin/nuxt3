@@ -1,0 +1,1 @@
+import{_ as s,c,o as t,a as e}from"./B31o5omS.js";const a={},o={class:"l-sneakerList"},n=e("div",{class:"c-page-sneakerName"},"NIKE DUNK",-1),_=e("ul",{class:"p-sneakerList"},null,-1),r=[n,_];function i(l,d){return t(),c("div",o,r)}const p=s(a,[["render",i]]);export{p as default};

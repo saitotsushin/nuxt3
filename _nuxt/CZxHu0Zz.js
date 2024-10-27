@@ -1,11 +1,11 @@
-import{_ as U}from"./BKawTDLM.js";import{l as b,r as _,k as h,g as M,o as T,c as E,a as R,W,P as x,S as k,T as A,C as B,j as D,M as G}from"./moyrZwSY.js";const L=`
+import{_ as U}from"./DNaZnbO1.js";import{l as b,r as _,k as h,g as M,o as T,c as E,a as R,W,P as x,S as k,T as B,I as D,j as G,M as L}from"./B31o5omS.js";const j=`
   varying vec2 vUv;
   
   void main() {
     vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
-        `,j=`
+        `,A=`
   uniform sampler2D uTexture;
   varying vec2 vUv;
   uniform float uPos;
@@ -101,4 +101,4 @@ void main(void){
     gl_FragColor = vec4(closestColor, texColor.a);
 
 }
-        `,I=b({__name:"mosaic",setup(F){const f=_(null),g=_(null);var r,n=!1,u=new h,d={uPos:20,uTexture:r};const P=(v,w,z)=>({init:()=>{const o=new W({alpha:!0,antialias:!0});g.value.getBoundingClientRect();var a=0,t=0,s=new x(45,window.innerWidth/window.outerWidth,1,2e3);const i=new k,C=new A;var S=new B(16777215);i.add(S),r=C.load("/nuxt3/images/thumb/12.jpg",function(e){a=e.image.naturalWidth,t=e.image.naturalHeight,o.setSize(a,t),o.setPixelRatio(window.devicePixelRatio?window.devicePixelRatio:1);const c=60,m=c/2*(Math.PI/180),l=t/2/Math.tan(m);s=new x(c,a/t,1,l*2),s.position.z=l,v.value.appendChild(o.domElement),o.domElement.style.width="100%",y()}),o.debug.onShaderError=(e,c,m,l)=>{e.getShaderSource(m),e.getShaderSource(l),console.groupCollapsed("vertexShader"),console.groupEnd(),console.groupCollapsed("fragmentShader"),console.groupEnd()};function y(){const e=new D(a,t,1);d.uTexture=r,u=new h({uniforms:{uPos:{value:d.uPos},uTexture:{value:r}},vertexShader:L,fragmentShader:j});const c=new G(e,u);i.add(c),n=!0,console.log("isActive",n)}function p(e){requestAnimationFrame(p),n&&(console.log("uniforms.uPos",d.uPos),u.uniforms.uPos.value=e*.01),o.render(i,s)}console.log(n),p(0),o.render(i,s)}});return M(()=>{const{init:v}=P(f);v()}),(v,w)=>(T(),E("div",{class:"webGL_glsi_box",ref_key:"container",ref:f},[R("img",{src:U,ref_key:"thumb",ref:g},null,512)],512))}});export{I as default};
+        `,q=b({__name:"mosaic",setup(F){const d=_(null),m=_(null);var r,f=!1,l=new h,g={uPos:20,uTexture:r};const w=(n,P,z)=>({init:()=>{const t=new W({alpha:!0,antialias:!0});m.value.getBoundingClientRect();var v=0,o=0,a=new x(45,window.innerWidth/window.outerWidth,1,2e3);const i=new k,S=new B;var C=new D(16777215);i.add(C),r=S.load("/nuxt3/images/thumb/12.jpg",function(e){v=e.image.naturalWidth,o=e.image.naturalHeight,t.setSize(v,o),t.setPixelRatio(window.devicePixelRatio?window.devicePixelRatio:1);const c=60,u=c/2*(Math.PI/180),s=o/2/Math.tan(u);a=new x(c,v/o,1,s*2),a.position.z=s,n.value.appendChild(t.domElement),t.domElement.style.width="100%",y()}),t.debug.onShaderError=(e,c,u,s)=>{e.getShaderSource(u),e.getShaderSource(s),console.groupCollapsed("vertexShader"),console.groupEnd(),console.groupCollapsed("fragmentShader"),console.groupEnd()};function y(){const e=new G(v,o,1);g.uTexture=r,l=new h({uniforms:{uPos:{value:g.uPos},uTexture:{value:r}},vertexShader:j,fragmentShader:A});const c=new L(e,l);i.add(c),f=!0}function p(e){requestAnimationFrame(p),f&&(l.uniforms.uPos.value=e*.01),t.render(i,a)}p(0),t.render(i,a)}});return M(()=>{const{init:n}=w(d);n()}),(n,P)=>(T(),E("div",{class:"webGL_glsi_box",ref_key:"container",ref:d},[R("img",{src:U,ref_key:"thumb",ref:m},null,512)],512))}});export{q as default};
