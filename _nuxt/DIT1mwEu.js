@@ -1,0 +1,1 @@
+import{_ as t,c,b as e,ah as _,a as r,ai as d,o as l,aj as m,ak as p}from"./D4we-pZE.js";const i={},f={class:"wrapper"},u=r("div",null,"layout:sneaker",-1);function k(o,B){const a=m,n=d("BgImage"),s=p;return l(),c("div",f,[e(a),u,_(o.$slots,"default"),e(n),e(s)])}const h=t(i,[["render",k]]);export{h as default};
