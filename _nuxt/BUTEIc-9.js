@@ -1,0 +1,56 @@
+import{_ as te}from"./BfyxekQ6.js";import{_ as oe}from"./D4D-49a8.js";import{m as O,r as t,l as V,h as W,o as G,c as j,a as e,W as U,P as F,S as J,T as ne,A as le,k as se,V as K,M as re,u as X,q as Q,s as Z,g as ie,w as ae,v as q,e as ce,x as ue,D as de,G as me,i as ee,y as ge,L as ve,t as u,j as l,F as he,z as _e,B as fe,n as M,b as $}from"./seE0ligh.js";import{v as pe}from"./C74dAFiS.js";import{_ as we}from"./BYvrNzQL.js";import"./DMAXLEiR.js";const xe=`uniform sampler2D uTexture;
+varying vec2 vUv;
+uniform vec2 u_resolution;
+uniform float uTime;
+uniform float u_glitchAmount;
+
+// ノイズ生成関数（擬似ランダム値）
+float random(float x) {
+    return fract(sin(x) * 43758.5453123);
+}
+float noise(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+  
+void main(void){
+
+    // フラグメントの正規化座標（0.0〜1.0の範囲）
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+
+    // テクスチャの色をサンプリング
+    vec4 texColor = texture2D(uTexture, uv);
+    vec2 st = gl_FragCoord.xy / u_resolution.xy;
+    float n = noise(st * u_resolution.xy + uTime);
+    // ノイズを色に適用
+    vec3 noiseColor = vec3(n * u_glitchAmount) + vec3(texColor);
+    
+    // 線のパラメータ
+    // ランダムな線の太さを 0.01〜0.02 に設定
+    float randValue = random(uv.x);           // ランダムな値を生成
+    float lineWidth = mix(0.005, 0.01, randValue);  // 0.01 〜 0.02 の間でランダムに設定
+
+
+    float speed = 0.5;       // 線の下方向への速度
+
+    // uTimeに基づいてY座標を移動させる
+    float lineY = fract(uv.y - uTime * speed);  // 時間で下に移動する線
+
+    // Y座標に基づいて線を描く
+    float line = step(1.0 - lineWidth, abs(lineY));
+
+    // 線の色とテクスチャの色を合成
+    vec4 lineColor = vec4(1.0, 1.0, 0.0, 1.0); // 赤い線
+    // 減算合成: テクスチャの色から線の色を減算
+    // vec4 finalColor = texColor - lineColor * line;    
+
+    // 減算合成: テクスチャの色から線の色を減算
+    vec4 finalColor = vec4(noiseColor,1.0) - lineColor * line;
+
+    // vec4 finalColor = mix(texColor, lineColor, line);
+    if (texColor.a < 0.5) {
+        discard;
+    }
+    // 出力
+    gl_FragColor = finalColor;
+
+}`,be={class:"l-pageTitle"},Ce={class:"c-pageTitle"},ye={src:oe,class:"pageLogoDummy",ref:"pageLogoDummy"},Se=O({__name:"PageTitle",setup(I){t(null),t(null);const x=t(null),i=t(null);var b,S=!1,_=new V,f=0,a=0;const d=(L,D,B)=>({init:()=>{const c=new U({alpha:!0,antialias:!0});var p=new F(45,window.innerWidth/window.outerWidth,1,2e3);c.setSize(window.innerWidth,window.innerHeight);const C=new J,o=new ne;var r=new le(16777215);C.add(r),b=o.load("/nuxt3/images/logo_sneakerarchives1_s.png",function(m){f=m.image.naturalWidth,a=m.image.naturalHeight,c.setSize(f,a);const s=60,n=s/2*(Math.PI/180),g=a/2/Math.tan(n);p=new F(s,f/a,1,g*2),p.position.z=g,x.value.appendChild(c.domElement),i.value.style.display="none",c.domElement.style.width="100%",c.domElement.style.height="auto",T()}),c.debug.onShaderError=(m,s,n,g)=>{m.getShaderSource(n),m.getShaderSource(g),console.groupCollapsed("vertexShader"),console.groupEnd(),console.groupCollapsed("fragmentShader"),console.groupEnd()};function T(){const m=new se(f,a,1);_=new V({uniforms:{uTime:{value:0},u_resolution:{value:new K(f,a)},uTexture:{value:b},u_glitchAmount:{value:1}},vertexShader:pe,fragmentShader:xe});const s=new re(m,_);C.add(s),S=!0}function y(m){requestAnimationFrame(y),S&&(_.uniforms.uTime.value=m,_.uniforms.u_resolution.value=new K(f,a),_.uniforms.u_glitchAmount.value=.5),c.render(C,p)}y(0),c.render(C,p)}});return W(()=>{const{init:L}=d();L()}),(L,D)=>(G(),j("div",be,[e("h2",Ce,[e("div",{ref_key:"pageLogo",ref:x},[e("img",{src:te,class:"loadingGif",ref_key:"LoadingGif",ref:i},null,512),e("img",ye,null,512)],512)])]))}}),Le=O({__name:"Box3D_lo",props:{title:String,cgPath:String,mainColor:String,modelIndex:String},setup(I,{expose:x,emit:i}){let b=[],S=null,_,f=!1;const a=t(null),d=I,L=i;x({container:a,sendTitle:()=>{L("getTitle",d.title)},animationPlay:()=>{f||S&&S.forEach(s=>{const n=new ge(_),g=n.clipAction(s);g.setLoop(ve,0),g.clampWhenFinished=!0,g.play(),b.push(n),f=!0})}});const A=X(),c=Q(),p=()=>{q.to(_.rotation,{y:Math.PI*6,duration:.5,repeat:0,ease:"power1.inOut",onComplete:function(){}}),q.to(_.scale,{x:0,z:0,duration:.5,repeat:0,ease:"power1.inOut"}),A.showPage(Number(d.modelIndex))},C=()=>{d.title&&d.cgPath&&A.addComponent(d.title,d.cgPath,Number(d.modelIndex))};let o=null;const r=()=>{document.body.scrollHeight-window.innerHeight,document.documentElement.scrollTop,o&&clearTimeout(o),o=setTimeout(()=>{o=null},300)},T=s=>{s.forEach(n=>{n.isIntersecting&&c.setMainColor(`${d.mainColor}`)})},y=()=>{const s=new IntersectionObserver(T,{root:null,rootMargin:"-50% 0px",threshold:0});a.value&&s.observe(a.value)},m=(s,n,g)=>({init:()=>{const v=new U({alpha:!0,antialias:!1}),h=256,Y=192;v.setPixelRatio(1),v.setSize(h,Y),v.setClearColor(0,0),s.value.appendChild(v.domElement);const w=new J,H=new F(45,h/Y,.1,70);H.position.set(2,2,4),H.lookAt(new ue(0,1,0));const R=new de(16777215);R.intensity=4,R.position.set(0,2,1),w.add(R),new me().load(`${d.cgPath}`,k=>{_=k.scene,_.position.set(0,1.4,0),w.add(_),C(),S=k.animations},void 0,function(k){console.error(k)});const E=()=>{requestAnimationFrame(E),b.forEach(k=>k.update(.01)),v.render(w,H)};E(),v.render(w,H),ee(()=>{v.dispose(),v.forceContextLoss()})}});return W(()=>{const{init:s}=m(a);s(),y(),window.addEventListener("scroll",r)}),Z(()=>{window.removeEventListener("scroll",r)}),(s,n)=>{const g=ce;return G(),ie(g,{to:`/sneaker/${I.modelIndex}`,onClick:p,class:"c-sneaker-list"},{default:ae(()=>[e("div",{class:"webGLbox",ref_key:"container",ref:a},null,512)]),_:1},8,["to"])}}}),Ae={class:"ScrollBar"},Te=e("img",{src:_e,class:"ScrollBarArrow ScrollBarArrow--top"},null,-1),Be=e("img",{src:fe,class:"ScrollBarArrow ScrollBarArrow--bottom"},null,-1),Ee=e("div",{class:"custom-scrollbar-thumb-inner"},null,-1),ke=[Ee],De={class:"debug"},Pe=O({__name:"ScrollBar",setup(I){const x=t(null),i=t(null),b=t(""),S=t(""),_=t(""),f=t(""),a=t(""),d=t(""),L=t(""),D=t(""),B=t("");return W(()=>{const A=document.querySelector(".l-wrapper");if(!A)return;let c=A.scrollHeight,p=window.innerHeight,C=p/c*p,o=window.scrollY,r=o/c*p+15;i.value&&(i.value.style.height=`${C}px`,i.value.style.transform=`translateY(${r}px)`),window.addEventListener("scroll",()=>{T||i.value&&(o=window.scrollY,r=o/c*p,r<15&&(r=15),r>window.innerHeight-C-15&&(r=window.innerHeight-C-15),i.value.style.transform=`translateY(${r}px)`)});let T=!1,y,m,s;i.value&&(i.value.addEventListener("mousedown",n=>{T=!0,y=n.pageY,s=n.clientY,L.value=y.toString(),o=window.scrollY,r=o/c*p,m=window.scrollY,D.value=m.toString(),document.body.style.userSelect="none"}),b.value=A.clientHeight.toString(),S.value=A.scrollHeight.toString(),document.addEventListener("mousemove",n=>{if(T){const g=n.pageY-y,P=n.clientY-s,v=P/window.innerHeight*document.documentElement.scrollHeight;if(window.scrollTo(0,m+v),d.value=n.pageY.toString(),L.value=y.toString(),f.value=g.toString(),a.value=v.toString(),i.value){let h=P/window.innerHeight*p+r;i.value.style.transform=`translateY(${h}px)`,B.value=h.toString(),h<15&&(h=15,i.value.style.transform=`translateY(${h}px)`,B.value=r.toString()),h>window.innerHeight-C-15&&(h=window.innerHeight-C-15,i.value.style.transform=`translateY(${h}px)`,B.value=r.toString())}}}),document.addEventListener("mouseup",()=>{T=!1,document.body.style.userSelect=""}))}),(A,c)=>(G(),j(he,null,[e("div",Ae,[Te,Be,e("div",{ref_key:"customScrollbar",ref:x,class:"custom-scrollbar"},[e("div",{ref_key:"scrollbarThumb",ref:i,class:"custom-scrollbar-thumb"},ke,512)],512)]),e("div",De,[e("div",null,"高さ: "+u(l(b)),1),e("div",null,"スクロール高さ: "+u(l(S)),1),e("div",null,"イベント名: "+u(l(_)),1),e("div",null,"deltaY: "+u(l(f)),1),e("div",null,"debug_scrollDelta: "+u(l(a)),1),e("div",null,"debug_pageY: "+u(l(d)),1),e("div",null,"debug_startY: "+u(l(L)),1),e("div",null,"debug_startScrollTop: "+u(l(D)),1),e("div",null,"debug_thumbPosition: "+u(l(B)),1)])],64))}}),Ye={class:"l-content-scroll"},Re={class:"l-content-wrapper"},He={class:"l-content-wrapper-inner"},$e={class:"l-selectCursor"},Oe={__name:"index_v0",setup(I){const x=t(-1),i=Q(),b=X();t(null);const S=t(null),_=t(!1),f=t(""),a=t(null),d=t(null),L=t(null),D=t(null),B=t(null);t(!1);const A=t(null),c=t(null),p=t(null),C=t(null),o=t({topLeft:{x:"0",y:"0"},topRight:{x:"0",y:"0"},bottomLeft:{x:"0",y:"0"},bottomRight:{x:"0",y:"0"}}),r=n=>{f.value=n},T=t(!1),y=()=>{const n=B.value.getBoundingClientRect(),g=1,P=n.width*g,v=n.height*g,h=n.left+n.width/2,Y=n.top+n.height/2,w={left:h-P/2,right:h+P/2,top:Y-v/2,bottom:Y+v/2};o.value.topLeft.x=Math.floor(w.left),o.value.topLeft.y=Math.floor(w.top),o.value.topRight.x=Math.floor(w.right),o.value.topRight.y=Math.floor(w.top),o.value.bottomLeft.x=Math.floor(w.left),o.value.bottomLeft.y=Math.floor(w.bottom),o.value.bottomRight.x=Math.floor(w.right),o.value.bottomRight.y=Math.floor(w.bottom);const H=[a,d,L,D];T.value=H.some((R,z)=>{const E=R.value.container.getBoundingClientRect(),k={x:(E.right-E.left)/2+E.left,y:(E.bottom-E.top)/2+E.top};let N=!1;return w.top<k.y&&k.y<w.bottom&&(R.value.sendTitle(),R.value.animationPlay(),N=!0,x.value=z),N||(x.value=-1,f.value=""),N})},m=()=>{window.scrollY===0&&i.setMainBasicColor()},s=()=>{if(!S.value)return;const n=S.value.getBoundingClientRect();_.value=n.top<=0};return W(()=>{window.addEventListener("scroll",s),y(),window.addEventListener("scroll",y),window.addEventListener("scroll",m)}),ee(()=>{window.removeEventListener("scroll",s)}),Z(()=>{window.removeEventListener("scroll",y)}),(n,g)=>{const P=Se,v=we,h=Le,Y=Pe;return G(),j("div",null,[e("div",Ye,[e("div",Re,[e("div",He,[e("div",$e,[e("div",{class:M(["p-selectCursor",{isDebug:l(b).isDebug}])},[e("div",{class:M(["c-selectCursor",{isDebug:l(b).isDebug}]),ref_key:"selectCursor",ref:B},[e("div",{class:M(["c-selectCursor-pos debugBox",{isActive:l(b).isDebug}])},[e("div",{class:"c-selectCursor-pos-disp -topLeft",ref_key:"selectCursorTopLeft",ref:A}," ("+u(l(o).topLeft.x)+","+u(l(o).topLeft.y)+") ",513),e("div",{class:"c-selectCursor-pos-disp -topRight",ref_key:"selectCursorTopRight",ref:c}," ("+u(l(o).topRight.x)+","+u(l(o).topRight.y)+") ",513),e("div",{class:"c-selectCursor-pos-disp -bottomLeft",ref_key:"selectCursorBottomLeft",ref:p}," ("+u(l(o).bottomLeft.x)+","+u(l(o).bottomLeft.y)+") ",513),e("div",{class:"c-selectCursor-pos-disp -bottomRight",ref_key:"selectCursorBottomRight",ref:C}," ("+u(l(o).bottomRight.x)+","+u(l(o).bottomRight.y)+") ",513)],2),e("div",{class:M(["c-selectCursor-name",{isActive:l(b).isDebug}])}," Touch Area ",2)],2)],2)]),$(P),e("div",{class:M(["debugBox debugShowActiveObjIndex",{isActive:l(b).isDebug}])}," Active Obj index: "+u(l(x)),3),$(v,{ref_key:"Box3D_lo_1",ref:a,modelIndex:"1",title:"NIKE AIR JORDAN 2",cgPath:"/nuxt3/object/sneaker_lo.glb",mainColor:"#473acc",isActive:l(x)===0,onGetTitle:r},null,8,["isActive"]),$(v,{ref_key:"Box3D_lo_2",ref:d,modelIndex:"2",title:"NIKE DUNK LOW Pro B",cgPath:"/nuxt3/object/sneaker_lo_2.glb",mainColor:"#F00",isActive:l(x)===1,onGetTitle:r},null,8,["isActive"]),$(h,{ref_key:"Box3D_lo_3",ref:L,modelIndex:"3",title:"NIKE SNEAKER AAAAA",cgPath:"/nuxt3/object/sneaker_lo_others.glb",mainColor:"#333",isActive:l(x)===2,onGetTitle:r},null,8,["isActive"]),$(h,{ref_key:"Box3D_lo_4",ref:D,modelIndex:"4",title:"NIKE OTHERS",cgPath:"/nuxt3/object/sneaker_lo_others.glb",mainColor:"#333",isActive:l(x)===3,onGetTitle:r},null,8,["isActive"])])])]),$(Y)])}}};export{Oe as default};

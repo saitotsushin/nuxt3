@@ -1,0 +1,1 @@
+import{_ as e}from"./DWeZfVkv.js";import{_ as o,c as n,b as t,o as r}from"./seE0ligh.js";const s={};function _(a,f){const c=e;return r(),n("div",null,[t(c)])}const m=o(s,[["render",_]]);export{m as default};

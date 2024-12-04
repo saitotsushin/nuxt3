@@ -1,0 +1,1 @@
+import{_ as t,c as s,ag as o,o as c}from"./seE0ligh.js";const n={},a={class:"l-contents"};function r(e,_){return c(),s("div",a,[o(e.$slots,"default")])}const d=t(n,[["render",r]]);export{d as default};
