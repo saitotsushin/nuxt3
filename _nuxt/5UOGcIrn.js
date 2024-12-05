@@ -1,0 +1,1 @@
+import{r as n,h as r,I as t,o,c as s}from"./DdG86zgv.js";const m={__name:"MyGame",setup(c){const e=n(null);return r(()=>{const{$initPhaser:a}=t();a(e.value)}),(a,_)=>(o(),s("div",{ref_key:"gameContainer",ref:e,class:"gameContainer"},null,512))}};export{m as _};
