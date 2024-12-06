@@ -1,0 +1,1 @@
+import{_ as t,c,b as e,ag as _,a as r,ah as d,o as l,ai as m,aj as p}from"./d-9HYnaW.js";const i={},f={class:"wrapper"},u=r("div",null,"layout:sneaker",-1);function g(o,B){const a=m,n=d("BgImage"),s=p;return l(),c("div",f,[e(a),u,_(o.$slots,"default"),e(n),e(s)])}const k=t(i,[["render",g]]);export{k as default};

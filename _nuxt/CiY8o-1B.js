@@ -1,1 +1,0 @@
-import{_ as s,c as t,ag as o,o as c}from"./DdG86zgv.js";const n={},r={class:"l-contents"};function a(e,l){return c(),t("div",r,[o(e.$slots,"default")])}const d=s(n,[["render",a]]);export{d as default};
